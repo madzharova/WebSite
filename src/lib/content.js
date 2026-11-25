@@ -5,6 +5,7 @@
 import { criteria, sections, slugOf } from './data/criteria.js';
 import { documents } from './data/documents.js';
 import { base } from '$app/paths';
+import { dev } from '$app/environment';
 
 // Път от Markdown полетата (cover: /img/…) → с базовия път; външните адреси остават.
 const withBase = (v) =>
@@ -31,7 +32,8 @@ function collect(modules) {
 			evidence: mod.metadata?.evidence ?? [],
 			component: mod.default
 		}))
-		.filter((item) => !item.draft)
+		// draft: true – скрито навсякъде; template: true (образец за нов файл) – видим само при npm run dev
+		.filter((item) => !item.draft && (dev || !item.template))
 		.sort((a, b) => String(b.date ?? '').localeCompare(String(a.date ?? '')));
 }
 

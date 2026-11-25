@@ -1,13 +1,12 @@
 <script>
 	import { base } from '$app/paths';
 	import { subjects } from '$lib/content.js';
-	import { spotlight } from '$lib/actions/tilt.js';
 	import { topicLabel } from '$lib/data/subjects.js';
 	let { r } = $props();
 	const fmt = (d) => (d ? new Date(d).toLocaleDateString('bg-BG', { month: 'long', year: 'numeric' }) : '');
 </script>
 
-<a class="card" class:has-cover={r.cover} href="{base}/resursi/{r.slug}/" use:spotlight data-subject={r.subject}>
+<a class="card" class:has-cover={r.cover} href="{base}/resursi/{r.slug}/" data-subject={r.subject}>
 	{#if r.cover}<div class="cover"><img src={r.cover} alt="" loading="lazy" /></div>{/if}
 	<div class="meta">
 		<span class="subj">{subjects[r.subject] ?? r.subject}</span>
@@ -30,8 +29,6 @@
 
 <style>
 	.card {
-		--mx: 50%;
-		--my: 0%;
 		position: relative;
 		display: flex;
 		flex-direction: column;
@@ -50,16 +47,6 @@
 			transform 0.5s var(--ease),
 			box-shadow 0.5s var(--ease),
 			border-color 0.3s;
-	}
-	.card::before {
-		/* светлина под курсора */
-		content: '';
-		position: absolute;
-		inset: 0;
-		z-index: -1;
-		background: radial-gradient(320px circle at var(--mx) var(--my), rgb(228 238 244 / 0.9), transparent 60%);
-		opacity: 0;
-		transition: opacity 0.4s;
 	}
 	.card::after {
 		/* тънка линия, която се изтегля отгоре */
@@ -82,9 +69,6 @@
 		box-shadow: var(--shadow-soft);
 		border-color: var(--line-strong);
 		color: var(--ink);
-	}
-	.card:hover::before {
-		opacity: 1;
 	}
 	.card:hover::after {
 		transform: scaleX(1);

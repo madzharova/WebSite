@@ -1,5 +1,6 @@
 <script>
 	import { base } from '$app/paths';
+	import { dev } from '$app/environment';
 	import { sections } from '$lib/data/criteria.js';
 	import { criteriaWithEvidence, criterionHref } from '$lib/content.js';
 	import { reveal } from '$lib/actions/reveal.js';
@@ -21,20 +22,23 @@
 				<span class="roman" aria-hidden="true">{s.roman}</span>
 				<div>
 					<h3 id="sec-{s.id}"><a href="{base}/portfolio/{s.slug}/">{s.title}</a></h3>
-					<p>{s.subtitle} · до {s.max} т.</p>
+					<p>{s.subtitle}</p>
 				</div>
-				<div class="meter" title="{covered} от {items.length} критерия с поне 2 доказателства">
-					<span style="width: {(covered / items.length) * 100}%"></span>
-				</div>
+				<!-- напредък по доказателствата – само локално -->
+				{#if dev}
+					<div class="meter" title="{covered} от {items.length} критерия с поне 2 доказателства">
+						<span style="width: {(covered / items.length) * 100}%"></span>
+					</div>
+				{/if}
 			</header>
 			<ol class="tiles">
 				{#each items as c, i}
-					{@const st = status(c.evidenceCount)}
+					{@const st = dev ? status(c.evidenceCount) : ''}
 					<li use:reveal={{ delay: (i % 6) * 50 }}>
 						<a href={criterionHref(c)} class="tile {st}">
 							<span class="top">
 								<span class="num">{c.section}.{c.num}</span>
-								<span class="st">{statusLabel[st]}</span>
+								{#if dev}<span class="st">{statusLabel[st]}</span>{/if}
 							</span>
 							<span class="short">{c.short}</span>
 							{#if c.evidenceCount > 0}

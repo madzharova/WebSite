@@ -1,12 +1,11 @@
 <script>
 	import { base } from '$app/paths';
-	import { sections } from '$lib/data/criteria.js';
-	import { functions, portfolioMeta, scale, evidenceKinds } from '$lib/data/portfolio.js';
+	import { functions, portfolioMeta } from '$lib/data/portfolio.js';
 	import { criteriaWithEvidence } from '$lib/content.js';
+	import { dev } from '$app/environment';
 	import { reveal } from '$lib/actions/reveal.js';
 	import PageHeader from '$lib/components/PageHeader.svelte';
 	import CriteriaMap from '$lib/components/CriteriaMap.svelte';
-	import Collapse from '$lib/components/Collapse.svelte';
 
 	const covered = criteriaWithEvidence.filter((c) => c.evidenceCount >= 2).length;
 	const fmt = (d) => d.split('-').reverse().join('.');
@@ -17,12 +16,12 @@
 <PageHeader
 	eyebrow="Професионално портфолио · атестационна карта"
 	title="Портфолио"
-	lead="Подредено по 25-те критерия от Приложение № 20 към Наредба № 15/2019 и петте критерия на ПГМТ „Проф. Цветан Лазаров“. Към всеки критерий – доказателствата и на какво се основава самооценката."
+	lead="Подредено по 25-те критерия от атестационната карта (Приложение № 20 към Наредба № 15/2019), включително петте критерия на ПГМТ „Проф. Цветан Лазаров“. Към всеки критерий – доказателствата."
 >
 	<dl class="facts">
 		<div class:fill={portfolioMeta.period.includes('[')}><dt>Период</dt><dd>{portfolioMeta.period}</dd></div>
 		<div><dt>Актуализация</dt><dd>{fmt(portfolioMeta.lastUpdated)}</dd></div>
-		<div><dt>Критерии с доказателства</dt><dd>{covered} / {criteriaWithEvidence.length}</dd></div>
+		{#if dev}<div><dt>Критерии с доказателства</dt><dd>{covered} / {criteriaWithEvidence.length}</dd></div>{/if}
 	</dl>
 </PageHeader>
 
@@ -50,46 +49,18 @@
 		<div class="maphead">
 			<div>
 				<p class="eyebrow" use:reveal>Атестационна карта</p>
-				<h2 use:reveal={{ delay: 60 }}>25 критерия · 50 точки</h2>
+				<h2 use:reveal={{ delay: 60 }}>25 критерия</h2>
 			</div>
-			<ul class="legend" aria-label="Легенда">
+			{#if dev}<ul class="legend" aria-label="Легенда">
 				<li><i class="l covered"></i>покрит – 2+ доказателства</li>
 				<li><i class="l progress"></i>в процес (1)</li>
 				<li><i class="l todo"></i>предстои</li>
-			</ul>
+			</ul>{/if}
 		</div>
 		<CriteriaMap />
 	</div>
 </section>
 
-<!-- Скриващи се пояснения -->
-<section class="section">
-	<div class="wrap narrow">
-		<h2 use:reveal>Как се оценява</h2>
-		<div class="acc">
-			<Collapse title="Точки по всеки критерий">
-				<p>Всеки критерий се оценява с 1, 1,5 или 2 точки (Наредба № 15, чл. 82, ал. 2). Две точки се дават, когато дейността надвишава изискванията за длъжността и резултатите на учениците надвишават очакваните.</p>
-			</Collapse>
-			<Collapse title="Окончателен резултат">
-				<p><b>ОР = 0,25 × самооценка + 0,75 × оценка на комисията</b> (чл. 82, ал. 6).</p>
-				<ul class="scale">
-					{#each scale as s}
-						<li><span>{s.from}–{s.to === 50 ? 50 : String(s.to).replace('.', ',')}</span>{s.label}</li>
-					{/each}
-				</ul>
-			</Collapse>
-			<Collapse title="Какво доказват материалите">
-				<p>Според чл. 66, ал. 3 материалите в портфолиото доказват:</p>
-				<ul>
-					{#each Object.values(evidenceKinds) as e}<li>{e}</li>{/each}
-				</ul>
-			</Collapse>
-			<Collapse title="Лични документи">
-				<p>Документите за образование и квалификация не се публикуват. Те са в Google Drive с ограничен достъп. В сайта е само <a href="{base}/portfolio/opis/">описът им</a> (чл. 67, т. 4).</p>
-			</Collapse>
-		</div>
-	</div>
-</section>
 
 <style>
 	.facts {
@@ -206,28 +177,6 @@
 	.l.todo {
 		border-style: dashed;
 		background: transparent;
-	}
-	.narrow {
-		max-width: 860px;
-	}
-	.acc {
-		margin-top: 32px;
-	}
-	.scale {
-		list-style: none;
-		padding: 0;
-	}
-	.scale li {
-		display: flex;
-		gap: 16px;
-		padding: 8px 0;
-		border-bottom: 1px solid var(--line);
-	}
-	.scale span {
-		min-width: 100px;
-		font-family: var(--serif);
-		font-size: 19px;
-		color: var(--sea);
 	}
 	@media (max-width: 900px) {
 		.fns {

@@ -1,8 +1,7 @@
 <script>
 	import { base } from '$app/paths';
 	import { reveal } from '$lib/actions/reveal.js';
-	import { resources, practices } from '$lib/content.js';
-	import { criteria } from '$lib/data/criteria.js';
+	import { resources } from '$lib/content.js';
 	import ResourceCard from '$lib/components/ResourceCard.svelte';
 	import { subjectPages, bridge } from '$lib/data/subjects.js';
 
@@ -15,20 +14,7 @@
 
 	const latest = resources.slice(0, 3);
 
-	// Двуезичен девиз, който се сменя плавно
-	const mottos = [
-		{ lang: 'bg', text: 'Уча се, като живея.' },
-		{ lang: 'fr', text: 'J’apprends en vivant.' },
-		{ lang: 'bg', text: 'Живея, като се уча.' },
-		{ lang: 'fr', text: 'Je vis en apprenant.' }
-	];
-	let m = $state(0);
-	$effect(() => {
-		const t = setInterval(() => (m = (m + 1) % mottos.length), 3600);
-		return () => clearInterval(t);
-	});
 
-	const words = ['граматика', 'литература', 'Бодлер', 'vocabulaire', 'игри', 'Балзак', 'правопис', 'conjugaison', 'тестове', 'интерактивни уроци', 'la Francophonie', 'анализ'];
 
 	const paths = [
 		{
@@ -53,24 +39,7 @@
 			cta: 'Към библиотеката'
 		}
 	];
-	let openPath = $state(0);
 
-	// Брояч, който се „изкачва“, когато влезе в екрана
-	function countUp(node, target) {
-		const io = new IntersectionObserver(([e]) => {
-			if (!e.isIntersecting) return;
-			io.disconnect();
-			const t0 = performance.now();
-			const step = (t) => {
-				const k = Math.min(1, (t - t0) / 1400);
-				node.textContent = Math.round(target * (1 - Math.pow(1 - k, 3)));
-				if (k < 1) requestAnimationFrame(step);
-			};
-			requestAnimationFrame(step);
-		});
-		io.observe(node);
-		return { destroy: () => io.disconnect() };
-	}
 </script>
 
 <svelte:head>
@@ -84,11 +53,10 @@
 		<div class="hero-text">
 			<p class="eyebrow" use:reveal>Учител · БЕЛ и френски език · Пловдив</p>
 			<h1 use:reveal={{ delay: 80 }}>Интерактивни уроци и&nbsp;ресурси <em>за&nbsp;учители</em></h1>
-			<div class="motto" aria-live="off" use:reveal={{ delay: 160 }}>
-				{#each mottos as mt, i}
-					<span class:on={i === m} lang={mt.lang}>{mt.text}</span>
-				{/each}
-			</div>
+			<p class="motto" use:reveal={{ delay: 160 }}>
+				<span lang="bg">Уча се, като живея.</span>
+				<span lang="fr">J’apprends en vivant.</span>
+			</p>
 			<p class="lead" use:reveal={{ delay: 220 }}>
 				Създавам безплатни игри, упражнения и уроци по български език, литература и френски език. Тук е и професионалното ми портфолио.
 			</p>
@@ -115,27 +83,10 @@
 					<span class="fc-t">{resources[0].title}</span>
 				</a>
 			{/if}
-			<svg class="orbit" viewBox="0 0 200 200" aria-hidden="true">
-				<circle cx="100" cy="100" r="96" fill="none" stroke="var(--line-strong)" stroke-width="0.6" stroke-dasharray="2 6" />
-			</svg>
 		</div>
 	</div>
-
-	<a href="#predmeti" class="scroll-cue" aria-label="Надолу към ресурсите">
-		<span></span>
-	</a>
 </section>
 
-<!-- ───── Лента с думи ───── -->
-<div class="ticker" aria-hidden="true">
-	<div class="track">
-		{#each [0, 1] as _}
-			{#each words as w}
-				<span>{w}</span><i>✦</i>
-			{/each}
-		{/each}
-	</div>
-</div>
 
 
 <!-- ───── Двата предмета ───── -->
@@ -205,12 +156,8 @@
 		<h2 id="paths-h" class="visually-hidden">Раздели на сайта</h2>
 		<ol class="paths">
 			{#each paths as p, i}
-				<li
-					class:open={openPath === i}
-					onpointerenter={() => (openPath = i)}
-					use:reveal={{ delay: i * 80 }}
-				>
-					<a href={p.href} onfocus={() => (openPath = i)}>
+				<li use:reveal={{ delay: i * 80 }}>
+					<a href={p.href}>
 						<span class="pn">{p.n}</span>
 						<span class="pt">{p.title}</span>
 						<span class="pa" aria-hidden="true">→</span>
@@ -227,27 +174,6 @@
 	</div>
 </section>
 
-<!-- ───── Числа ───── -->
-<section class="section section--paper" aria-label="Накратко в числа">
-	<div class="wrap stats">
-		<div use:reveal>
-			<span class="num" use:countUp={resources.length}>{resources.length}</span>
-			<span class="lbl">ресурса в библиотеката</span>
-		</div>
-		<div use:reveal={{ delay: 80 }}>
-			<span class="num" use:countUp={practices.length}>{practices.length}</span>
-			<span class="lbl">описани практики</span>
-		</div>
-		<div use:reveal={{ delay: 160 }}>
-			<span class="num" use:countUp={criteria.length}>{criteria.length}</span>
-			<span class="lbl">критерия в портфолиото</span>
-		</div>
-		<div use:reveal={{ delay: 240 }}>
-			<span class="num" use:countUp={12}>{12}</span>
-			<span class="lbl">квалификационни кредита</span>
-		</div>
-	</div>
-</section>
 
 <!-- ───── Философия ───── -->
 <section class="section quote-sec">
@@ -290,29 +216,18 @@
 		font-weight: 500;
 	}
 	.motto {
-		position: relative;
-		height: 34px;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0 0.6em;
 		margin: 22px 0 20px;
 		font-family: var(--serif);
 		font-style: italic;
 		font-size: 24px;
+		line-height: 1.3;
 		color: var(--coral);
 	}
-	.motto span {
-		position: absolute;
-		inset: 0;
-		opacity: 0;
-		transform: translateY(10px);
-		filter: blur(4px);
-		transition:
-			opacity 0.8s var(--ease),
-			transform 0.8s var(--ease),
-			filter 0.8s var(--ease);
-	}
-	.motto span.on {
-		opacity: 1;
-		transform: none;
-		filter: none;
+	.motto span[lang='fr'] {
+		color: var(--ink-soft);
 	}
 	.ctas {
 		display: flex;
@@ -349,14 +264,6 @@
 	.hero-visual:hover .frame {
 		translate: 10px 10px;
 	}
-	.orbit {
-		position: absolute;
-		width: 150px;
-		top: -40px;
-		right: -60px;
-		animation: spin 60s linear infinite;
-		pointer-events: none;
-	}
 	.float-card {
 		position: absolute;
 		left: -48px;
@@ -374,7 +281,6 @@
 		box-shadow: var(--shadow-float);
 		text-decoration: none;
 		color: var(--ink);
-		animation: bob 6s ease-in-out infinite;
 	}
 	.fc-k {
 		font-size: 10.5px;
@@ -389,27 +295,6 @@
 		font-weight: 600;
 		color: var(--sea);
 		line-height: 1.2;
-	}
-	.scroll-cue {
-		position: absolute;
-		left: 50%;
-		bottom: 28px;
-		translate: -50% 0;
-		width: 26px;
-		height: 42px;
-		border: 1px solid var(--line-strong);
-		border-radius: 20px;
-	}
-	.scroll-cue span {
-		position: absolute;
-		left: 50%;
-		top: 8px;
-		width: 2px;
-		height: 8px;
-		margin-left: -1px;
-		border-radius: 2px;
-		background: var(--sea);
-		animation: cue 2s var(--ease) infinite;
 	}
 
 
@@ -597,31 +482,6 @@
 	}
 
 	/* Лента */
-	.ticker {
-		overflow: hidden;
-		border-block: 1px solid var(--line);
-		padding: 18px 0;
-		mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
-	}
-	.track {
-		display: flex;
-		width: max-content;
-		gap: 28px;
-		align-items: center;
-		animation: marquee 50s linear infinite;
-		font-family: var(--serif);
-		font-size: 26px;
-		font-style: italic;
-		color: var(--ink-soft);
-	}
-	.ticker:hover .track {
-		animation-play-state: paused;
-	}
-	.track i {
-		font-style: normal;
-		font-size: 12px;
-		color: var(--coral);
-	}
 
 	/* Заглавни редове на секции */
 	.head {
@@ -683,30 +543,13 @@
 		color: var(--sea);
 		transition: transform 0.6s var(--ease), color 0.3s;
 	}
-	.open .pt {
-		transform: translateX(14px);
-		font-style: italic;
-	}
 	.pa {
 		font-size: 28px;
 		color: var(--sea);
 		opacity: 0.4;
 		transition: transform 0.5s var(--ease), opacity 0.3s;
 	}
-	.open .pa {
-		opacity: 1;
-		transform: rotate(-45deg);
-	}
-	.pbody {
-		display: grid;
-		grid-template-rows: 0fr;
-		transition: grid-template-rows 0.6s var(--ease);
-	}
-	.open .pbody {
-		grid-template-rows: 1fr;
-	}
 	.pbody > div {
-		overflow: hidden;
 		padding-left: 80px;
 	}
 	.pbody p {
@@ -721,27 +564,6 @@
 	}
 
 	/* Числа */
-	.stats {
-		display: grid;
-		grid-template-columns: repeat(4, minmax(0, 1fr));
-	}
-	.stats > div {
-		display: flex;
-		flex-direction: column;
-		gap: 6px;
-		padding: 8px 24px;
-		border-left: 1px solid var(--line);
-	}
-	.num {
-		font-family: var(--serif);
-		font-size: clamp(54px, 7vw, 84px);
-		line-height: 1;
-		color: var(--sea);
-	}
-	.lbl {
-		font-size: 14px;
-		color: var(--ink-soft);
-	}
 
 	/* Цитат */
 	.narrow {
@@ -755,34 +577,6 @@
 		color: var(--ink);
 	}
 
-	@keyframes spin {
-		to {
-			rotate: 360deg;
-		}
-	}
-	@keyframes bob {
-		50% {
-			transform: translateY(-8px);
-		}
-	}
-	@keyframes cue {
-		0% {
-			transform: translateY(0);
-			opacity: 1;
-		}
-		80% {
-			transform: translateY(14px);
-			opacity: 0;
-		}
-		100% {
-			opacity: 0;
-		}
-	}
-	@keyframes marquee {
-		to {
-			transform: translateX(-50%);
-		}
-	}
 
 	@media (max-width: 900px) {
 		.hero-grid {
@@ -798,18 +592,11 @@
 		.cards {
 			grid-template-columns: 1fr;
 		}
-		.stats {
-			grid-template-columns: 1fr 1fr;
-			row-gap: 32px;
-		}
 		.pbody > div {
 			padding-left: 0;
 		}
 		.paths li > a {
 			grid-template-columns: 40px 1fr auto;
-		}
-		.scroll-cue {
-			display: none;
 		}
 	}
 	@media (min-width: 901px) and (max-width: 1100px) {

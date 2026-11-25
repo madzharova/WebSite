@@ -6,7 +6,6 @@
 	import { evidenceKinds } from '$lib/data/portfolio.js';
 	import { reveal } from '$lib/actions/reveal.js';
 	import ResourceCard from '$lib/components/ResourceCard.svelte';
-	import Collapse from '$lib/components/Collapse.svelte';
 
 	let { data } = $props();
 	let c = $derived(byId[data.id]);
@@ -34,7 +33,7 @@
 					<a href={criterionHref(x)} aria-current={x.id === c.id ? 'page' : undefined}>
 						<span class="n">{x.num}</span>
 						<span class="t">{x.short}</span>
-						<i class="d" class:ok={x.evidenceCount >= 2} class:half={x.evidenceCount === 1} aria-hidden="true"></i>
+						{#if dev}<i class="d" class:ok={x.evidenceCount >= 2} class:half={x.evidenceCount === 1} aria-hidden="true"></i>{/if}
 					</a>
 				</li>
 			{/each}
@@ -47,7 +46,7 @@
 				<a href="{base}/portfolio/">Портфолио</a> <span>/</span> <a href="{base}/portfolio/{s.slug}/">{s.roman}. {s.title}</a>
 				{#if group}<span>/</span> {group.title}{/if}
 			</nav>
-			<p class="big" use:reveal aria-hidden="true">{c.section}.{c.num}</p>
+			<p class="eyebrow crit-no" use:reveal>Критерий {c.section}.{c.num}</p>
 			<h1 use:reveal={{ delay: 60 }}>{c.short}</h1>
 			<p class="official" use:reveal={{ delay: 120 }}>{c.text}</p>
 		</header>
@@ -59,10 +58,11 @@
 			</div>
 		{/if}
 
-		{#if ev.note?.basis || dev}
+		<!-- Чернова на колоната „формира се на базата на“ за хартиената карта – само локално -->
+		{#if dev}
 			<section class="self" use:reveal>
 				<div>
-					<p class="h">Самооценка – формира се на базата на</p>
+					<p class="h">Чернова за картата – „формира се на базата на“ (вижда се само локално)</p>
 					<p class:fill={!ev.note?.basis}>{ev.note?.basis ?? '[ПОЛЕ ЗА ПОПЪЛВАНЕ]'}</p>
 				</div>
 			</section>
@@ -116,7 +116,7 @@
 								<a class="lock" href={d.href}>отвори →</a>
 							{:else if d.url}
 								<a class="lock" href={d.url} rel="noopener">ограничен достъп ↗</a>
-							{:else}
+							{:else if dev}
 								<span class="lock pending">предстои качване</span>
 							{/if}
 						</li>
@@ -129,11 +129,6 @@
 			{/if}
 		</section>
 
-		<div class="scale">
-			<Collapse title="Какво означават 2 точки в раздел {s.roman}">
-				<p class="muted">{s.top}</p>
-			</Collapse>
-		</div>
 
 		<nav class="pager" aria-label="Предишен и следващ критерий">
 			{#if prev}
@@ -147,6 +142,9 @@
 </div>
 
 <style>
+	.crit-no {
+		margin: 28px 0 14px;
+	}
 	.page {
 		display: grid;
 		grid-template-columns: 270px minmax(0, 1fr);
@@ -230,15 +228,6 @@
 	}
 	.crumbs span {
 		margin: 0 6px;
-	}
-	.big {
-		margin: 28px 0 0;
-		font-family: var(--serif);
-		font-size: clamp(80px, 12vw, 140px);
-		line-height: 0.85;
-		color: var(--sea);
-		opacity: 0.18;
-		letter-spacing: -0.02em;
 	}
 	h1 {
 		font-size: clamp(36px, 4.6vw, 54px);
@@ -399,9 +388,6 @@
 		border-radius: var(--radius-lg);
 		color: var(--ink-soft);
 		margin-top: 16px;
-	}
-	.scale {
-		margin-top: 64px;
 	}
 	.pager {
 		display: grid;
