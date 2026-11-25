@@ -20,7 +20,7 @@
 	lead="Подредено по 25-те критерия от Приложение № 20 към Наредба № 15/2019 и петте критерия на ПГМТ „Проф. Цветан Лазаров“. Към всеки критерий – доказателства и кратка самооценка."
 >
 	<dl class="facts">
-		<div><dt>Период</dt><dd class:fill={portfolioMeta.period.includes('[')}>{portfolioMeta.period}</dd></div>
+		<div class:fill={portfolioMeta.period.includes('[')}><dt>Период</dt><dd>{portfolioMeta.period}</dd></div>
 		<div><dt>Актуализация</dt><dd>{fmt(portfolioMeta.lastUpdated)}</dd></div>
 		<div><dt>Критерии с доказателства</dt><dd>{covered} / {criteriaWithEvidence.length}</dd></div>
 	</dl>

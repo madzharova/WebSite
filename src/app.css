@@ -219,6 +219,11 @@ a:hover {
 	border-radius: var(--radius);
 }
 
+/* Незавършени полета: видими само при `npm run dev`, скрити на публичния сайт.
+   Списък на всички: `npm run todo`. */
+.shell:not(.show-fill) .fill {
+	display: none !important;
+}
 .fill {
 	/* видимо маркиране на [ПОЛЕ ЗА ПОПЪЛВАНЕ] */
 	background: #fbf1e6;

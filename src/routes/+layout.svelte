@@ -12,6 +12,7 @@
 	import { onNavigate } from '$app/navigation';
 	import { markHydrated } from '$lib/actions/reveal.js';
 	import { page } from '$app/state';
+	import { dev } from '$app/environment';
 	import { ORIGIN, SITE_NAME, SITE_DESC } from '$lib/data/site.js';
 	import Nav from '$lib/components/Nav.svelte';
 	import Footer from '$lib/components/Footer.svelte';
@@ -52,7 +53,8 @@
 <Nav onsearch={() => (searchOpen = true)} />
 <Search bind:open={searchOpen} />
 
-<div class="shell">
+<!-- show-fill: незавършените полета (.fill) се виждат само при npm run dev -->
+<div class="shell" class:show-fill={dev}>
 	<main id="main">
 		{@render children()}
 	</main>
