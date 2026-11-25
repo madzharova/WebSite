@@ -65,7 +65,6 @@ export const subjectPages = {
 export const bridge = {
 	key: 'bel-fr',
 	name: 'Бинарни уроци',
-	pair: 'БЕЛ ↔ Français',
 	text: 'Литература в оригинал и превод, общи теми и уроци, водени заедно с колега.'
 };
 

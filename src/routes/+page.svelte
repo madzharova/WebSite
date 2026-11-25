@@ -122,9 +122,7 @@
 			{/each}
 			{#if shared.length}
 				<a class="bridge-pill" href="{base}/balgarski/#binarni" use:reveal={{ delay: 260 }}>
-					<span class="bp-k">{bridge.pair}</span>
-					<span>{bridge.name}</span>
-					<small>{shared.length} {shared.length === 1 ? 'урок' : 'урока'}</small>
+					{bridge.name}
 				</a>
 			{/if}
 		</div>
@@ -444,19 +442,6 @@
 	.bridge-pill:hover {
 		transform: translateY(-2px);
 		color: var(--ink);
-	}
-	.bp-k {
-		font-size: 10.5px;
-		letter-spacing: 0.2em;
-		text-transform: uppercase;
-		background: linear-gradient(90deg, var(--sea), var(--coral));
-		-webkit-background-clip: text;
-		background-clip: text;
-		color: transparent;
-		font-weight: 700;
-	}
-	.bridge-pill small {
-		color: var(--ink-soft);
 	}
 	@media (max-width: 800px) {
 		.doors {

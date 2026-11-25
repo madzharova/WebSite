@@ -106,7 +106,7 @@
 		<div class="wrap">
 			<div class="bh">
 				<div>
-					<p class="eyebrow" use:reveal>{bridge.pair}</p>
+					<p class="eyebrow" use:reveal>С колеги от други предмети</p>
 					<h2 use:reveal={{ delay: 60 }}>{bridge.name}</h2>
 					<p class="muted" use:reveal={{ delay: 100 }}>{bridge.text}</p>
 				</div>
