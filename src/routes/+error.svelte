@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import { page } from '$app/state';
 </script>
 
@@ -9,9 +10,9 @@
 	<h1>Тази страница я няма – или се е преместила.</h1>
 	<p class="lead">Сайтът е обновен и някои адреси са променени.</p>
 	<div class="ctas">
-		<a class="btn" href="/">Към началото</a>
-		<a class="btn btn--ghost" href="/resursi/">Ресурси</a>
-		<a class="btn btn--ghost" href="/portfolio/">Портфолио</a>
+		<a class="btn" href="{base}/">Към началото</a>
+		<a class="btn btn--ghost" href="{base}/resursi/">Ресурси</a>
+		<a class="btn btn--ghost" href="{base}/portfolio/">Портфолио</a>
 	</div>
 </section>
 

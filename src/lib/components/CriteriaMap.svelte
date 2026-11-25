@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import { sections } from '$lib/data/criteria.js';
 	import { criteriaWithEvidence, criterionHref } from '$lib/content.js';
 	import { reveal } from '$lib/actions/reveal.js';
@@ -19,7 +20,7 @@
 			<header use:reveal>
 				<span class="roman" aria-hidden="true">{s.roman}</span>
 				<div>
-					<h3 id="sec-{s.id}"><a href="/portfolio/{s.slug}/">{s.title}</a></h3>
+					<h3 id="sec-{s.id}"><a href="{base}/portfolio/{s.slug}/">{s.title}</a></h3>
 					<p>{s.subtitle} · до {s.max} т.</p>
 				</div>
 				<div class="meter" title="{covered} от {items.length} критерия с поне 2 доказателства">

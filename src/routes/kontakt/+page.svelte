@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import { reveal } from '$lib/actions/reveal.js';
 	import TitleLine from '$lib/components/TitleLine.svelte';
 	import { contacts } from '$lib/data/contacts.js';
@@ -57,7 +58,7 @@
 
 		<div class="card" use:reveal={{ delay: 120 }}>
 			<figure class="who">
-				<img src="/img/margarita-560.webp" alt="Маргарита Маджарова" width="72" height="72" />
+				<img src="{base}/img/margarita-560.webp" alt="Маргарита Маджарова" width="72" height="72" />
 				<figcaption>
 					<strong>Маргарита Маджарова</strong>
 					<span>Учител по български език и литература и френски език</span>

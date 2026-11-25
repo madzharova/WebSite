@@ -1,11 +1,13 @@
 // Двата предмета – всеки има своя начална страница, раздели и нива.
 // Ресурс с subject: bel-fr (бинарен/интердисциплинарен) се показва и в двата.
 
+import { base } from '$app/paths';
+
 export const subjectPages = {
 	bel: {
 		key: 'bel',
 		slug: 'balgarski',
-		href: '/balgarski/',
+		href: `${base}/balgarski/`,
 		name: 'Български',
 		full: 'Български език и литература',
 		tagline: 'Граматика, правопис, литература и писане – с игри, упражнения и интерактивни уроци.',
@@ -30,7 +32,7 @@ export const subjectPages = {
 	fr: {
 		key: 'fr',
 		slug: 'francais',
-		href: '/francais/',
+		href: `${base}/francais/`,
 		name: 'Français',
 		full: 'Френски език',
 		tagline: 'Grammaire, vocabulaire, civilisation et Francophonie – уроци и игри за втори чужд език.',

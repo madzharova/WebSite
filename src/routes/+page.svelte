@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import { reveal } from '$lib/actions/reveal.js';
 	import { resources, practices } from '$lib/content.js';
 	import { criteria } from '$lib/data/criteria.js';
@@ -32,21 +33,21 @@
 	const paths = [
 		{
 			n: '01',
-			href: '/praktiki/',
+			href: `${base}/praktiki/`,
 			title: 'Практики',
 			text: 'Как работя в час: проблем → решение → резултат. Кратки и честни истории от класната стая.',
 			cta: 'Вижте практиките'
 		},
 		{
 			n: '02',
-			href: '/portfolio/',
+			href: `${base}/portfolio/`,
 			title: 'Портфолио',
 			text: 'Професионалното ми портфолио, подредено по 25-те критерия на атестационната карта – с доказателства към всеки.',
 			cta: 'Отворете портфолиото'
 		},
 		{
 			n: '03',
-			href: '/resursi/',
+			href: `${base}/resursi/`,
 			title: 'Всички ресурси',
 			text: 'Цялата библиотека на едно място – с филтри по предмет, вид и клас.',
 			cta: 'Към библиотеката'
@@ -93,7 +94,7 @@
 			</p>
 			<div class="ctas" use:reveal={{ delay: 300 }}>
 				<a class="btn" href="#predmeti">Ресурси <span class="arrow">↓</span></a>
-				<a class="btn btn--ghost" href="/portfolio/">Портфолио</a>
+				<a class="btn btn--ghost" href="{base}/portfolio/">Портфолио</a>
 			</div>
 		</div>
 
@@ -101,15 +102,15 @@
 			<div class="frame" aria-hidden="true"></div>
 			<img
 				class="photo"
-				src="/img/margarita-900.webp"
-				srcset="/img/margarita-560.webp 560w, /img/margarita-900.webp 900w"
+				src="{base}/img/margarita-900.webp"
+				srcset="{base}/img/margarita-560.webp 560w, {base}/img/margarita-900.webp 900w"
 				sizes="(max-width: 900px) 70vw, 360px"
 				alt="Маргарита Маджарова в класната стая, зад нея – табло за Деня на Франкофонията и урок по френски на дъската"
 				width="900"
 				height="1125"
 			/>
 			{#if resources[0]}
-				<a class="float-card" href="/resursi/{resources[0].slug}/">
+				<a class="float-card" href="{base}/resursi/{resources[0].slug}/">
 					<span class="fc-k">Ново</span>
 					<span class="fc-t">{resources[0].title}</span>
 				</a>
@@ -169,7 +170,7 @@
 				</a>
 			{/each}
 			{#if shared.length}
-				<a class="bridge-pill" href="/balgarski/#most" use:reveal={{ delay: 260 }}>
+				<a class="bridge-pill" href="{base}/balgarski/#most" use:reveal={{ delay: 260 }}>
 					<span class="bp-k">Мост</span>
 					<span>{bridge.name}</span>
 					<small>{shared.length} {shared.length === 1 ? 'урок' : 'урока'}</small>
@@ -187,7 +188,7 @@
 				<p class="eyebrow" use:reveal>Библиотека</p>
 				<h2 id="novi-h" use:reveal={{ delay: 60 }}>Нови ресурси</h2>
 			</div>
-			<a href="/resursi/" class="more" use:reveal>Всички ресурси <span>→</span></a>
+			<a href="{base}/resursi/" class="more" use:reveal>Всички ресурси <span>→</span></a>
 		</div>
 		<div class="cards">
 			{#each latest as r, i}
@@ -255,7 +256,7 @@
 		<blockquote use:reveal={{ delay: 80 }}>
 			Образованието трябва да отговаря на нуждите на учениците. Малките стъпки, последователността и дисциплината подобряват резултатите.
 		</blockquote>
-		<a href="/portfolio/filosofia/" class="more" use:reveal={{ delay: 140 }}>Прочетете повече <span>→</span></a>
+		<a href="{base}/portfolio/filosofia/" class="more" use:reveal={{ delay: 140 }}>Прочетете повече <span>→</span></a>
 	</div>
 </section>
 

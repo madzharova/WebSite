@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import { practices, resources, criterionHref } from '$lib/content.js';
 	import { byId } from '$lib/data/criteria.js';
 	import { reveal } from '$lib/actions/reveal.js';
@@ -23,7 +24,7 @@
 			<aside>
 				{#if res}
 					<p class="h">Свързан ресурс</p>
-					<a href="/resursi/{res.slug}/" class="res">{res.title} →</a>
+					<a href="{base}/resursi/{res.slug}/" class="res">{res.title} →</a>
 				{/if}
 				<p class="h">Доказателство към</p>
 				{#each p.criteria as id}

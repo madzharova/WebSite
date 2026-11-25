@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import { pages } from '$lib/content.js';
 	import { documents } from '$lib/data/documents.js';
 	import PageHeader from '$lib/components/PageHeader.svelte';
@@ -18,7 +19,7 @@
 			<ul>
 				{#each documents as d}<li>{d.title}</li>{/each}
 			</ul>
-			<a href="/portfolio/opis/">Пълен опис →</a>
+			<a href="{base}/portfolio/opis/">Пълен опис →</a>
 		</aside>
 	</div>
 </section>

@@ -68,6 +68,15 @@ draft: true           # скрива файла, докато го пишете
 Съдържанието на `build/` се качва на сървъра. Всяка страница е готов HTML файл (`trailingSlash: always`),
 а `404.html` е страницата за грешка.
 
+### GitHub Pages
+
+При всеки push в `main` GitHub Actions (`.github/workflows/deploy.yml`) пуска `npm run build:github`
+и публикува сайта на https://madzharova.github.io/WebSite/.
+Адресът е в `.env.github` (`VITE_SITE_URL`); пътят от него (`/WebSite`) става базов път на всички страници.
+Затова вътрешните връзки в кода се пишат с `{base}` от `$app/paths` (`href="{base}/resursi/"`),
+а в Markdown – обикновено (`](/portfolio/opis/)`), те получават базовия път автоматично.
+В GitHub: Settings → Pages → Source → **GitHub Actions**.
+
 ## Шрифтове
 
 Cormorant Garamond и Manrope са инсталирани през npm (`@fontsource`) и се зареждат от самия сайт –

@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import { page } from '$app/state';
 	import { afterNavigate } from '$app/navigation';
 	import { sections } from '$lib/data/criteria.js';
@@ -6,20 +7,20 @@
 	let { onsearch } = $props();
 
 	const links = [
-		{ href: '/balgarski/', label: 'Български', subj: 'bel' },
-		{ href: '/francais/', label: 'Français', subj: 'fr', lang: 'fr' },
-		{ href: '/praktiki/', label: 'Практики' },
-		{ href: '/portfolio/', label: 'Портфолио', mega: true },
-		{ href: '/kontakt/', label: 'Контакт' }
+		{ href: `${base}/balgarski/`, label: 'Български', subj: 'bel' },
+		{ href: `${base}/francais/`, label: 'Français', subj: 'fr', lang: 'fr' },
+		{ href: `${base}/praktiki/`, label: 'Практики' },
+		{ href: `${base}/portfolio/`, label: 'Портфолио', mega: true },
+		{ href: `${base}/kontakt/`, label: 'Контакт' }
 	];
 
 	const portfolioPages = [
-		{ href: '/portfolio/za-men/', label: 'За мен', note: 'образование и квалификация' },
-		{ href: '/portfolio/filosofia/', label: 'Философия', note: 'как и защо преподавам' },
-		{ href: '/portfolio/deinosti/', label: 'Дейности с ученици', note: 'посещения, конкурси, проекти' },
-		{ href: '/portfolio/celi/', label: 'Цели за развитие', note: 'измерими и със срокове' },
-		{ href: '/portfolio/otzivi/', label: 'Отзиви', note: 'родители и ученици' },
-		{ href: '/portfolio/opis/', label: 'Опис на документите', note: 'чл. 67, т. 4' }
+		{ href: `${base}/portfolio/za-men/`, label: 'За мен', note: 'образование и квалификация' },
+		{ href: `${base}/portfolio/filosofia/`, label: 'Философия', note: 'как и защо преподавам' },
+		{ href: `${base}/portfolio/deinosti/`, label: 'Дейности с ученици', note: 'посещения, конкурси, проекти' },
+		{ href: `${base}/portfolio/celi/`, label: 'Цели за развитие', note: 'измерими и със срокове' },
+		{ href: `${base}/portfolio/otzivi/`, label: 'Отзиви', note: 'родители и ученици' },
+		{ href: `${base}/portfolio/opis/`, label: 'Опис на документите', note: 'чл. 67, т. 4' }
 	];
 
 	let scrolled = $state(false);
@@ -33,7 +34,7 @@
 	let ind = $state({ x: 0, w: 0, show: false });
 
 	const isActive = (href) =>
-		href === '/' ? page.url.pathname === '/' : page.url.pathname.startsWith(href);
+		href === `${base}/` ? page.url.pathname === `${base}/` : page.url.pathname.startsWith(href);
 
 	function moveTo(el) {
 		if (!el || !navEl) return;
@@ -96,7 +97,7 @@
 
 <header class="site-nav" class:scrolled class:hidden={hidden && !menuOpen}>
 	<div class="bar">
-		<a href="/" class="brand" aria-label="Маргарита Маджарова – начало">
+		<a href="{base}/" class="brand" aria-label="Маргарита Маджарова – начало">
 			<span class="mono" aria-hidden="true">ММ</span>
 			<span class="brand-text">
 				<span class="name">Маргарита Маджарова</span>
@@ -146,14 +147,14 @@
 							<div class="mega-col mega-col--map">
 								<p class="mega-title">Атестационна карта</p>
 								{#each sections as s}
-									<a href="/portfolio/{s.slug}/" class="mega-sec">
+									<a href="{base}/portfolio/{s.slug}/" class="mega-sec">
 										<span class="roman">{s.roman}</span>
 										<span class="sec-name">{s.title}</span>
 										<span class="pts">{s.max} т.</span>
 										<span class="go" aria-hidden="true">→</span>
 									</a>
 								{/each}
-								<a href="/portfolio/#karta" class="mega-all">Цялата карта – 25 критерия →</a>
+								<a href="{base}/portfolio/#karta" class="mega-all">Цялата карта – 25 критерия →</a>
 							</div>
 						</div>
 					</div>
@@ -199,13 +200,13 @@
 <!-- Мобилно меню на цял екран -->
 <div id="mobile-menu" class="overlay" class:open={menuOpen} aria-hidden={!menuOpen} inert={!menuOpen}>
 	<nav aria-label="Мобилно меню">
-		{#each [{ href: '/', label: 'Начало' }, ...links] as l, i}
+		{#each [{ href: `${base}/`, label: 'Начало' }, ...links] as l, i}
 			<a href={l.href} style="--i: {i}" aria-current={isActive(l.href) ? 'page' : undefined}>
 				<span class="idx">0{i + 1}</span>{l.label}
 			</a>
 		{/each}
 		<div class="overlay-sub" style="--i: 6">
-			<a href="/resursi/">Всички ресурси</a>
+			<a href="{base}/resursi/">Всички ресурси</a>
 			{#each portfolioPages as p}
 				<a href={p.href}>{p.label}</a>
 			{/each}

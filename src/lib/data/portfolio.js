@@ -1,5 +1,7 @@
 // Общи данни за портфолиото. Основа: Наредба № 15/2019, чл. 66–68 и чл. 82–84.
 
+import { base } from '$app/paths';
+
 export const portfolioMeta = {
 	// чл. 68, ал. 1 – портфолиото се актуализира в началото на всяка учебна година
 	// и се посочва периодът, за който се отнасят материалите.
@@ -23,22 +25,22 @@ export const functions = [
 	{
 		name: 'Представителна',
 		text: 'Философия, образование, квалификация и допълнителни компетентности.',
-		href: '/portfolio/za-men/'
+		href: `${base}/portfolio/za-men/`
 	},
 	{
 		name: 'Развиваща',
 		text: 'Конкретни, измерими и осъществими цели за професионално развитие.',
-		href: '/portfolio/celi/'
+		href: `${base}/portfolio/celi/`
 	},
 	{
 		name: 'Оценъчна',
 		text: 'Доказателства и самооценка по всеки от 25-те критерия.',
-		href: '/portfolio/#karta'
+		href: `${base}/portfolio/#karta`
 	},
 	{
 		name: 'Комуникативна',
 		text: 'Обратна връзка от родители и ученици, споделени ресурси.',
-		href: '/portfolio/otzivi/'
+		href: `${base}/portfolio/otzivi/`
 	}
 ];
 

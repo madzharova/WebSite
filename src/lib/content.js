@@ -4,9 +4,20 @@
 
 import { criteria, sections, slugOf } from './data/criteria.js';
 import { documents } from './data/documents.js';
+import { base } from '$app/paths';
+
+// Път от Markdown полетата (cover: /img/…) → с базовия път; външните адреси остават.
+const withBase = (v) =>
+	typeof v === 'string' && v.startsWith('/') && !v.startsWith('//')
+		? base + v
+		: Array.isArray(v)
+			? v.map(withBase)
+			: v && typeof v === 'object'
+				? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, withBase(x)]))
+				: v;
 
 export const criterionHref = (c) =>
-	`/portfolio/${sections.find((s) => s.id === c.section).slug}/${slugOf(c.id)}/`;
+	`${base}/portfolio/${sections.find((s) => s.id === c.section).slug}/${slugOf(c.id)}/`;
 
 const fileSlug = (path) => path.split('/').pop().replace(/\.md$/, '');
 
@@ -15,7 +26,7 @@ function collect(modules) {
 	return Object.entries(modules)
 		.map(([path, mod]) => ({
 			slug: fileSlug(path),
-			...mod.metadata,
+			...withBase(mod.metadata),
 			criteria: mod.metadata?.criteria ?? [],
 			evidence: mod.metadata?.evidence ?? [],
 			component: mod.default
@@ -32,10 +43,10 @@ export const events = Object.entries(import.meta.glob('/src/content/events/*.md'
 		const n = Number(mod.metadata?.images ?? 0);
 		return {
 			slug,
-			...mod.metadata,
+			...withBase(mod.metadata),
 			criteria: mod.metadata?.criteria ?? [],
 			evidence: mod.metadata?.evidence ?? [],
-			images: Array.from({ length: n }, (_, i) => `/img/deinosti/${slug}/${i + 1}.webp`),
+			images: Array.from({ length: n }, (_, i) => `${base}/img/deinosti/${slug}/${i + 1}.webp`),
 			component: mod.default
 		};
 	})
@@ -47,7 +58,7 @@ export const testimonials = collect(import.meta.glob('/src/content/testimonials/
 const criterionNotes = Object.fromEntries(
 	Object.entries(import.meta.glob('/src/content/criteria/*.md', { eager: true })).map(([path, mod]) => [
 		fileSlug(path),
-		{ ...mod.metadata, component: mod.default }
+		{ ...withBase(mod.metadata), component: mod.default }
 	])
 );
 
@@ -71,9 +82,9 @@ export function evidenceFor(id) {
 	const pr = practices.filter((p) => p.criteria.includes(id));
 	const ev = events.filter((e) => e.criteria.includes(id));
 	const tst = ['I-4.1', 'II-2.3'].includes(id) && testimonials.length
-		? [{ title: `Отзиви от родители (${testimonials.length})`, href: '/portfolio/otzivi/' }]
+		? [{ title: `Отзиви от родители (${testimonials.length})`, href: `${base}/portfolio/otzivi/` }]
 		: [];
-	const docs = [...tst, ...(note?.documents ?? []), ...documents.filter((d) => d.criteria?.includes(id))];
+	const docs = [...tst, ...(note?.documents ?? []), ...withBase(documents.filter((d) => d.criteria?.includes(id)))];
 	return {
 		note,
 		resources: res,
@@ -97,19 +108,19 @@ export const searchIndex = [
 		kind: r.subject === 'fr' ? 'Français' : r.subject === 'bel' ? 'Български' : 'Ресурс',
 		title: r.title,
 		text: `${r.summary ?? ''} ${subjects[r.subject] ?? ''} ${r.type ?? ''}`,
-		href: `/resursi/${r.slug}/`
+		href: `${base}/resursi/${r.slug}/`
 	})),
 	...practices.map((p) => ({
 		kind: 'Практика',
 		title: p.title,
 		text: `${p.problem ?? ''} ${p.solution ?? ''}`,
-		href: `/praktiki/${p.slug}/`
+		href: `${base}/praktiki/${p.slug}/`
 	})),
 	...events.map((e) => ({
 		kind: 'Дейност',
 		title: e.title,
 		text: `${e.place ?? ''} ${e.kind ?? ''}`,
-		href: `/portfolio/deinosti/#${e.slug}`
+		href: `${base}/portfolio/deinosti/#${e.slug}`
 	})),
 	...criteriaWithEvidence.map((c) => ({
 		kind: `Критерий ${c.section}.${c.num}`,

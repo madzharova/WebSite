@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import { sections } from '$lib/data/criteria.js';
 	import PageHeader from '$lib/components/PageHeader.svelte';
 	import CriteriaMap from '$lib/components/CriteriaMap.svelte';
@@ -25,8 +26,8 @@
 		{#key s.id}<CriteriaMap only={s.id} />{/key}
 
 		<nav class="pager" aria-label="Други раздели">
-			{#if prev}<a href="/portfolio/{prev.slug}/">← {prev.roman}. {prev.title}</a>{:else}<a href="/portfolio/">← Портфолио</a>{/if}
-			{#if next}<a href="/portfolio/{next.slug}/" class="r">{next.roman}. {next.title} →</a>{/if}
+			{#if prev}<a href="{base}/portfolio/{prev.slug}/">← {prev.roman}. {prev.title}</a>{:else}<a href="{base}/portfolio/">← Портфолио</a>{/if}
+			{#if next}<a href="{base}/portfolio/{next.slug}/" class="r">{next.roman}. {next.title} →</a>{/if}
 		</nav>
 	</div>
 </section>

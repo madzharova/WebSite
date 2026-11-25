@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import { portfolioMeta } from '$lib/data/portfolio.js';
 	import { contacts } from '$lib/data/contacts.js';
 	import linkedinIcon from '$lib/icons/linkedin-filled.svg?raw';
@@ -52,12 +53,12 @@
 			</div>
 			<nav aria-label="Навигация">
 				<p class="h">Навигация</p>
-				<a href="/balgarski/">Български</a>
-				<a href="/francais/" lang="fr">Français</a>
-				<a href="/resursi/">Всички ресурси</a>
-				<a href="/praktiki/">Практики</a>
-				<a href="/portfolio/">Портфолио</a>
-				<a href="/kontakt/">Контакт</a>
+				<a href="{base}/balgarski/">Български</a>
+				<a href="{base}/francais/" lang="fr">Français</a>
+				<a href="{base}/resursi/">Всички ресурси</a>
+				<a href="{base}/praktiki/">Практики</a>
+				<a href="{base}/portfolio/">Портфолио</a>
+				<a href="{base}/kontakt/">Контакт</a>
 			</nav>
 			<nav aria-label="Проекти и партньори">
 				<p class="h">Проекти и партньори</p>

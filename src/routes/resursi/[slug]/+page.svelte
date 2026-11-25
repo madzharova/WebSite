@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import { dev } from '$app/environment';
 	import { resources, subjects, criterionHref } from '$lib/content.js';
 	import { byId } from '$lib/data/criteria.js';
@@ -26,9 +27,9 @@
 				{#if subjectPages[r.subject]}
 					<a href={subjectPages[r.subject].href}>{subjectPages[r.subject].name}</a>
 				{:else if r.subject === 'bel-fr'}
-					<a href="/balgarski/">Български</a> ↔ <a href="/francais/">Français</a>
+					<a href="{base}/balgarski/">Български</a> ↔ <a href="{base}/francais/">Français</a>
 				{:else}
-					<a href="/resursi/">Ресурси</a>
+					<a href="{base}/resursi/">Ресурси</a>
 				{/if}
 				<span>/</span> {r.topic ? [].concat(r.topic).map(topicLabel).join(', ') : r.type}
 			</nav>

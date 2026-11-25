@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import { dev } from '$app/environment';
 	import { byId, criteria, sectionOf } from '$lib/data/criteria.js';
 	import { evidenceFor, criterionHref, criteriaWithEvidence } from '$lib/content.js';
@@ -24,7 +25,7 @@
 <div class="page wrap">
 	<!-- Странично меню с всички критерии от раздела -->
 	<aside class="index" aria-label="Критерии в раздел {s.roman}">
-		<a href="/portfolio/{s.slug}/" class="sec">
+		<a href="{base}/portfolio/{s.slug}/" class="sec">
 			<span class="roman">{s.roman}</span>
 			<span>{s.title}</span>
 		</a>
@@ -44,7 +45,7 @@
 	<article>
 		<header>
 			<nav class="crumbs" aria-label="Път">
-				<a href="/portfolio/">Портфолио</a> <span>/</span> <a href="/portfolio/{s.slug}/">{s.roman}. {s.title}</a>
+				<a href="{base}/portfolio/">Портфолио</a> <span>/</span> <a href="{base}/portfolio/{s.slug}/">{s.roman}. {s.title}</a>
 				{#if group}<span>/</span> {group.title}{/if}
 			</nav>
 			<p class="big" use:reveal aria-hidden="true">{c.section}.{c.num}</p>
@@ -91,7 +92,7 @@
 				<h3 class="sub">Практики</h3>
 				<ul class="rows">
 					{#each ev.practices as p}
-						<li><a href="/praktiki/{p.slug}/"><span>{p.title}</span><span class="arr">→</span></a></li>
+						<li><a href="{base}/praktiki/{p.slug}/"><span>{p.title}</span><span class="arr">→</span></a></li>
 					{/each}
 				</ul>
 			{/if}
@@ -100,7 +101,7 @@
 				<h3 class="sub">Дейности с ученици</h3>
 				<div class="evs">
 					{#each ev.events as e}
-						<a class="evc" href="/portfolio/deinosti/#{e.slug}">
+						<a class="evc" href="{base}/portfolio/deinosti/#{e.slug}">
 							{#if e.images[0]}<img src={e.images[0]} alt="" loading="lazy" />{/if}
 							<span>{e.title}</span>
 						</a>

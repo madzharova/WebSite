@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import { sections } from '$lib/data/criteria.js';
 	import { functions, portfolioMeta, scale, evidenceKinds } from '$lib/data/portfolio.js';
 	import { criteriaWithEvidence } from '$lib/content.js';
@@ -84,7 +85,7 @@
 				</ul>
 			</Collapse>
 			<Collapse title="Лични документи">
-				<p>Документите за образование и квалификация не се публикуват. Те са в Google Drive с ограничен достъп. В сайта е само <a href="/portfolio/opis/">описът им</a> (чл. 67, т. 4).</p>
+				<p>Документите за образование и квалификация не се публикуват. Те са в Google Drive с ограничен достъп. В сайта е само <a href="{base}/portfolio/opis/">описът им</a> (чл. 67, т. 4).</p>
 			</Collapse>
 		</div>
 	</div>

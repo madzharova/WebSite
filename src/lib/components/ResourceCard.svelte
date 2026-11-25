@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import { subjects } from '$lib/content.js';
 	import { spotlight } from '$lib/actions/tilt.js';
 	import { topicLabel } from '$lib/data/subjects.js';
@@ -6,7 +7,7 @@
 	const fmt = (d) => (d ? new Date(d).toLocaleDateString('bg-BG', { month: 'long', year: 'numeric' }) : '');
 </script>
 
-<a class="card" class:has-cover={r.cover} href="/resursi/{r.slug}/" use:spotlight data-subject={r.subject}>
+<a class="card" class:has-cover={r.cover} href="{base}/resursi/{r.slug}/" use:spotlight data-subject={r.subject}>
 	{#if r.cover}<div class="cover"><img src={r.cover} alt="" loading="lazy" /></div>{/if}
 	<div class="meta">
 		<span class="subj">{subjects[r.subject] ?? r.subject}</span>

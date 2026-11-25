@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import { practices } from '$lib/content.js';
 	import { reveal } from '$lib/actions/reveal.js';
 	import PageHeader from '$lib/components/PageHeader.svelte';
@@ -17,7 +18,7 @@
 <section class="section">
 	<div class="wrap list">
 		{#each practices as p, i}
-			<a class="pr" href="/praktiki/{p.slug}/" use:reveal={{ delay: (i % 3) * 80 }}>
+			<a class="pr" href="{base}/praktiki/{p.slug}/" use:reveal={{ delay: (i % 3) * 80 }}>
 				<div class="top">
 					<span class="n">{String(i + 1).padStart(2, '0')}</span>
 					<h2>{p.title}</h2>

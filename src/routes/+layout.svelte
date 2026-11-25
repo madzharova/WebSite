@@ -10,7 +10,7 @@
 
 	import { onNavigate } from '$app/navigation';
 	import { page } from '$app/state';
-	import { SITE, SITE_NAME, SITE_DESC } from '$lib/data/site.js';
+	import { ORIGIN, SITE_NAME, SITE_DESC } from '$lib/data/site.js';
 	import Nav from '$lib/components/Nav.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import Search from '$lib/components/Search.svelte';
@@ -33,11 +33,11 @@
 </script>
 
 <svelte:head>
-	<link rel="canonical" href="{SITE}{page.url.pathname}" />
+	<link rel="canonical" href="{ORIGIN}{page.url.pathname}" />
 	<meta property="og:site_name" content={SITE_NAME} />
 	<meta property="og:type" content="website" />
 	<meta property="og:locale" content="bg_BG" />
-	<meta property="og:url" content="{SITE}{page.url.pathname}" />
+	<meta property="og:url" content="{ORIGIN}{page.url.pathname}" />
 	<meta property="og:description" content={SITE_DESC} />
 	<meta name="twitter:card" content="summary" />
 </svelte:head>

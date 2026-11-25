@@ -69,6 +69,7 @@ web_modules/
 .env
 .env.*
 !.env.example
+!.env.github
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -155,3 +156,50 @@ vite.config.ts.timestamp-*
 .nx/cache
 .nx/workspace-data
 .nx/migrate-runs
+
+# ───────── Проектът ─────────
+# Build изход (npm run build / build:github / PREVIEW=1)
+/build/
+/build-preview/
+/.svelte-kit/
+
+# Генерирани файлове от Claude – не са сорс
+/Claude outputs/
+
+# Python кеш и виртуални среди (tools/)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# ───────── Артефакти на ОС ─────────
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+Icon?
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ───────── Редактори ─────────
+.idea/
+*.swp
+*.swo
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
