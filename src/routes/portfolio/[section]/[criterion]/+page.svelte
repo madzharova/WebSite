@@ -114,10 +114,6 @@
 							</div>
 							{#if d.href}
 								<a class="lock" href={d.href}>отвори →</a>
-							{:else if d.url}
-								<a class="lock" href={d.url} rel="noopener">ограничен достъп ↗</a>
-							{:else if dev}
-								<span class="lock pending">предстои качване</span>
 							{/if}
 						</li>
 					{/each}
@@ -377,10 +373,6 @@
 		border-radius: 999px;
 		border: 1px solid var(--sea);
 		text-decoration: none;
-	}
-	.lock.pending {
-		border: 1px dashed var(--line-strong);
-		color: var(--ink-soft);
 	}
 	.empty {
 		padding: 28px;

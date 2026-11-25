@@ -1,8 +1,7 @@
 // Опис на документите (Наредба № 15, чл. 67, т. 4) – образование, квалификация, стаж.
-// Самите файлове са в Google Drive с ОГРАНИЧЕН достъп; в сайта е само описът.
+// В сайта е само описът; копията се представят при атестирането (чл. 68, ал. 1).
 // В публичния опис НЕ се показват ЕГН, номера на дипломи и регистрационни номера.
 //
-// url      – връзка към файла в Drive (достъп само за комисията). Празно = още не е качен.
 // criteria – към кои критерии се показва автоматично като доказателство.
 // credits  – квалификационни кредити; hours – академични часове.
 
@@ -22,7 +21,6 @@ export const documents = [
 		title: 'Диплома за висше образование – ОКС „магистър“, специалност „Български език и френски език“',
 		issuer: 'ПУ „Паисий Хилендарски“, Пловдив',
 		date: '1999',
-		url: '',
 		criteria: ['III-1']
 	},
 
@@ -32,7 +30,6 @@ export const documents = [
 		title: 'Свидетелство за V ПКС',
 		issuer: 'СУ „Св. Климент Охридски“ – ДИУУ',
 		date: '18.10.2023',
-		url: '',
 		criteria: ['III-1']
 	},
 	{
@@ -40,7 +37,6 @@ export const documents = [
 		title: 'Свидетелство за IV ПКС',
 		issuer: 'СУ „Св. Климент Охридски“ – ДИУУ',
 		date: '23.10.2024',
-		url: '',
 		criteria: ['III-1']
 	},
 	{
@@ -48,7 +44,6 @@ export const documents = [
 		title: 'Уверение за обучение за III ПКС',
 		issuer: '[ПОЛЕ ЗА ПОПЪЛВАНЕ]',
 		date: '[ПОЛЕ ЗА ПОПЪЛВАНЕ]',
-		url: '',
 		criteria: ['III-1', 'IV-3'],
 		note: 'Обучението е в процес.'
 	},
@@ -61,7 +56,6 @@ export const documents = [
 		date: '14.10.2021',
 		hours: 16,
 		credits: 1,
-		url: '',
 		criteria: ['III-1']
 	},
 	{
@@ -71,7 +65,6 @@ export const documents = [
 		date: '23.10 – 03.11.2021',
 		hours: 16,
 		credits: 1,
-		url: '',
 		criteria: ['III-1', 'I-1.3']
 	},
 	{
@@ -81,7 +74,6 @@ export const documents = [
 		date: '11–12.11.2021',
 		hours: 16,
 		credits: 1,
-		url: '',
 		criteria: ['III-1']
 	},
 	{
@@ -91,7 +83,6 @@ export const documents = [
 		date: '24.03 – 21.04.2022',
 		hours: 16,
 		credits: 1,
-		url: '',
 		criteria: ['III-1', 'I-1.3']
 	},
 	{
@@ -101,7 +92,6 @@ export const documents = [
 		date: '27.06.2022',
 		hours: 16,
 		credits: 1,
-		url: '',
 		criteria: ['III-1']
 	},
 	{
@@ -111,7 +101,6 @@ export const documents = [
 		date: 'юли 2022',
 		hours: 16,
 		credits: 1,
-		url: '',
 		criteria: ['III-1']
 	},
 	{
@@ -121,7 +110,6 @@ export const documents = [
 		date: '11–12.03.2023',
 		hours: 16,
 		credits: 1,
-		url: '',
 		criteria: ['III-1']
 	},
 	{
@@ -131,7 +119,6 @@ export const documents = [
 		date: '14–20.12.2023',
 		hours: 16,
 		credits: 1,
-		url: '',
 		criteria: ['III-1', 'I-2.3']
 	},
 	{
@@ -141,7 +128,6 @@ export const documents = [
 		date: '10–17.01.2024',
 		hours: 16,
 		credits: 1,
-		url: '',
 		criteria: ['III-1']
 	},
 	{
@@ -151,7 +137,6 @@ export const documents = [
 		date: '09–10.03.2024',
 		hours: 16,
 		credits: 1,
-		url: '',
 		criteria: ['III-1']
 	},
 	{
@@ -161,7 +146,6 @@ export const documents = [
 		date: '11–17.04.2024',
 		hours: 16,
 		credits: 1,
-		url: '',
 		criteria: ['III-1', 'I-1.3']
 	},
 	{
@@ -171,7 +155,6 @@ export const documents = [
 		date: '12.03.2025',
 		hours: 16,
 		credits: 1,
-		url: '',
 		criteria: ['III-1']
 	},
 
@@ -182,7 +165,6 @@ export const documents = [
 		issuer: 'ПГМТ „Проф. Цветан Лазаров“',
 		date: '15–18.10.2021',
 		hours: '[ПОЛЕ ЗА ПОПЪЛВАНЕ]',
-		url: '',
 		criteria: ['III-2']
 	},
 	{
@@ -191,7 +173,6 @@ export const documents = [
 		issuer: 'ПГМТ „Проф. Цветан Лазаров“ – комисия по интернационализация',
 		date: '16.04.2025',
 		hours: '[ПОЛЕ ЗА ПОПЪЛВАНЕ]',
-		url: '',
 		criteria: ['III-2', 'I-2.3']
 	},
 	{
@@ -199,7 +180,6 @@ export const documents = [
 		title: 'Протоколи с академични часове за всяка учебна година',
 		issuer: 'ПГМТ „Проф. Цветан Лазаров“',
 		date: '[ПОЛЕ ЗА ПОПЪЛВАНЕ: по учебни години]',
-		url: '',
 		criteria: ['III-2'],
 		note: 'Минимум 16 академични часа годишно.'
 	},
@@ -210,7 +190,6 @@ export const documents = [
 		title: 'Сертификат: придружаващ учител в двуседмична програма с Berlink (Erasmus+, проект 2023-1-BG01-KA121-VET-000121596)',
 		issuer: 'BERLINK ETN GmbH, Берлин',
 		date: '14–27.04.2024',
-		url: '',
 		criteria: ['IV-2', 'IV-3', 'II-1']
 	},
 	{
@@ -218,7 +197,6 @@ export const documents = [
 		title: 'Сертификат: краткосрочно обучение по проект CLEVER (Erasmus+ Jean Monnet, № 101176593)',
 		issuer: 'IIS Apicio Colonna Gatti, Анцио, Италия',
 		date: '29.09 – 04.10.2025',
-		url: '',
 		criteria: ['IV-3', 'III-1']
 	}
 ];

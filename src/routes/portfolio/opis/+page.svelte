@@ -9,7 +9,7 @@
 <PageHeader
 	eyebrow="Портфолио · чл. 67, т. 4"
 	title="Опис на документите"
-	lead="Документи за образование, квалификация и професионален стаж. Копията са в Google Drive с ограничен достъп и се предоставят на атестационната комисия."
+	lead="Документи за образование, квалификация и професионален стаж."
 />
 
 <section class="section">
@@ -24,8 +24,8 @@
 			{#if list.length}
 				<h2 class="gh">{g}</h2>
 				<table>
-					<colgroup><col style="width: 50%" /><col style="width: 17%" /><col style="width: 13%" /><col style="width: 11%" /><col style="width: 9%" /></colgroup>
-					<thead><tr><th>Документ</th><th>Дата / период</th><th>Часове · кредити</th><th>Критерии</th><th><span class="visually-hidden">Достъп</span></th></tr></thead>
+					<colgroup><col style="width: 56%" /><col style="width: 17%" /><col style="width: 15%" /><col style="width: 12%" /></colgroup>
+					<thead><tr><th>Документ</th><th>Дата / период</th><th>Часове · кредити</th><th>Критерии</th></tr></thead>
 					<tbody>
 						{#each list as d}
 							<tr>
@@ -41,7 +41,6 @@
 										{#if c}<a href={criterionHref(c)}>{c.section}.{c.num}</a>{/if}
 									{/each}
 								</td>
-								<td>{#if d.url}<a href={d.url} rel="noopener" class="lock">Drive ↗</a>{:else}<span class="muted">предстои</span>{/if}</td>
 							</tr>
 						{/each}
 					</tbody>
@@ -121,9 +120,6 @@
 		font-family: var(--serif);
 		font-size: 17px;
 		text-decoration: none;
-	}
-	.lock {
-		white-space: nowrap;
 	}
 	@media (max-width: 700px) {
 		thead {
