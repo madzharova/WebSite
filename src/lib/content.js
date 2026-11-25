@@ -98,8 +98,7 @@ export function evidenceFor(id) {
 export const criteriaWithEvidence = criteria.map((c) => ({
 	...c,
 	slug: slugOf(c.id),
-	evidenceCount: evidenceFor(c.id).count,
-	selfScore: criterionNotes[c.id]?.selfScore ?? null
+	evidenceCount: evidenceFor(c.id).count
 }));
 
 /** Плосък индекс за търсачката */

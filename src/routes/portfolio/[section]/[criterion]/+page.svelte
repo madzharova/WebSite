@@ -3,7 +3,7 @@
 	import { dev } from '$app/environment';
 	import { byId, criteria, sectionOf } from '$lib/data/criteria.js';
 	import { evidenceFor, criterionHref, criteriaWithEvidence } from '$lib/content.js';
-	import { portfolioMeta, evidenceKinds } from '$lib/data/portfolio.js';
+	import { evidenceKinds } from '$lib/data/portfolio.js';
 	import { reveal } from '$lib/actions/reveal.js';
 	import ResourceCard from '$lib/components/ResourceCard.svelte';
 	import Collapse from '$lib/components/Collapse.svelte';
@@ -17,7 +17,6 @@
 	let prev = $derived(criteria[i - 1]);
 	let next = $derived(criteria[i + 1]);
 	let group = $derived(s.groups?.find((g) => g.id === c.group));
-	let showScore = $derived(dev || portfolioMeta.showSelfScore);
 </script>
 
 <svelte:head><title>{c.section}.{c.num} {c.short} · Портфолио</title></svelte:head>
@@ -60,17 +59,12 @@
 			</div>
 		{/if}
 
-		{#if ev.note?.basis || showScore}
+		{#if ev.note?.basis || dev}
 			<section class="self" use:reveal>
 				<div>
 					<p class="h">Самооценка – формира се на базата на</p>
 					<p class:fill={!ev.note?.basis}>{ev.note?.basis ?? '[ПОЛЕ ЗА ПОПЪЛВАНЕ]'}</p>
 				</div>
-				{#if showScore}
-					<div class="score" title="Самооценка в точки">
-						<span>{ev.note?.selfScore ?? '—'}</span><small>/ 2</small>
-					</div>
-				{/if}
 			</section>
 		{/if}
 
@@ -290,21 +284,6 @@
 		text-transform: uppercase;
 		color: var(--ink-soft);
 		margin-bottom: 6px !important;
-	}
-	.score {
-		display: flex;
-		align-items: baseline;
-		gap: 4px;
-		font-family: var(--serif);
-		color: var(--sea);
-	}
-	.score span {
-		font-size: 56px;
-		line-height: 1;
-	}
-	.score small {
-		font-size: 20px;
-		color: var(--ink-soft);
 	}
 	.note {
 		margin-top: 32px;
