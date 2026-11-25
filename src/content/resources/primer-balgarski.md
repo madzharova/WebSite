@@ -7,7 +7,6 @@ topic: [pravopis]
 grade: 11
 date: 2026-11-09
 example: true
-template: true    # образец за нов ресурс – вижда се само при npm run dev
 criteria: [I-2.3, I-2.4]
 ---
 

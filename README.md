@@ -34,6 +34,7 @@ interactive: true     # по желание
 criteria: [I-2.3, IV-4]               # към кои критерии да се покаже като доказателство
 evidence: [dinamika, rezultati]       # вид по чл. 66, ал. 3: dinamika | rezultati | politiki | razvitie
 draft: true           # скрива файла, докато го пишете
+example: true         # примерно съдържание за визията – вижда се само при npm run dev
 ---
 Текст на страницата…
 ```

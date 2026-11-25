@@ -46,6 +46,19 @@ for (const [file, items] of [...found].sort()) {
 	console.log(items.join('\n'));
 }
 
+// Примерно съдържание (example: true) – за визията; на публичния сайт не се показва
+const examples = [];
+for (const f of files(join(src, 'content'))) {
+	const head = readFileSync(f, 'utf8').match(/^---\n([\s\S]*?)\n---/)?.[1] ?? '';
+	if (/^example:\s*true\b/m.test(head)) {
+		const title = head.match(/^title:\s*"?(.*?)"?\s*$/m)?.[1] ?? '';
+		examples.push(`  ${relative(root, f)}  ${dim(title)}`);
+	}
+}
+console.log(bold(`\nПримерно съдържание за замяна (example: true): ${examples.length}`));
+console.log(dim('  видимо само при npm run dev; махнете example: true, когато съдържанието е истинско'));
+console.log(examples.sort().join('\n'));
+
 const ids = [...readFileSync(join(src, 'lib/data/criteria.js'), 'utf8').matchAll(/id: '([IV]+-[\d.]+)'/g)].map((m) => m[1]);
 const missing = ids.filter((id) => !existsSync(join(src, 'content/criteria', `${id}.md`)));
 console.log(bold(`\nКритерии без бележка „формира се на базата на“: ${missing.length} от ${ids.length}`));

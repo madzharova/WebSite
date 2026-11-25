@@ -32,8 +32,9 @@ function collect(modules) {
 			evidence: mod.metadata?.evidence ?? [],
 			component: mod.default
 		}))
-		// draft: true – скрито навсякъде; template: true (образец за нов файл) – видим само при npm run dev
-		.filter((item) => !item.draft && (dev || !item.template))
+		// draft: true – скрито навсякъде;
+		// example: true – примерно съдържание за визията, видимо само при npm run dev
+		.filter((item) => !item.draft && (dev || !item.example))
 		.sort((a, b) => String(b.date ?? '').localeCompare(String(a.date ?? '')));
 }
 
