@@ -14,7 +14,7 @@
 <svelte:head><title>Професионално портфолио · Маргарита Маджарова</title></svelte:head>
 
 <PageHeader
-	eyebrow="Професионално портфолио · атестационна карта"
+	eyebrow="Професионално портфолио"
 	title="Портфолио"
 	lead="Подредено по 25-те критерия от атестационната карта (Приложение № 20 към Наредба № 15/2019), включително петте критерия на ПГМТ „Проф. Цветан Лазаров“. Към всеки критерий – доказателствата."
 >
@@ -43,13 +43,13 @@
 	</div>
 </section>
 
-<!-- Картата -->
-<section class="section section--paper" id="karta">
+<!-- Компетентностите (25-те критерия) -->
+<section class="section section--paper" id="kompetentnosti">
 	<div class="wrap">
 		<div class="maphead">
 			<div>
-				<p class="eyebrow" use:reveal>Атестационна карта</p>
-				<h2 use:reveal={{ delay: 60 }}>25 критерия</h2>
+				<p class="eyebrow" use:reveal>25 критерия в 4 области</p>
+				<h2 use:reveal={{ delay: 60 }}>Компетентности</h2>
 			</div>
 			{#if dev}<ul class="legend" aria-label="Легенда">
 				<li><i class="l covered"></i>покрит – 2+ доказателства</li>

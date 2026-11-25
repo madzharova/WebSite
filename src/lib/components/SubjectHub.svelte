@@ -102,13 +102,13 @@
 </section>
 
 {#if shared.length}
-	<section class="section bridge" id="most">
+	<section class="section bridge" id="binarni">
 		<div class="wrap">
 			<div class="bh">
 				<div>
-					<p class="eyebrow" use:reveal>Мост</p>
+					<p class="eyebrow" use:reveal>{bridge.pair}</p>
 					<h2 use:reveal={{ delay: 60 }}>{bridge.name}</h2>
-					<p class="muted" use:reveal={{ delay: 100 }}>{bridge.full}. {bridge.text}</p>
+					<p class="muted" use:reveal={{ delay: 100 }}>{bridge.text}</p>
 				</div>
 				<svg class="arc" viewBox="0 0 220 60" aria-hidden="true">
 					<path d="M10 50 Q110 -10 210 50" fill="none" stroke="var(--sea)" stroke-width="1" />

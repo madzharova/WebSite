@@ -121,8 +121,8 @@
 				</a>
 			{/each}
 			{#if shared.length}
-				<a class="bridge-pill" href="{base}/balgarski/#most" use:reveal={{ delay: 260 }}>
-					<span class="bp-k">Мост</span>
+				<a class="bridge-pill" href="{base}/balgarski/#binarni" use:reveal={{ delay: 260 }}>
+					<span class="bp-k">{bridge.pair}</span>
 					<span>{bridge.name}</span>
 					<small>{shared.length} {shared.length === 1 ? 'урок' : 'урока'}</small>
 				</a>

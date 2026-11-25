@@ -145,7 +145,7 @@
 								{/each}
 							</div>
 							<div class="mega-col mega-col--map">
-								<p class="mega-title">Атестационна карта</p>
+								<p class="mega-title">Компетентности</p>
 								{#each sections as s}
 									<a href="{base}/portfolio/{s.slug}/" class="mega-sec">
 										<span class="roman">{s.roman}</span>
@@ -154,7 +154,7 @@
 										<span class="go" aria-hidden="true">→</span>
 									</a>
 								{/each}
-								<a href="{base}/portfolio/#karta" class="mega-all">Цялата карта – 25 критерия →</a>
+								<a href="{base}/portfolio/#kompetentnosti" class="mega-all">Всички 25 критерия →</a>
 							</div>
 						</div>
 					</div>

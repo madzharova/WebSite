@@ -35,7 +35,7 @@ export const functions = [
 	{
 		name: 'Оценъчна',
 		text: 'Доказателства по всеки от 25-те критерия.',
-		href: `${base}/portfolio/#karta`
+		href: `${base}/portfolio/#kompetentnosti`
 	},
 	{
 		name: 'Комуникативна',
