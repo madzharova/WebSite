@@ -8,7 +8,9 @@
 	import '@fontsource-variable/manrope/wght.css';
 	import '../app.css';
 
+	import { onMount } from 'svelte';
 	import { onNavigate } from '$app/navigation';
+	import { markHydrated } from '$lib/actions/reveal.js';
 	import { page } from '$app/state';
 	import { ORIGIN, SITE_NAME, SITE_DESC } from '$lib/data/site.js';
 	import Nav from '$lib/components/Nav.svelte';
@@ -17,6 +19,9 @@
 	import ScrollProgress from '$lib/components/ScrollProgress.svelte';
 
 	let { children } = $props();
+
+	// След първото монтиране use:reveal вече може да анимира и елементите в екрана
+	onMount(markHydrated);
 	let searchOpen = $state(false);
 
 	// Плавен преход между страниците, където браузърът го поддържа

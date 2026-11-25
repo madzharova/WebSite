@@ -297,6 +297,9 @@ a:hover {
 	*::before,
 	*::after {
 		animation-duration: 0.01ms !important;
+		/* Безкрайните анимации (лента с думи, орбита и др.) иначе се повтарят
+		   безброй пъти по 0.01ms и треперят – пускаме ги само веднъж. */
+		animation-iteration-count: 1 !important;
 		transition-duration: 0.01ms !important;
 	}
 	[data-reveal] {
