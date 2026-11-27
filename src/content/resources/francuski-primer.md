@@ -7,6 +7,7 @@ topic: [grammaire]
 level: "[ПОЛЕ ЗА ПОПЪЛВАНЕ]"
 date: 2026-11-10
 example: true
+draft: true      # образец за нов ресурс – копирайте файла; не се показва никъде
 criteria: [I-2.3]
 ---
 

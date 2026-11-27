@@ -7,6 +7,7 @@ topic: [pravopis]
 grade: 11
 date: 2026-11-09
 example: true
+draft: true      # образец за нов ресурс – копирайте файла; не се показва никъде
 criteria: [I-2.3, I-2.4]
 ---
 

@@ -80,59 +80,89 @@
 </script>
 
 <header class="hub" style="--accent: {S.accent}" lang={S.lang === 'fr' ? 'bg' : undefined}>
-	<span class="mark" aria-hidden="true">{S.mark}</span>
 	<div class="wrap">
-		<p class="eyebrow" use:reveal>Ресурси · {S.full}</p>
-		<h1 use:reveal={{ delay: 60 }} lang={S.lang}>{S.name}</h1>
-		<TitleLine color="var(--accent)" />
-		<p class="lead" use:reveal={{ delay: 120 }}>{S.tagline}</p>
-		{#if S.dict}
-			<DictSearch name={S.dict.name} url={S.dict.url} placeholder={S.dict.placeholder} lang={S.lang} />
-		{/if}
-
-		{#if usedKinds.length}
-			<nav class="topics" aria-label="Вид материал" use:reveal={{ delay: 180 }}>
-				<button class:on={!kind} onclick={() => (kind = '')}>
-					Всички <span class="c">{own.length}</span>
-				</button>
-				{#each usedKinds as k}
-					<button class:on={kind === k.id} aria-pressed={kind === k.id} onclick={() => (kind = kind === k.id ? '' : k.id)}>
-						{k.label} <span class="c">{k.n}</span>
-					</button>
-				{/each}
-			</nav>
-		{/if}
-		{#if usedTopics.length || usedExams.length}
-			<nav class="tags" aria-label="Тема" use:reveal={{ delay: 220 }}>
-				{#if usedTopics.length}<span class="tl">Тема</span>{/if}
-				{#each usedTopics as t}
-					<button class:on={openTopic?.id === t.id} aria-pressed={topic === t.id} onclick={() => (topic = topic === t.id ? '' : t.id)} lang={S.lang}>
-						{t.label}
-					</button>
-				{/each}
-				{#if usedExams.length}
-					<span class="tl sep">Изпит</span>
-					{#each usedExams as e}
-						<button class:on={exam === e.id} aria-pressed={exam === e.id} onclick={() => (exam = exam === e.id ? '' : e.id)}>{e.label}</button>
-					{/each}
-				{/if}
-			</nav>
-			{#if openTopic?.sub.length}
-				<nav class="tags subtags" aria-label={openTopic.label}>
-					{#each openTopic.sub as st}
-						<button
-							class:on={topic === st.id}
-							class:empty={!st.n}
-							disabled={!st.n}
-							title={st.n ? undefined : 'Предстои'}
-							aria-pressed={topic === st.id}
-							onclick={() => (topic = topic === st.id ? openTopic.id : st.id)}
-						>
-							{st.label}
-						</button>
-					{/each}
-				</nav>
+		<div class="head">
+			<div>
+				<p class="eyebrow" use:reveal>Ресурси</p>
+				<h1 use:reveal={{ delay: 60 }} lang={S.lang}>{S.name}</h1>
+				<TitleLine color="var(--accent)" />
+				<p class="lead" use:reveal={{ delay: 120 }}>{S.tagline}</p>
+			</div>
+			<!-- Речникът е отделен инструмент – стои вдясно, встрани от филтрите -->
+			{#if S.dict}
+				<aside class="dictbox" use:reveal={{ delay: 160 }}>
+					<DictSearch name={S.dict.name} url={S.dict.url} placeholder={S.dict.placeholder} lang={S.lang} />
+				</aside>
 			{/if}
+		</div>
+
+		<!-- Филтри: всеки ред е един въпрос (Вид, Тема, Изпит, Клас) с „Всички“ в началото -->
+		{#if own.length}
+			<div class="filters" use:reveal={{ delay: 200 }}>
+				{#if usedKinds.length > 1}
+					<div class="frow" role="group" aria-label="Вид">
+						<span class="fl">Вид</span>
+						<div class="chips">
+							<button class:on={!kind} onclick={() => (kind = '')}>Всички</button>
+							{#each usedKinds as k}
+								<button class:on={kind === k.id} aria-pressed={kind === k.id} onclick={() => (kind = kind === k.id ? '' : k.id)}>{k.label}</button>
+							{/each}
+						</div>
+					</div>
+				{/if}
+				{#if usedTopics.length}
+					<div class="frow" role="group" aria-label="Тема">
+						<span class="fl">Тема</span>
+						<div class="chips">
+							<button class:on={!topic} onclick={() => (topic = '')}>Всички</button>
+							{#each usedTopics as t}
+								<button class:on={openTopic?.id === t.id} aria-pressed={topic === t.id} onclick={() => (topic = topic === t.id ? '' : t.id)} lang={S.lang}>{t.label}</button>
+							{/each}
+						</div>
+					</div>
+					{#if openTopic?.sub.length}
+						<div class="frow sub" role="group" aria-label={openTopic.label}>
+							<span class="fl" aria-hidden="true"></span>
+							<div class="chips">
+								{#each openTopic.sub as st}
+									<button
+										class:on={topic === st.id}
+										class:empty={!st.n}
+										disabled={!st.n}
+										title={st.n ? undefined : 'Предстои'}
+										aria-pressed={topic === st.id}
+										onclick={() => (topic = topic === st.id ? openTopic.id : st.id)}
+									>
+										{st.label}
+									</button>
+								{/each}
+							</div>
+						</div>
+					{/if}
+				{/if}
+				{#if usedExams.length}
+					<div class="frow" role="group" aria-label="Изпит">
+						<span class="fl">Изпит</span>
+						<div class="chips">
+							<button class:on={!exam} onclick={() => (exam = '')}>Всички</button>
+							{#each usedExams as e}
+								<button class:on={exam === e.id} aria-pressed={exam === e.id} onclick={() => (exam = exam === e.id ? '' : e.id)}>{e.label}</button>
+							{/each}
+						</div>
+					</div>
+				{/if}
+				{#if usedLevels.length}
+					<div class="frow" role="group" aria-label={key === 'fr' ? 'Ниво' : 'Клас'}>
+						<span class="fl">{key === 'fr' ? 'Ниво' : 'Клас'}</span>
+						<div class="chips">
+							<button class:on={!level} onclick={() => (level = '')}>Всички</button>
+							{#each usedLevels as l}
+								<button class:on={level === l} aria-pressed={level === l} onclick={() => (level = level === l ? '' : l)}>{S.levelLabel(l)}</button>
+							{/each}
+						</div>
+					</div>
+				{/if}
+			</div>
 		{/if}
 	</div>
 </header>
@@ -146,14 +176,10 @@
 				{#if kind}· {kinds.find((k) => k.id === kind)?.label}{/if}
 				{#if topic}· {topicLabel(topic)}{/if}
 				{#if exam}· {examLabel(exam)}{/if}
+				{#if level}· {S.levelLabel(level)}{/if}
 			</p>
-			{#if usedLevels.length}
-				<div class="levels" role="group" aria-label={key === 'fr' ? 'Ниво' : 'Клас'}>
-					<button class:on={!level} onclick={() => (level = '')}>{key === 'fr' ? 'Всички нива' : 'Всички класове'}</button>
-					{#each usedLevels as l}
-						<button class:on={level === l} aria-pressed={level === l} onclick={() => (level = level === l ? '' : l)}>{S.levelLabel(l)}</button>
-					{/each}
-				</div>
+			{#if kind || topic || exam || level}
+				<button class="clear" onclick={() => (kind = topic = exam = level = '')}>Изчисти филтрите ×</button>
 			{/if}
 		</div>
 
@@ -205,6 +231,108 @@
 
 
 <style>
+	/* Заглавие вляво, речникът вдясно */
+	.head {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(280px, 400px);
+		gap: 32px 64px;
+		align-items: end;
+	}
+	.dictbox :global(.dict) {
+		max-width: none;
+		margin-top: 0;
+	}
+	@media (max-width: 900px) {
+		.head {
+			grid-template-columns: 1fr;
+		}
+	}
+	/* Филтри – редове с надпис вляво */
+	.filters {
+		display: grid;
+		gap: 10px;
+		margin-top: 40px;
+		padding-top: 28px;
+		border-top: 1px solid var(--line);
+	}
+	.frow {
+		display: grid;
+		grid-template-columns: 72px minmax(0, 1fr);
+		align-items: center;
+		gap: 12px;
+	}
+	.fl {
+		font-size: 12px;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--ink-soft);
+	}
+	.chips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+	}
+	.chips button {
+		min-height: 38px;
+		padding: 6px 16px;
+		border-radius: 999px;
+		border: 1px solid var(--line);
+		background: var(--card);
+		font: 500 14.5px var(--sans);
+		color: var(--ink);
+		cursor: pointer;
+		transition: background 0.2s, border-color 0.2s, color 0.2s;
+	}
+	.chips button:hover {
+		border-color: var(--accent);
+	}
+	.chips button.on {
+		background: var(--accent);
+		border-color: var(--accent);
+		color: #fff;
+	}
+	/* Подтемите – по-дребни, под „Български език“, с линия вляво */
+	.frow.sub {
+		margin-top: -2px;
+	}
+	.frow.sub .chips {
+		padding-left: 12px;
+		border-left: 2px solid color-mix(in srgb, var(--accent) 35%, transparent);
+	}
+	.frow.sub .chips button {
+		min-height: 32px;
+		padding: 4px 13px;
+		font-size: 13.5px;
+		background: transparent;
+	}
+	.frow.sub .chips button.on {
+		background: color-mix(in srgb, var(--accent) 12%, transparent);
+		color: var(--accent);
+	}
+	.chips button.empty {
+		opacity: 0.45;
+		border-style: dashed;
+		cursor: default;
+	}
+	.chips button.empty:hover {
+		border-color: var(--line);
+	}
+	@media (max-width: 560px) {
+		.frow {
+			grid-template-columns: 1fr;
+			gap: 6px;
+		}
+		.frow.sub .fl {
+			display: none;
+		}
+	}
+	.clear {
+		border: 0;
+		background: none;
+		font: 500 14px var(--sans);
+		color: var(--accent);
+		cursor: pointer;
+	}
 	.hub {
 		position: relative;
 		overflow: hidden;
@@ -214,19 +342,6 @@
 			radial-gradient(60% 90% at 100% 0%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 70%),
 			var(--bg);
 	}
-	.mark {
-		position: absolute;
-		right: -2vw; /* нарочно излиза леко отвъд десния край */
-		top: 40px;
-		font-family: var(--serif);
-		font-size: clamp(220px, 34vw, 460px);
-		line-height: 1;
-		color: transparent;
-		-webkit-text-stroke: 1px color-mix(in srgb, var(--accent) 35%, transparent);
-		pointer-events: none;
-		user-select: none;
-		animation: drift 14s ease-in-out infinite alternate;
-	}
 	h1 {
 		margin-top: 18px;
 		font-size: clamp(36px, 4.6vw, 60px); /* като заглавията на вътрешните страници */
@@ -235,100 +350,8 @@
 	.lead {
 		margin-top: 0;
 	}
-	.topics {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 8px;
-		margin-top: 36px;
-	}
 	/* Темите – втори, по-дребен ред */
-	.tags {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: 6px;
-		margin-top: 14px;
-	}
-	.tl {
-		margin-right: 6px;
-		font-size: 11px;
-		letter-spacing: 0.2em;
-		text-transform: uppercase;
-		color: var(--ink-soft);
-	}
-	.tl.sep {
-		margin-left: 14px;
-	}
 	/* Подтемите („Правописна норма“…) – отместени под избраната тема */
-	.subtags {
-		margin-top: 8px;
-		margin-left: 50px; /* под първата тема, след надписа „Тема“ */
-		padding-left: 12px;
-		border-left: 1px solid var(--line);
-	}
-	@media (max-width: 560px) {
-		.subtags {
-			margin-left: 0;
-		}
-	}
-	.tags button {
-		padding: 5px 13px;
-		border-radius: 999px;
-		border: 1px solid var(--line);
-		background: transparent;
-		font: 500 13.5px var(--sans);
-		color: var(--ink-soft);
-		cursor: pointer;
-		transition: border-color 0.2s, color 0.2s, background 0.2s;
-	}
-	.tags button:hover {
-		border-color: var(--accent);
-		color: var(--ink);
-	}
-	.tags button.empty {
-		opacity: 0.45;
-		cursor: default;
-		border-style: dashed;
-	}
-	.tags button.empty:hover {
-		border-color: var(--line);
-		color: var(--ink-soft);
-	}
-	.tags button.on {
-		border-color: var(--accent);
-		background: color-mix(in srgb, var(--accent) 10%, transparent);
-		color: var(--accent);
-	}
-	.topics button,
-	.levels button {
-		display: inline-flex;
-		align-items: center;
-		gap: 8px;
-		min-height: 44px;
-		padding: 8px 18px;
-		border-radius: 999px;
-		border: 1px solid var(--line);
-		background: rgb(255 255 255 / 0.7);
-		backdrop-filter: blur(6px);
-		font: 500 15px var(--sans);
-		color: var(--ink);
-		cursor: pointer;
-		transition: background 0.25s, border-color 0.25s, color 0.25s;
-	}
-	.topics button:hover,
-	.levels button:hover {
-		border-color: var(--accent);
-	}
-	.topics button.on,
-	.levels button.on {
-		background: var(--accent);
-		border-color: var(--accent);
-		color: #fff;
-	}
-	.c {
-		font-size: 12px;
-		opacity: 0.7;
-	}
 	.lib {
 		padding-top: 40px;
 	}
@@ -344,16 +367,6 @@
 		margin: 0;
 		font-size: 14px;
 		color: var(--ink-soft);
-	}
-	.levels {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px;
-	}
-	.levels button {
-		min-height: 38px;
-		padding: 6px 14px;
-		font-size: 13.5px;
 	}
 	.grid,
 	.row {
@@ -398,16 +411,5 @@
 	}
 	.tools h2 {
 		margin: 10px 0 32px;
-	}
-	@keyframes drift {
-		to {
-			transform: translate(-24px, 12px) rotate(-2deg);
-		}
-	}
-	@media (max-width: 700px) {
-		.mark {
-			top: 90px;
-			opacity: 0.6;
-		}
 	}
 </style>
