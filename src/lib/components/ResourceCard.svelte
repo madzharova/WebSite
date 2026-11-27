@@ -2,14 +2,17 @@
 	import { base } from '$app/paths';
 	import { subjects, gradeLabel } from '$lib/content.js';
 	import { topicLabel, examLabel } from '$lib/data/subjects.js';
-	let { r } = $props();
+	// hideSubject – на страницата на предмета името му не се повтаря върху всяка карта
+	let { r, hideSubject = false } = $props();
 </script>
 
 <a class="card" class:has-cover={r.cover} href="{base}/resursi/{r.slug}/" data-subject={r.subject}>
 	{#if r.cover}<div class="cover"><img src={r.cover} alt="" loading="lazy" /></div>{/if}
 	<div class="meta">
-		<span class="subj">{subjects[r.subject] ?? r.subject}</span>
-		<span class="dot" aria-hidden="true">·</span>
+		{#if !hideSubject}
+			<span class="subj">{subjects[r.subject] ?? r.subject}</span>
+			<span class="dot" aria-hidden="true">·</span>
+		{/if}
 		<span>{r.type}</span>
 		{#if r.level && !String(r.level).includes('[')}<span class="grade">{r.level}</span>{:else if r.grade}<span class="grade">{gradeLabel(r)}</span>{/if}
 	</div>

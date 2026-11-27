@@ -4,14 +4,13 @@
 	import { resources, subjects, criterionHref, gradeLabel } from '$lib/content.js';
 	import { byId } from '$lib/data/criteria.js';
 	import { evidenceKinds } from '$lib/data/portfolio.js';
-	import { subjectPages, topicLabel } from '$lib/data/subjects.js';
+	import { subjectPages } from '$lib/data/subjects.js';
 	import { reveal } from '$lib/actions/reveal.js';
 	import ResourceCard from '$lib/components/ResourceCard.svelte';
 
 	let { data } = $props();
 	let r = $derived(resources.find((x) => x.slug === data.slug));
 	let related = $derived(resources.filter((x) => x.slug !== r.slug && (x.subject === r.subject || x.type === r.type)).slice(0, 3));
-	const fmt = (d) => (d ? new Date(d).toLocaleDateString('bg-BG', { day: 'numeric', month: 'long', year: 'numeric' }) : '');
 </script>
 
 <svelte:head>
@@ -23,15 +22,16 @@
 	<header class="rh" class:with-cover={r.cover}>
 		<div class="wrap" class:hgrid={r.cover}>
 			<div>
-			<nav class="crumbs" aria-label="Път">
+			<!-- Видим път обратно към предмета -->
+			<nav class="back" aria-label="Обратно">
 				{#if subjectPages[r.subject]}
-					<a href={subjectPages[r.subject].href}>{subjectPages[r.subject].name}</a>
+					<a href={subjectPages[r.subject].href}><span aria-hidden="true">←</span> {subjectPages[r.subject].name}</a>
 				{:else if r.subject === 'bel-fr'}
-					<a href="{base}/balgarski/">Български</a> ↔ <a href="{base}/francais/">Français</a>
+					<a href="{base}/balgarski/"><span aria-hidden="true">←</span> Български</a>
+					<a href="{base}/francais/"><span aria-hidden="true">←</span> Français</a>
 				{:else}
-					<a href="{base}/resursi/">Ресурси</a>
+					<a href="{base}/resursi/"><span aria-hidden="true">←</span> Всички ресурси</a>
 				{/if}
-				<span>/</span> {r.topic ? [].concat(r.topic).map(topicLabel).join(', ') : r.type}
 			</nav>
 			<div class="meta" use:reveal>
 				<span class="chip subj" data-subject={r.subject}>{subjects[r.subject]}</span>
@@ -45,18 +45,19 @@
 				{#if r.link}<a class="btn" href={r.link} rel="noopener">{r.linkLabel ?? "Отвори ресурса"} <span class="arrow">↗</span></a>{/if}
 				{#each r.files ?? [] as f}<a class="btn btn--ghost" href={f.href} download>↓ {f.label}</a>{/each}
 				{#if r.drive}<a class="btn btn--ghost" href={r.drive} rel="noopener">Споделено с колегите</a>{/if}
-				<span class="date muted">{fmt(r.date)}</span>
 			</div>
 			</div>
 			{#if r.cover}<img class="hcover" src={r.cover} alt="Плакат: {r.title}" use:reveal={{ delay: 200 }} />{/if}
 		</div>
 	</header>
 
-	<div class="wrap body" class:wide={r.wide}>
+	<div class="wrap body" class:wide={r.wide} class:solo={!dev}>
 		<div class="prose">
 			<r.component />
 		</div>
 
+		<!-- Към кои критерии е доказателство – само локално; публично се вижда в портфолиото -->
+		{#if dev}
 		<aside class="side">
 			<div class="box">
 				<p class="h">Доказателство към</p>
@@ -76,6 +77,7 @@
 				{/if}
 			</div>
 		</aside>
+		{/if}
 	</div>
 </article>
 
@@ -120,13 +122,28 @@
 			max-width: 280px;
 		}
 	}
-	.crumbs {
-		font-size: 13px;
-		color: var(--ink-soft);
+	.back {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
 		margin-bottom: 24px;
 	}
-	.crumbs span {
-		margin: 0 6px;
+	.back a {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 7px 16px 7px 12px;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		background: var(--card);
+		font-size: 14px;
+		font-weight: 500;
+		color: var(--sea);
+		text-decoration: none;
+		transition: border-color 0.3s;
+	}
+	.back a:hover {
+		border-color: var(--sea);
 	}
 	.meta {
 		display: flex;
@@ -161,9 +178,6 @@
 		gap: 12px;
 		margin-top: 24px;
 	}
-	.date {
-		font-size: 14px;
-	}
 	.body {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) 300px;
@@ -174,6 +188,9 @@
 		position: relative;
 	}
 	/* wide: true – интерактивен тест на цялата ширина, колоната с критериите отива отдолу */
+	.body.solo {
+		grid-template-columns: minmax(0, 1fr);
+	}
 	.body.wide {
 		grid-template-columns: 1fr;
 		gap: 32px;

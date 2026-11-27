@@ -187,7 +187,7 @@
 			<ul class="grid">
 				{#each list as r (r.slug)}
 					<li animate:flip={{ duration: 500 }} in:scale={{ start: 0.96, duration: 400 }} out:fade={{ duration: 150 }}>
-						<ResourceCard {r} />
+						<ResourceCard {r} hideSubject />
 					</li>
 				{/each}
 			</ul>
@@ -210,7 +210,7 @@
 				</div>
 			</div>
 			<div class="row">
-				{#each shared as r, i}<div use:reveal={{ delay: i * 80 }}><ResourceCard {r} /></div>{/each}
+				{#each shared as r, i}<div use:reveal={{ delay: i * 80 }}><ResourceCard {r} hideSubject /></div>{/each}
 			</div>
 		</div>
 	</section>
