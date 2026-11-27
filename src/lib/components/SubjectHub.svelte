@@ -3,7 +3,7 @@
 	import DictSearch from './DictSearch.svelte';
 	import { flip } from 'svelte/animate';
 	import { fade, scale } from 'svelte/transition';
-	import { resources } from '$lib/content.js';
+	import { resources, gradesOf } from '$lib/content.js';
 	import { subjectPages, bridge, kinds, topicLabel, examLabel } from '$lib/data/subjects.js';
 	import { reveal } from '$lib/actions/reveal.js';
 	import ResourceCard from './ResourceCard.svelte';
@@ -16,7 +16,8 @@
 	const tools = resources.filter((r) => r.subject === 'all');
 
 	const topicsOf = (r) => [].concat(r.topic ?? []);
-	const levelOf = (r) => String(key === 'fr' ? (r.level ?? r.grade ?? '') : (r.grade ?? ''));
+	// Клас/ниво може да е едно („11“) или няколко ([10, 11, 12])
+	const levelsOf = (r) => (key === 'fr' && r.level ? [].concat(r.level).map(String) : gradesOf(r));
 
 	const kindOf = (r) => kinds.find((k) => k.types.includes(r.type))?.id ?? '';
 
@@ -41,7 +42,7 @@
 		}))
 		.filter((t) => t.n);
 	const usedExams = (S.exams ?? []).filter((e) => own.some((r) => examsOf(r).includes(e.id)));
-	const usedLevels = S.levels.filter((l) => own.some((r) => levelOf(r) === l));
+	const usedLevels = S.levels.filter((l) => own.some((r) => levelsOf(r).includes(l)));
 
 	let kind = $state('');
 	let topic = $state('');
@@ -55,7 +56,7 @@
 				(!kind || kindOf(r) === kind) &&
 				(!topic || hasTopic(r, topic)) &&
 				(!exam || examsOf(r).includes(exam)) &&
-				(!level || levelOf(r) === level)
+				(!level || levelsOf(r).includes(level))
 		)
 	);
 

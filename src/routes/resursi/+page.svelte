@@ -1,7 +1,7 @@
 <script>
 	import { flip } from 'svelte/animate';
 	import { fade, scale } from 'svelte/transition';
-	import { resources, subjects, types } from '$lib/content.js';
+	import { resources, subjects, types, gradesOf } from '$lib/content.js';
 	import PageHeader from '$lib/components/PageHeader.svelte';
 	import ResourceCard from '$lib/components/ResourceCard.svelte';
 
@@ -10,7 +10,7 @@
 	let grade = $state('');
 	let q = $state('');
 
-	const grades = [...new Set(resources.map((r) => r.grade).filter(Boolean))].sort((a, b) => a - b);
+	const grades = [...new Set(resources.flatMap(gradesOf))].sort((a, b) => a - b);
 	const usedTypes = types.filter((t) => resources.some((r) => r.type === t));
 
 	let list = $derived(
@@ -18,7 +18,7 @@
 			(r) =>
 				(!subject || r.subject === subject || (subject !== 'all' && r.subject === 'bel-fr' && ['bel', 'fr'].includes(subject))) &&
 				(!type || r.type === type) &&
-				(!grade || String(r.grade) === grade) &&
+				(!grade || gradesOf(r).includes(grade)) &&
 				(!q || `${r.title} ${r.summary}`.toLowerCase().includes(q.toLowerCase()))
 		)
 	);

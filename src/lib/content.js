@@ -76,6 +76,17 @@ export const subjects = {
 export const resourcesFor = (key) =>
 	resources.filter((r) => r.subject === key || r.subject === 'bel-fr' || r.subject === 'all');
 
+/** Класовете на материал – `grade: 11` или `grade: [10, 11, 12]` */
+export const gradesOf = (r) => [].concat(r.grade ?? []).map(String);
+
+/** Етикет: „11 клас“, „10–12 клас“ (поредни) или „8, 10 клас“ */
+export function gradeLabel(r) {
+	const g = gradesOf(r).map(Number).sort((a, b) => a - b);
+	if (!g.length) return '';
+	const run = g.length > 2 && g.every((x, i) => i === 0 || x === g[i - 1] + 1);
+	return `${run ? `${g[0]}–${g.at(-1)}` : g.join(', ')} клас`;
+}
+
 export const types = ['урок', 'игра', 'упражнение', 'тест', 'презентация', 'инструмент'];
 
 /** Всичко, което доказва даден критерий */

@@ -1,6 +1,6 @@
 <script>
 	import { base } from '$app/paths';
-	import { subjects } from '$lib/content.js';
+	import { subjects, gradeLabel } from '$lib/content.js';
 	import { topicLabel, examLabel } from '$lib/data/subjects.js';
 	let { r } = $props();
 	const fmt = (d) => (d ? new Date(d).toLocaleDateString('bg-BG', { month: 'long', year: 'numeric' }) : '');
@@ -12,7 +12,7 @@
 		<span class="subj">{subjects[r.subject] ?? r.subject}</span>
 		<span class="dot" aria-hidden="true">·</span>
 		<span>{r.type}</span>
-		{#if r.level && !String(r.level).includes('[')}<span class="grade">{r.level}</span>{:else if r.grade}<span class="grade">{r.grade} клас</span>{/if}
+		{#if r.level && !String(r.level).includes('[')}<span class="grade">{r.level}</span>{:else if r.grade}<span class="grade">{gradeLabel(r)}</span>{/if}
 	</div>
 	{#if r.topic}<p class="topic">{[].concat(r.topic).map(topicLabel).join(' · ')}</p>{/if}
 	<h3>{r.title}</h3>

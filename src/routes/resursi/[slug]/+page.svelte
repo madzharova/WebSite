@@ -1,7 +1,7 @@
 <script>
 	import { base } from '$app/paths';
 	import { dev } from '$app/environment';
-	import { resources, subjects, criterionHref } from '$lib/content.js';
+	import { resources, subjects, criterionHref, gradeLabel } from '$lib/content.js';
 	import { byId } from '$lib/data/criteria.js';
 	import { evidenceKinds } from '$lib/data/portfolio.js';
 	import { subjectPages, topicLabel } from '$lib/data/subjects.js';
@@ -36,7 +36,7 @@
 			<div class="meta" use:reveal>
 				<span class="chip subj" data-subject={r.subject}>{subjects[r.subject]}</span>
 				<span class="chip">{r.type}</span>
-				{#if r.grade}<span class="chip">{r.grade} клас</span>{/if}
+				{#if r.grade}<span class="chip">{gradeLabel(r)}</span>{/if}
 				{#if r.example}<span class="chip ex">примерен ресурс</span>{/if}
 			</div>
 			<h1 use:reveal={{ delay: 60 }}>{r.title}</h1>
@@ -52,7 +52,7 @@
 		</div>
 	</header>
 
-	<div class="wrap body">
+	<div class="wrap body" class:wide={r.wide}>
 		<div class="prose">
 			<r.component />
 		</div>
@@ -172,6 +172,18 @@
 	}
 	.side {
 		position: relative;
+	}
+	/* wide: true – интерактивен тест на цялата ширина, колоната с критериите отива отдолу */
+	.body.wide {
+		grid-template-columns: 1fr;
+		gap: 32px;
+	}
+	.body.wide .prose {
+		max-width: none;
+	}
+	.body.wide .box {
+		position: static;
+		max-width: 520px;
 	}
 	.box {
 		position: sticky;
