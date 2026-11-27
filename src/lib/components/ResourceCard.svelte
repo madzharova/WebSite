@@ -3,7 +3,6 @@
 	import { subjects, gradeLabel } from '$lib/content.js';
 	import { topicLabel, examLabel } from '$lib/data/subjects.js';
 	let { r } = $props();
-	const fmt = (d) => (d ? new Date(d).toLocaleDateString('bg-BG', { month: 'long', year: 'numeric' }) : '');
 </script>
 
 <a class="card" class:has-cover={r.cover} href="{base}/resursi/{r.slug}/" data-subject={r.subject}>
@@ -18,11 +17,8 @@
 	<h3>{r.title}</h3>
 	<p>{r.summary}</p>
 	<div class="foot">
-		<span class="date">{fmt(r.date)}</span>
 		<span class="flags">
 			{#each [].concat(r.izpit ?? []) as e}<span class="chip">{examLabel(e)}</span>{/each}
-			{#if r.interactive}<span class="chip">интерактивно</span>{/if}
-			{#if r.files?.length}<span class="chip" title="Материали за сваляне">за печат</span>{/if}
 		</span>
 		<span class="arrow" aria-hidden="true">→</span>
 	</div>
@@ -150,14 +146,15 @@
 	}
 	.flags {
 		display: flex;
+		flex-wrap: wrap;
 		gap: 6px;
-		margin-left: auto;
 	}
 	.flags .chip {
 		font-size: 11.5px;
 		padding: 2px 9px;
 	}
 	.arrow {
+		margin-left: auto;
 		color: var(--sea);
 		transition: transform 0.4s var(--ease);
 	}
