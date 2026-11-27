@@ -1,8 +1,8 @@
 <script>
 	import { base } from '$app/paths';
 	import { dev } from '$app/environment';
-	import { byId, criteria, sectionOf } from '$lib/data/criteria.js';
-	import { evidenceFor, criterionHref, criteriaWithEvidence } from '$lib/content.js';
+	import { byId, sectionOf } from '$lib/data/criteria.js';
+	import { evidenceFor, criterionHref, visibleCriteria } from '$lib/content.js';
 	import { evidenceKinds } from '$lib/data/portfolio.js';
 	import { reveal } from '$lib/actions/reveal.js';
 	import ResourceCard from '$lib/components/ResourceCard.svelte';
@@ -11,10 +11,10 @@
 	let c = $derived(byId[data.id]);
 	let s = $derived(sectionOf(c));
 	let ev = $derived(evidenceFor(c.id));
-	let siblings = $derived(criteriaWithEvidence.filter((x) => x.section === c.section));
-	let i = $derived(criteria.indexOf(c));
-	let prev = $derived(criteria[i - 1]);
-	let next = $derived(criteria[i + 1]);
+	let siblings = $derived(visibleCriteria.filter((x) => x.section === c.section));
+	let i = $derived(visibleCriteria.findIndex((x) => x.id === c.id));
+	let prev = $derived(visibleCriteria[i - 1]);
+	let next = $derived(visibleCriteria[i + 1]);
 	let group = $derived(s.groups?.find((g) => g.id === c.group));
 </script>
 

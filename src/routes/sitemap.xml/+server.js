@@ -8,7 +8,7 @@ export const prerender = true;
 export function GET() {
 	const pages = [
 		...[
-			'/', '/balgarski/', '/francais/', '/resursi/', '/praktiki/', '/kontakt/',
+			'/', '/balgarski/', '/francais/', '/resursi/', '/praktiki/',
 			'/portfolio/', '/portfolio/za-men/', '/portfolio/filosofia/', '/portfolio/celi/', '/portfolio/deinosti/', '/portfolio/otzivi/', '/portfolio/opis/',
 			...sections.map((s) => `/portfolio/${s.slug}/`)
 		].map((p) => base + p),

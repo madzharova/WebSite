@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import { documents, documentGroups, totalCredits } from '$lib/data/documents.js';
 	import { byId } from '$lib/data/criteria.js';
 	import { criterionHref } from '$lib/content.js';
@@ -6,8 +7,8 @@
 </script>
 
 <svelte:head><title>Опис на документите · Портфолио</title></svelte:head>
-<PageHeader
-	eyebrow="Портфолио · чл. 67, т. 4"
+<PageHeader back={{ href: `${base}/portfolio/`, label: 'Портфолио' }}
+	eyebrow="чл. 67, т. 4"
 	title="Опис на документите"
 	lead="Документи за образование, квалификация и професионален стаж."
 />

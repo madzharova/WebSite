@@ -9,7 +9,7 @@
 
 <svelte:head><title>За мен · Портфолио</title></svelte:head>
 
-<PageHeader eyebrow="Портфолио · Общи данни" title={p.title} lead={p.lead} />
+<PageHeader back={{ href: `${base}/portfolio/`, label: 'Портфолио' }} eyebrow="Общи данни" title={p.title} lead={p.lead} />
 
 <section class="section">
 	<div class="wrap cols">

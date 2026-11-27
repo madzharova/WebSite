@@ -13,9 +13,9 @@
 
 <svelte:head><title>{s.roman}. {s.title} · Портфолио</title></svelte:head>
 
-<PageHeader eyebrow="Раздел {s.roman} · до {s.max} точки" title={s.title} lead={s.subtitle} />
+<PageHeader back={{ href: `${base}/portfolio/`, label: 'Портфолио' }} eyebrow="Област {s.roman}" title={s.title} lead={s.subtitle} />
 
-<section class="section">
+<section class="section area">
 	<div class="wrap">
 		{#key s.id}<CriteriaMap only={s.id} />{/key}
 
@@ -27,6 +27,9 @@
 </section>
 
 <style>
+	.area {
+		padding-top: clamp(32px, 4vw, 48px);
+	}
 	.pager {
 		display: flex;
 		justify-content: space-between;

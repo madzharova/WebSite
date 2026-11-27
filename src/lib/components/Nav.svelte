@@ -2,7 +2,6 @@
 	import { base } from '$app/paths';
 	import { page } from '$app/state';
 	import { afterNavigate } from '$app/navigation';
-	import { sections } from '$lib/data/criteria.js';
 
 	let { onsearch } = $props();
 
@@ -10,24 +9,14 @@
 		{ href: `${base}/balgarski/`, label: 'Български', subj: 'bel' },
 		{ href: `${base}/francais/`, label: 'Français', subj: 'fr', lang: 'fr' },
 		{ href: `${base}/praktiki/`, label: 'Практики' },
-		{ href: `${base}/portfolio/`, label: 'Портфолио', mega: true },
-		{ href: `${base}/kontakt/`, label: 'Контакт' }
+		{ href: `${base}/portfolio/`, label: 'Портфолио' },
+		{ href: '#kontakt', label: 'Контакт' }
 	];
 
-	const portfolioPages = [
-		{ href: `${base}/portfolio/za-men/`, label: 'За мен', note: 'образование и квалификация' },
-		{ href: `${base}/portfolio/filosofia/`, label: 'Философия', note: 'как и защо преподавам' },
-		{ href: `${base}/portfolio/deinosti/`, label: 'Дейности с ученици', note: 'посещения, конкурси, проекти' },
-		{ href: `${base}/portfolio/celi/`, label: 'Цели за развитие', note: 'измерими и със срокове' },
-		{ href: `${base}/portfolio/otzivi/`, label: 'Отзиви', note: 'родители и ученици' },
-		{ href: `${base}/portfolio/opis/`, label: 'Опис на документите', note: 'чл. 67, т. 4' }
-	];
 
 	let scrolled = $state(false);
 	let hidden = $state(false);
 	let menuOpen = $state(false);
-	let megaOpen = $state(false);
-	let megaTimer;
 
 	// Плъзгащ се индикатор под менюто
 	let navEl = $state();
@@ -53,7 +42,7 @@
 		const onScroll = () => {
 			const y = window.scrollY;
 			scrolled = y > 24;
-			if (!menuOpen && !megaOpen) hidden = y > 320 && y > lastY + 4;
+			if (!menuOpen) hidden = y > 320 && y > lastY + 4;
 			if (y < lastY - 4) hidden = false;
 			lastY = y;
 		};
@@ -68,7 +57,6 @@
 
 	afterNavigate(() => {
 		menuOpen = false;
-		megaOpen = false;
 		requestAnimationFrame(resetIndicator);
 	});
 
@@ -76,20 +64,11 @@
 		document.documentElement.style.overflow = menuOpen ? 'hidden' : '';
 	});
 
-	const openMega = () => {
-		clearTimeout(megaTimer);
-		megaOpen = true;
-	};
-	const closeMega = () => {
-		clearTimeout(megaTimer);
-		megaTimer = setTimeout(() => (megaOpen = false), 160);
-	};
 </script>
 
 <svelte:window
 	onkeydown={(e) => {
 		if (e.key === 'Escape') {
-			megaOpen = false;
 			menuOpen = false;
 		}
 	}}
@@ -101,7 +80,6 @@
 			<span class="mono" aria-hidden="true">ММ</span>
 			<span class="brand-text">
 				<span class="name">Маргарита Маджарова</span>
-				<span class="role">БЕЛ · Français</span>
 			</span>
 		</a>
 
@@ -113,52 +91,6 @@
 				aria-hidden="true"
 			></span>
 			{#each links as l}
-				{#if l.mega}
-					<div class="has-mega" onpointerenter={openMega} onpointerleave={closeMega} role="presentation">
-						<a
-							href={l.href}
-							aria-current={isActive(l.href) ? 'page' : undefined}
-							aria-expanded={megaOpen}
-							aria-haspopup="true"
-							onpointerenter={(e) => moveTo(e.currentTarget)}
-							onfocus={(e) => {
-								moveTo(e.currentTarget);
-								openMega();
-							}}
-						>
-							{l.label}
-							<svg class="caret" class:open={megaOpen} width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"
-								><path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" stroke-width="1.2" /></svg
-							>
-						</a>
-						<div class="mega" class:open={megaOpen} onfocusout={(e) => !e.currentTarget.contains(e.relatedTarget) && closeMega()}>
-							<div class="mega-col">
-								<p class="mega-title">Портфолио</p>
-								{#each portfolioPages as p}
-									<a href={p.href} class="mega-link">
-										<span class="txt">
-											<span class="lbl">{p.label}</span>
-											<small>{p.note}</small>
-										</span>
-										<span class="go" aria-hidden="true">→</span>
-									</a>
-								{/each}
-							</div>
-							<div class="mega-col mega-col--map">
-								<p class="mega-title">Компетентности</p>
-								{#each sections as s}
-									<a href="{base}/portfolio/{s.slug}/" class="mega-sec">
-										<span class="roman">{s.roman}</span>
-										<span class="sec-name">{s.title}</span>
-										<span class="pts">{s.max} т.</span>
-										<span class="go" aria-hidden="true">→</span>
-									</a>
-								{/each}
-								<a href="{base}/portfolio/#kompetentnosti" class="mega-all">Всички 25 критерия →</a>
-							</div>
-						</div>
-					</div>
-				{:else}
 					<a
 						href={l.href}
 						lang={l.lang}
@@ -167,7 +99,6 @@
 						onpointerenter={(e) => moveTo(e.currentTarget)}
 						onfocus={(e) => moveTo(e.currentTarget)}>{l.label}</a
 					>
-				{/if}
 			{/each}
 		</nav>
 
@@ -201,15 +132,12 @@
 <div id="mobile-menu" class="overlay" class:open={menuOpen} aria-hidden={!menuOpen} inert={!menuOpen}>
 	<nav aria-label="Мобилно меню">
 		{#each [{ href: `${base}/`, label: 'Начало' }, ...links] as l, i}
-			<a href={l.href} style="--i: {i}" aria-current={isActive(l.href) ? 'page' : undefined}>
+			<a href={l.href} style="--i: {i}" aria-current={isActive(l.href) ? 'page' : undefined} onclick={() => (menuOpen = false)}>
 				<span class="idx">0{i + 1}</span>{l.label}
 			</a>
 		{/each}
 		<div class="overlay-sub" style="--i: 6">
 			<a href="{base}/resursi/">Всички ресурси</a>
-			{#each portfolioPages as p}
-				<a href={p.href}>{p.label}</a>
-			{/each}
 		</div>
 	</nav>
 	<p class="overlay-motto" style="--i: 7">Уча се, като живея. Живея, като се уча.</p>
@@ -267,7 +195,7 @@
 		width: 40px;
 		height: 40px;
 		border-radius: 50%;
-		border: 1px solid var(--sea);
+		border: 1.5px solid var(--coral);
 		font-family: var(--serif);
 		font-size: 17px;
 		font-weight: 600;
@@ -277,7 +205,7 @@
 		transition: background 0.3s, color 0.3s;
 	}
 	.brand:hover .mono {
-		background: var(--sea);
+		background: var(--coral);
 		color: #fff;
 	}
 	.brand-text {
@@ -289,17 +217,10 @@
 	.name {
 		font-family: var(--serif);
 		font-weight: 600;
-		font-size: 19px;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
+		font-size: 22px;
+		letter-spacing: 0.01em;
 		color: var(--sea);
 		white-space: nowrap;
-	}
-	.role {
-		font-size: 10.5px;
-		letter-spacing: 0.24em;
-		text-transform: uppercase;
-		color: var(--ink-soft);
 	}
 
 	.desktop {
@@ -308,8 +229,7 @@
 		align-items: center;
 		gap: 2px;
 	}
-	.desktop > a,
-	.has-mega > a {
+	.desktop > a {
 		position: relative;
 		z-index: 1;
 		display: inline-flex;
@@ -345,179 +265,6 @@
 	}
 	.indicator.show {
 		opacity: 1;
-	}
-	.caret {
-		transition: transform 0.3s var(--ease);
-	}
-	.caret.open {
-		transform: rotate(180deg);
-	}
-
-	.has-mega {
-		position: relative;
-	}
-	.mega {
-		position: absolute;
-		top: calc(100% + 14px);
-		left: 50%;
-		width: min(640px, 80vw);
-		display: grid;
-		grid-template-columns: 1fr 1.25fr;
-		gap: 8px;
-		padding: 14px;
-		border-radius: var(--radius-lg);
-		background: rgb(250 248 245 / 0.92);
-		backdrop-filter: blur(20px) saturate(1.4);
-		-webkit-backdrop-filter: blur(20px) saturate(1.4);
-		border: 1px solid var(--line);
-		box-shadow: var(--shadow-float);
-		opacity: 0;
-		visibility: hidden;
-		transform: translate(-50%, -8px) scale(0.98);
-		transform-origin: top center;
-		transition:
-			opacity 0.3s var(--ease),
-			transform 0.4s var(--ease),
-			visibility 0.3s;
-	}
-	.mega::before {
-		/* мост, за да не се затваря при движение на мишката */
-		content: '';
-		position: absolute;
-		inset: -16px 0 auto 0;
-		height: 16px;
-	}
-	.mega.open {
-		opacity: 1;
-		visibility: visible;
-		transform: translate(-50%, 0) scale(1);
-	}
-	.mega-col {
-		display: flex;
-		flex-direction: column;
-		padding: 8px;
-	}
-	.mega-col--map {
-		border-left: 1px solid var(--line);
-		padding-left: 16px;
-	}
-	.mega-title {
-		margin: 4px 12px 8px;
-		font-size: 11px;
-		letter-spacing: 0.2em;
-		text-transform: uppercase;
-		color: var(--ink-soft);
-	}
-	.mega-link,
-	.mega-sec {
-		position: relative;
-		display: flex;
-		align-items: center;
-		gap: 12px;
-		text-decoration: none;
-		border-radius: 10px;
-		padding: 9px 12px;
-		color: var(--ink);
-		transition: background 0.3s var(--ease);
-	}
-	/* тънка синя черта отляво, която „израства“ при посочване */
-	.mega-link::before,
-	.mega-sec::before {
-		content: '';
-		position: absolute;
-		left: 0;
-		top: 10px;
-		bottom: 10px;
-		width: 2px;
-		border-radius: 2px;
-		background: var(--sea);
-		transform: scaleY(0);
-		transition: transform 0.35s var(--ease);
-	}
-	.mega-link:hover,
-	.mega-sec:hover,
-	.mega-link:focus-visible,
-	.mega-sec:focus-visible {
-		background: rgb(42 111 151 / 0.05);
-	}
-	.mega-link:hover::before,
-	.mega-sec:hover::before,
-	.mega-link:focus-visible::before,
-	.mega-sec:focus-visible::before {
-		transform: scaleY(1);
-	}
-	.txt {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		line-height: 1.3;
-		transition: transform 0.35s var(--ease);
-	}
-	.lbl {
-		font-weight: 500;
-		font-size: 15px;
-		transition: color 0.2s;
-	}
-	.mega-link small {
-		font-size: 12.5px;
-		color: var(--ink-soft);
-	}
-	.go {
-		color: var(--sea);
-		font-size: 15px;
-		opacity: 0;
-		transform: translateX(-6px);
-		transition: opacity 0.25s, transform 0.35s var(--ease);
-	}
-	.mega-link:hover .go,
-	.mega-sec:hover .go,
-	.mega-link:focus-visible .go,
-	.mega-sec:focus-visible .go {
-		opacity: 1;
-		transform: none;
-	}
-	.mega-link:hover .txt,
-	.mega-sec:hover .sec-name {
-		transform: translateX(4px);
-	}
-	.mega-link:hover .lbl,
-	.mega-sec:hover .sec-name {
-		color: var(--sea);
-	}
-	.mega-sec {
-		align-items: baseline;
-		font-size: 14.5px;
-		line-height: 1.35;
-	}
-	.mega-sec .go {
-		align-self: center;
-	}
-	.roman {
-		font-family: var(--serif);
-		font-size: 22px;
-		font-weight: 600;
-		color: var(--sea);
-		width: 30px;
-		flex-shrink: 0;
-	}
-	.sec-name {
-		flex: 1;
-		transition: transform 0.35s var(--ease), color 0.2s;
-	}
-	.pts {
-		font-size: 12px;
-		color: var(--ink-soft);
-		white-space: nowrap;
-		transition: opacity 0.2s;
-	}
-	.mega-sec:hover .pts {
-		opacity: 0.6;
-	}
-	.mega-all {
-		margin: 10px 12px 4px;
-		font-size: 14px;
-		font-weight: 500;
-		text-decoration: none;
 	}
 
 	.tools {
@@ -669,12 +416,11 @@
 			padding-left: 10px;
 			gap: 10px;
 		}
-		.role {
-			display: none;
+		.brand {
+			gap: 8px;
 		}
 		.name {
-			font-size: 15px;
-			letter-spacing: 0.03em;
+			font-size: 16.5px;
 			overflow: hidden;
 			text-overflow: ellipsis;
 		}
@@ -682,6 +428,11 @@
 			width: 36px;
 			height: 36px;
 			font-size: 15px;
+		}
+	}
+	@media (max-width: 380px) {
+		.name {
+			font-size: 14.5px;
 		}
 	}
 	@media (min-width: 901px) {

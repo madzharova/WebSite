@@ -104,6 +104,13 @@ export const criteriaWithEvidence = criteria.map((c) => ({
 	evidenceCount: evidenceFor(c.id).count
 }));
 
+/**
+ * Критериите, които се показват. На публичния сайт – само тези с поне едно доказателство,
+ * за да няма празни страници. Локално (npm run dev) – всички, с етикет „предстои“.
+ * Щом към критерий се добави доказателство, той се появява сам.
+ */
+export const visibleCriteria = criteriaWithEvidence.filter((c) => dev || c.evidenceCount > 0);
+
 /** Плосък индекс за търсачката */
 export const searchIndex = [
 	...resources.map((r) => ({
@@ -124,7 +131,7 @@ export const searchIndex = [
 		text: `${e.place ?? ''} ${e.kind ?? ''}`,
 		href: `${base}/portfolio/deinosti/#${e.slug}`
 	})),
-	...criteriaWithEvidence.map((c) => ({
+	...visibleCriteria.map((c) => ({
 		kind: `Критерий ${c.section}.${c.num}`,
 		title: c.short,
 		text: c.text,

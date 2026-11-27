@@ -4,13 +4,12 @@
 	import { flip } from 'svelte/animate';
 	import { fade, scale } from 'svelte/transition';
 	import { resources } from '$lib/content.js';
-	import { subjectPages, bridge } from '$lib/data/subjects.js';
+	import { subjectPages, bridge, kinds, topicLabel, examLabel } from '$lib/data/subjects.js';
 	import { reveal } from '$lib/actions/reveal.js';
 	import ResourceCard from './ResourceCard.svelte';
 
 	let { key } = $props();
 	const S = subjectPages[key];
-	const other = Object.values(subjectPages).find((x) => x.key !== key);
 
 	const own = resources.filter((r) => r.subject === key);
 	const shared = resources.filter((r) => r.subject === 'bel-fr');
@@ -19,23 +18,60 @@
 	const topicsOf = (r) => [].concat(r.topic ?? []);
 	const levelOf = (r) => String(key === 'fr' ? (r.level ?? r.grade ?? '') : (r.grade ?? ''));
 
-	const counts = Object.fromEntries(S.topics.map((t) => [t.id, own.filter((r) => topicsOf(r).includes(t.id)).length]));
+	const kindOf = (r) => kinds.find((k) => k.types.includes(r.type))?.id ?? '';
+
+	// Показват се само видовете, темите и класовете, в които има поне един материал
+	const usedKinds = kinds
+		.map((k) => ({ ...k, n: own.filter((r) => kindOf(r) === k.id).length }))
+		.filter((k) => k.n);
+	const examsOf = (r) => [].concat(r.izpit ?? []);
+	// Тема с подтеми („Български език“) съдържа и материалите с някоя от подтемите си
+	const idsOf = (id) => {
+		const t = S.topics.find((x) => x.id === id);
+		return t?.sub ? [t.id, ...t.sub.map((x) => x.id)] : [id];
+	};
+	const hasTopic = (r, id) => idsOf(id).some((x) => topicsOf(r).includes(x));
+	const parentOf = (id) => S.topics.find((t) => t.id === id || t.sub?.some((x) => x.id === id));
+	const usedTopics = S.topics
+		.map((t) => ({
+			...t,
+			n: own.filter((r) => hasTopic(r, t.id)).length,
+			// подтемите се виждат винаги – празните са бледи, за да личи цялата структура
+			sub: (t.sub ?? []).map((x) => ({ ...x, n: own.filter((r) => topicsOf(r).includes(x.id)).length }))
+		}))
+		.filter((t) => t.n);
+	const usedExams = (S.exams ?? []).filter((e) => own.some((r) => examsOf(r).includes(e.id)));
 	const usedLevels = S.levels.filter((l) => own.some((r) => levelOf(r) === l));
 
+	let kind = $state('');
 	let topic = $state('');
+	let exam = $state('');
+	let openTopic = $derived(usedTopics.find((t) => t.id === parentOf(topic)?.id));
 	let level = $state('');
 
-	let list = $derived(own.filter((r) => (!topic || topicsOf(r).includes(topic)) && (!level || levelOf(r) === level)));
+	let list = $derived(
+		own.filter(
+			(r) =>
+				(!kind || kindOf(r) === kind) &&
+				(!topic || hasTopic(r, topic)) &&
+				(!exam || examsOf(r).includes(exam)) &&
+				(!level || levelOf(r) === level)
+		)
+	);
 
-	// #tema=pravopis&nivo=11 – филтърът може да се сподели като връзка
+	// #vid=igri&tema=pravopis&nivo=11 – филтърът може да се сподели като връзка
 	$effect(() => {
 		const h = new URLSearchParams(location.hash.slice(1));
+		kind = h.get('vid') ?? '';
 		topic = h.get('tema') ?? '';
+		exam = h.get('izpit') ?? '';
 		level = h.get('nivo') ?? '';
 	});
 	$effect(() => {
 		const h = new URLSearchParams();
+		if (kind) h.set('vid', kind);
 		if (topic) h.set('tema', topic);
+		if (exam) h.set('izpit', exam);
 		if (level) h.set('nivo', level);
 		const s = h.toString();
 		history.replaceState(history.state, '', s ? `#${s}` : location.pathname);
@@ -53,16 +89,50 @@
 			<DictSearch name={S.dict.name} url={S.dict.url} placeholder={S.dict.placeholder} lang={S.lang} />
 		{/if}
 
-		<nav class="topics" aria-label="Раздели" use:reveal={{ delay: 180 }}>
-			<button class:on={!topic} onclick={() => (topic = '')}>
-				Всички <span class="c">{own.length}</span>
-			</button>
-			{#each S.topics as t}
-				<button class:on={topic === t.id} aria-pressed={topic === t.id} onclick={() => (topic = topic === t.id ? '' : t.id)} lang={S.lang}>
-					{t.label} <span class="c">{counts[t.id]}</span>
+		{#if usedKinds.length}
+			<nav class="topics" aria-label="Вид материал" use:reveal={{ delay: 180 }}>
+				<button class:on={!kind} onclick={() => (kind = '')}>
+					Всички <span class="c">{own.length}</span>
 				</button>
-			{/each}
-		</nav>
+				{#each usedKinds as k}
+					<button class:on={kind === k.id} aria-pressed={kind === k.id} onclick={() => (kind = kind === k.id ? '' : k.id)}>
+						{k.label} <span class="c">{k.n}</span>
+					</button>
+				{/each}
+			</nav>
+		{/if}
+		{#if usedTopics.length || usedExams.length}
+			<nav class="tags" aria-label="Тема" use:reveal={{ delay: 220 }}>
+				{#if usedTopics.length}<span class="tl">Тема</span>{/if}
+				{#each usedTopics as t}
+					<button class:on={openTopic?.id === t.id} aria-pressed={topic === t.id} onclick={() => (topic = topic === t.id ? '' : t.id)} lang={S.lang}>
+						{t.label}
+					</button>
+				{/each}
+				{#if usedExams.length}
+					<span class="tl sep">Изпит</span>
+					{#each usedExams as e}
+						<button class:on={exam === e.id} aria-pressed={exam === e.id} onclick={() => (exam = exam === e.id ? '' : e.id)}>{e.label}</button>
+					{/each}
+				{/if}
+			</nav>
+			{#if openTopic?.sub.length}
+				<nav class="tags subtags" aria-label={openTopic.label}>
+					{#each openTopic.sub as st}
+						<button
+							class:on={topic === st.id}
+							class:empty={!st.n}
+							disabled={!st.n}
+							title={st.n ? undefined : 'Предстои'}
+							aria-pressed={topic === st.id}
+							onclick={() => (topic = topic === st.id ? openTopic.id : st.id)}
+						>
+							{st.label}
+						</button>
+					{/each}
+				</nav>
+			{/if}
+		{/if}
 	</div>
 </header>
 
@@ -72,7 +142,9 @@
 			<p class="count" aria-live="polite">
 				{list.length}
 				{list.length === 1 ? 'ресурс' : 'ресурса'}
-				{#if topic}· {S.topics.find((t) => t.id === topic)?.label}{/if}
+				{#if kind}· {kinds.find((k) => k.id === kind)?.label}{/if}
+				{#if topic}· {topicLabel(topic)}{/if}
+				{#if exam}· {examLabel(exam)}{/if}
 			</p>
 			{#if usedLevels.length}
 				<div class="levels" role="group" aria-label={key === 'fr' ? 'Ниво' : 'Клас'}>
@@ -95,7 +167,7 @@
 		{:else}
 			<div class="empty" in:fade>
 				<p>Ресурсите в този раздел предстоят.</p>
-				{#if topic || level}<button onclick={() => (topic = level = '')}>Покажи всички</button>{/if}
+				{#if kind || topic || exam || level}<button onclick={() => (kind = topic = exam = level = '')}>Покажи всички</button>{/if}
 			</div>
 		{/if}
 	</div>
@@ -108,13 +180,7 @@
 				<div>
 					<p class="eyebrow" use:reveal>С колеги от други предмети</p>
 					<h2 use:reveal={{ delay: 60 }}>{bridge.name}</h2>
-					<p class="muted" use:reveal={{ delay: 100 }}>{bridge.text}</p>
 				</div>
-				<svg class="arc" viewBox="0 0 220 60" aria-hidden="true">
-					<path d="M10 50 Q110 -10 210 50" fill="none" stroke="var(--sea)" stroke-width="1" />
-					<circle cx="10" cy="50" r="4" fill="var(--sea)" />
-					<circle cx="210" cy="50" r="4" fill="var(--coral)" />
-				</svg>
 			</div>
 			<div class="row">
 				{#each shared as r, i}<div use:reveal={{ delay: i * 80 }}><ResourceCard {r} /></div>{/each}
@@ -123,10 +189,11 @@
 	</section>
 {/if}
 
-{#if tools.length}
+<!-- Разделът се показва, когато инструментите са поне два – един сам стои като недовършен раздел -->
+{#if tools.length >= 2}
 	<section class="section tools">
 		<div class="wrap">
-			<p class="eyebrow">За учители</p>
+			<p class="eyebrow">За всички предмети</p>
 			<h2>Инструменти</h2>
 			<div class="row">
 				{#each tools as r}<ResourceCard {r} />{/each}
@@ -135,19 +202,12 @@
 	</section>
 {/if}
 
-<a class="switch" href={other.href} style="--accent: {other.accent}">
-	<div class="wrap">
-		<span class="sl">Другият предмет</span>
-		<span class="sn" lang={other.lang}>{other.name} <span class="ar">→</span></span>
-		<span class="sm" aria-hidden="true">{other.mark}</span>
-	</div>
-</a>
 
 <style>
 	.hub {
 		position: relative;
 		overflow: hidden;
-		padding: clamp(150px, 18vw, 200px) 0 48px;
+		padding: clamp(130px, 14vw, 170px) 0 48px; /* като PageHeader на вътрешните страници */
 		border-bottom: 1px solid var(--line);
 		background:
 			radial-gradient(60% 90% at 100% 0%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 70%),
@@ -155,7 +215,7 @@
 	}
 	.mark {
 		position: absolute;
-		right: -2vw;
+		right: -2vw; /* нарочно излиза леко отвъд десния край */
 		top: 40px;
 		font-family: var(--serif);
 		font-size: clamp(220px, 34vw, 460px);
@@ -168,7 +228,7 @@
 	}
 	h1 {
 		margin-top: 18px;
-		font-size: var(--h1-page);
+		font-size: clamp(36px, 4.6vw, 60px); /* като заглавията на вътрешните страници */
 		color: var(--accent);
 	}
 	.lead {
@@ -179,6 +239,64 @@
 		flex-wrap: wrap;
 		gap: 8px;
 		margin-top: 36px;
+	}
+	/* Темите – втори, по-дребен ред */
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 6px;
+		margin-top: 14px;
+	}
+	.tl {
+		margin-right: 6px;
+		font-size: 11px;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+		color: var(--ink-soft);
+	}
+	.tl.sep {
+		margin-left: 14px;
+	}
+	/* Подтемите („Правописна норма“…) – отместени под избраната тема */
+	.subtags {
+		margin-top: 8px;
+		margin-left: 50px; /* под първата тема, след надписа „Тема“ */
+		padding-left: 12px;
+		border-left: 1px solid var(--line);
+	}
+	@media (max-width: 560px) {
+		.subtags {
+			margin-left: 0;
+		}
+	}
+	.tags button {
+		padding: 5px 13px;
+		border-radius: 999px;
+		border: 1px solid var(--line);
+		background: transparent;
+		font: 500 13.5px var(--sans);
+		color: var(--ink-soft);
+		cursor: pointer;
+		transition: border-color 0.2s, color 0.2s, background 0.2s;
+	}
+	.tags button:hover {
+		border-color: var(--accent);
+		color: var(--ink);
+	}
+	.tags button.empty {
+		opacity: 0.45;
+		cursor: default;
+		border-style: dashed;
+	}
+	.tags button.empty:hover {
+		border-color: var(--line);
+		color: var(--ink-soft);
+	}
+	.tags button.on {
+		border-color: var(--accent);
+		background: color-mix(in srgb, var(--accent) 10%, transparent);
+		color: var(--accent);
 	}
 	.topics button,
 	.levels button {
@@ -277,83 +395,15 @@
 	.bh p {
 		max-width: 56ch;
 	}
-	.arc {
-		width: 220px;
-	}
-	.arc path {
-		stroke-dasharray: 260;
-		stroke-dashoffset: 260;
-		animation: draw 2.4s 0.4s var(--ease) forwards;
-	}
 	.tools h2 {
 		margin: 10px 0 32px;
-	}
-	.switch {
-		display: block;
-		position: relative;
-		overflow: hidden;
-		padding: 72px 0;
-		border-top: 1px solid var(--line);
-		text-decoration: none;
-		color: var(--ink);
-		transition: background 0.5s var(--ease);
-	}
-	.switch:hover {
-		background: color-mix(in srgb, var(--accent) 7%, transparent);
-	}
-	.switch .wrap {
-		display: flex;
-		flex-direction: column;
-		gap: 6px;
-	}
-	.sl {
-		font-size: 12px;
-		letter-spacing: 0.22em;
-		text-transform: uppercase;
-		color: var(--ink-soft);
-	}
-	.sn {
-		font-family: var(--serif);
-		font-size: clamp(44px, 7vw, 84px);
-		line-height: 1;
-		color: var(--accent);
-	}
-	.ar {
-		display: inline-block;
-		transition: transform 0.5s var(--ease);
-	}
-	.switch:hover .ar {
-		transform: translateX(14px);
-	}
-	.sm {
-		position: absolute;
-		right: 4vw;
-		top: 50%;
-		translate: 0 -50%;
-		font-family: var(--serif);
-		font-size: 200px;
-		line-height: 1;
-		color: transparent;
-		-webkit-text-stroke: 1px color-mix(in srgb, var(--accent) 30%, transparent);
-		transition: transform 0.8s var(--ease);
-	}
-	.switch:hover .sm {
-		transform: translateX(-20px) rotate(-4deg);
 	}
 	@keyframes drift {
 		to {
 			transform: translate(-24px, 12px) rotate(-2deg);
 		}
 	}
-	@keyframes draw {
-		to {
-			stroke-dashoffset: 0;
-		}
-	}
 	@media (max-width: 700px) {
-		.sm {
-			display: none;
-		}
 		.mark {
 			top: 90px;
 			opacity: 0.6;

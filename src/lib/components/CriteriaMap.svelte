@@ -2,7 +2,7 @@
 	import { base } from '$app/paths';
 	import { dev } from '$app/environment';
 	import { sections } from '$lib/data/criteria.js';
-	import { criteriaWithEvidence, criterionHref } from '$lib/content.js';
+	import { visibleCriteria, criterionHref } from '$lib/content.js';
 	import { reveal } from '$lib/actions/reveal.js';
 
 	let { only = null } = $props();
@@ -10,18 +10,21 @@
 	const status = (n) => (n >= 2 ? 'covered' : n === 1 ? 'progress' : 'todo');
 	const statusLabel = { covered: 'покрит', progress: 'в процес', todo: 'предстои' };
 
-	let list = $derived(only ? sections.filter((s) => s.id === only) : sections);
+	let list = $derived(
+		(only ? sections.filter((s) => s.id === only) : sections).filter((s) => visibleCriteria.some((c) => c.section === s.id))
+	);
 </script>
 
 <div class="map">
 	{#each list as s}
-		{@const items = criteriaWithEvidence.filter((c) => c.section === s.id)}
+		{@const items = visibleCriteria.filter((c) => c.section === s.id)}
 		{@const covered = items.filter((c) => c.evidenceCount >= 2).length}
-		<section class="sec" aria-labelledby="sec-{s.id}">
-			<header use:reveal>
+		<section class="sec" aria-label="{s.roman}. {s.title}">
+			<!-- На страницата на областта заглавието вече е горе – тук не се повтаря -->
+			{#if !only}<header use:reveal>
 				<span class="roman" aria-hidden="true">{s.roman}</span>
 				<div>
-					<h3 id="sec-{s.id}"><a href="{base}/portfolio/{s.slug}/">{s.title}</a></h3>
+					<h3><a href="{base}/portfolio/{s.slug}/">{s.title}</a></h3>
 					<p>{s.subtitle}</p>
 				</div>
 				<!-- напредък по доказателствата – само локално -->
@@ -30,7 +33,7 @@
 						<span style="width: {(covered / items.length) * 100}%"></span>
 					</div>
 				{/if}
-			</header>
+			</header>{/if}
 			<ol class="tiles">
 				{#each items as c, i}
 					{@const st = dev ? status(c.evidenceCount) : ''}
@@ -41,7 +44,7 @@
 								{#if dev}<span class="st">{statusLabel[st]}</span>{/if}
 							</span>
 							<span class="short">{c.short}</span>
-							{#if c.evidenceCount > 0}
+							{#if dev && c.evidenceCount > 0}<!-- броят – само локално -->
 								<span class="foot">
 									<span class="dots" aria-hidden="true">
 										{#each Array(Math.min(c.evidenceCount, 6)) as _}<i></i>{/each}
@@ -200,7 +203,12 @@
 			grid-column: 1 / -1;
 		}
 		.tiles {
-			grid-template-columns: 1fr 1fr;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+	@media (max-width: 480px) {
+		.tiles {
+			grid-template-columns: minmax(0, 1fr);
 		}
 	}
 </style>

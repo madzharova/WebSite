@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import { dev } from '$app/environment';
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
@@ -32,8 +33,8 @@
 
 <svelte:head><title>Дейности с ученици · Портфолио</title></svelte:head>
 
-<PageHeader
-	eyebrow="Портфолио · Динамика на изявите"
+<PageHeader back={{ href: `${base}/portfolio/`, label: 'Портфолио' }}
+	eyebrow="Динамика на изявите"
 	title="Дейности с ученици"
 	lead="Посещения, конкурси, проекти и празници – учене извън класната стая. Лицата на учениците са замъглени."
 >

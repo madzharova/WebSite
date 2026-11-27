@@ -13,7 +13,7 @@
 	import { markHydrated } from '$lib/actions/reveal.js';
 	import { page } from '$app/state';
 	import { dev } from '$app/environment';
-	import { ORIGIN, SITE_NAME, SITE_DESC } from '$lib/data/site.js';
+	import { SITE, ORIGIN, SITE_NAME, SITE_DESC } from '$lib/data/site.js';
 	import Nav from '$lib/components/Nav.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import Search from '$lib/components/Search.svelte';
@@ -44,8 +44,14 @@
 	<meta property="og:type" content="website" />
 	<meta property="og:locale" content="bg_BG" />
 	<meta property="og:url" content="{ORIGIN}{page.url.pathname}" />
+	<meta property="og:title" content={SITE_NAME} />
 	<meta property="og:description" content={SITE_DESC} />
-	<meta name="twitter:card" content="summary" />
+	<!-- Картинка за преглед на връзката (Viber, Messenger, Facebook…) -->
+	<meta property="og:image" content="{SITE}/og.png" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:image:alt" content="Маргарита Маджарова – интерактивни уроци и ресурси за учители" />
+	<meta name="twitter:card" content="summary_large_image" />
 </svelte:head>
 
 <a class="skip" href="#main">Към съдържанието</a>

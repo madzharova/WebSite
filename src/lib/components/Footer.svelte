@@ -3,6 +3,7 @@
 	import { portfolioMeta } from '$lib/data/portfolio.js';
 	import { contacts } from '$lib/data/contacts.js';
 	import linkedinIcon from '$lib/icons/linkedin-filled.svg?raw';
+	import schoolIcon from '$lib/icons/school.svg?raw';
 	import copyIcon from '$lib/icons/copy.svg?raw';
 	import checkIcon from '$lib/icons/check.svg?raw';
 
@@ -30,16 +31,15 @@
 		{ href: 'https://dictionnaire.lerobert.com/', label: 'Le Robert – dictionnaire', lang: 'fr' },
 		{ href: 'https://www.larousse.fr/dictionnaires/francais', label: 'Larousse – dictionnaire', lang: 'fr' },
 		{ href: 'https://apprendre.tv5monde.com/fr', label: 'TV5Monde – Apprendre le français', lang: 'fr' },
-		{ href: 'https://www.pgmtplovdiv.info/', label: 'ПГМТ „Проф. Цв. Лазаров“' }
 	];
 	const year = new Date().getFullYear();
 </script>
 
-<footer class="footer">
+<footer class="footer" id="kontakt">
 	<div class="wrap">
 		<div class="top">
 			<div class="brand">
-				<p class="motto">Уча се, като живея.<br /><em>Живея, като се уча.</em></p>
+				<p class="h">Контакт</p>
 				<div class="contact">
 					{#each contacts.emails as e}
 						<button class="mail" class:done={copied === e.value} onclick={() => copy(e.value)} title="Копирай имейла">
@@ -49,6 +49,7 @@
 					{/each}
 					<span class="sr" aria-live="polite">{copied ? 'Имейлът е копиран' : ''}</span>
 					<a class="li" href={contacts.linkedin} target="_blank" rel="noopener noreferrer" aria-label="Margarita Madzharova в LinkedIn"><span class="lii" aria-hidden="true">{@html linkedinIcon}</span><span lang="en">Margarita Madzharova</span></a>
+					<a class="li" href={contacts.school.url} target="_blank" rel="noopener noreferrer"><span class="lii school" aria-hidden="true">{@html schoolIcon}</span><span>{contacts.school.name}, {contacts.school.city}</span></a>
 				</div>
 			</div>
 			<nav aria-label="Навигация">
@@ -58,7 +59,6 @@
 				<a href="{base}/resursi/">Всички ресурси</a>
 				<a href="{base}/praktiki/">Практики</a>
 				<a href="{base}/portfolio/">Портфолио</a>
-				<a href="{base}/kontakt/">Контакт</a>
 			</nav>
 			<nav aria-label="Проекти и партньори">
 				<p class="h">Проекти и партньори</p>
@@ -90,7 +90,9 @@
 	}
 	.top {
 		display: grid;
-		grid-template-columns: 1.4fr 0.65fr 1fr 1.15fr;
+		/* колоните са широки колкото съдържанието си, разстоянията между тях – еднакви */
+		grid-template-columns: repeat(4, auto);
+		justify-content: space-between;
 		gap: 40px;
 		padding-bottom: 36px;
 	}
@@ -103,17 +105,6 @@
 	}
 	.brand {
 		gap: 22px;
-	}
-	.motto {
-		font-family: var(--serif);
-		font-size: 30px;
-		line-height: 1.15;
-		color: var(--sea);
-		margin: 0;
-		white-space: nowrap;
-	}
-	.motto em {
-		color: var(--coral);
 	}
 	.contact {
 		display: flex;
@@ -128,7 +119,11 @@
 	}
 	.lii {
 		display: inline-flex;
+		flex-shrink: 0;
 		color: #0a66c2;
+	}
+	.lii.school {
+		color: var(--sea);
 	}
 	.lii :global(svg) {
 		width: 22px;
@@ -218,21 +213,26 @@
 		font-size: 13px;
 		color: var(--ink-soft);
 	}
-	@media (max-width: 960px) {
+	/* Контактите – на цял ред, отдолу трите колони с връзки */
+	@media (max-width: 1100px) {
 		.top {
-			grid-template-columns: 1fr 1fr;
-			gap: 36px 32px;
+			grid-template-columns: repeat(3, auto);
+			gap: 36px 40px;
 		}
 		.brand {
 			grid-column: 1 / -1;
 		}
 	}
+	@media (max-width: 760px) {
+		.top {
+			grid-template-columns: 1fr 1fr;
+			justify-content: stretch;
+			gap: 36px 32px;
+		}
+	}
 	@media (max-width: 560px) {
 		.top {
 			grid-template-columns: 1fr;
-		}
-		.motto {
-			font-size: 28px;
 		}
 		.top a,
 		.mv {

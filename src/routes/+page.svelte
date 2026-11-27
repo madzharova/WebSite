@@ -2,7 +2,6 @@
 	import { base } from '$app/paths';
 	import { reveal } from '$lib/actions/reveal.js';
 	import { resources } from '$lib/content.js';
-	import ResourceCard from '$lib/components/ResourceCard.svelte';
 	import { subjectPages, bridge } from '$lib/data/subjects.js';
 
 	const doors = Object.values(subjectPages).map((S) => ({
@@ -11,34 +10,6 @@
 	}));
 	const shared = resources.filter((r) => r.subject === 'bel-fr');
 	let hover = $state(null);
-
-	const latest = resources.slice(0, 3);
-
-
-
-	const paths = [
-		{
-			n: '01',
-			href: `${base}/praktiki/`,
-			title: 'Практики',
-			text: 'Как работя в час: проблем → решение → резултат. Кратки и честни истории от класната стая.',
-			cta: 'Вижте практиките'
-		},
-		{
-			n: '02',
-			href: `${base}/portfolio/`,
-			title: 'Портфолио',
-			text: 'Професионалното ми портфолио, подредено по 25-те критерия на атестационната карта – с доказателства към всеки.',
-			cta: 'Отворете портфолиото'
-		},
-		{
-			n: '03',
-			href: `${base}/resursi/`,
-			title: 'Всички ресурси',
-			text: 'Цялата библиотека на едно място – с филтри по предмет, вид и клас.',
-			cta: 'Към библиотеката'
-		}
-	];
 
 </script>
 
@@ -53,21 +24,16 @@
 		<div class="hero-text">
 			<p class="eyebrow" use:reveal>Учител · БЕЛ и френски език · Пловдив</p>
 			<h1 use:reveal={{ delay: 80 }}>Интерактивни уроци и&nbsp;ресурси <em>за&nbsp;учители</em></h1>
-			<p class="motto" use:reveal={{ delay: 160 }}>
-				<span lang="bg">Уча се, като живея.</span>
-				<span lang="fr">J’apprends en vivant.</span>
-			</p>
 			<p class="lead" use:reveal={{ delay: 220 }}>
-				Създавам безплатни игри, упражнения и уроци по български език, литература и френски език. Тук е и професионалното ми портфолио.
+				Безплатни игри, упражнения и уроци по български език, литература и френски език – готови за използване в час.
 			</p>
 			<div class="ctas" use:reveal={{ delay: 300 }}>
-				<a class="btn" href="#predmeti">Ресурси <span class="arrow">↓</span></a>
+				<a class="btn" href="#predmeti">Ресурси</a>
 				<a class="btn btn--ghost" href="{base}/portfolio/">Портфолио</a>
 			</div>
 		</div>
 
 		<div class="hero-visual" use:reveal={{ delay: 200 }}>
-			<div class="frame" aria-hidden="true"></div>
 			<img
 				class="photo"
 				src="{base}/img/margarita-900.webp"
@@ -77,12 +43,6 @@
 				width="900"
 				height="1125"
 			/>
-			{#if resources[0]}
-				<a class="float-card" href="{base}/resursi/{resources[0].slug}/">
-					<span class="fc-k">Ново</span>
-					<span class="fc-t">{resources[0].title}</span>
-				</a>
-			{/if}
 		</div>
 	</div>
 </section>
@@ -129,69 +89,13 @@
 	</div>
 </section>
 
-<!-- ───── Нови ресурси ───── -->
-<section class="section section--paper" id="novi" aria-labelledby="novi-h">
-	<div class="wrap">
-		<div class="head">
-			<div>
-				<p class="eyebrow" use:reveal>Библиотека</p>
-				<h2 id="novi-h" use:reveal={{ delay: 60 }}>Нови ресурси</h2>
-			</div>
-			<a href="{base}/resursi/" class="more" use:reveal>Всички ресурси <span>→</span></a>
-		</div>
-		<div class="cards">
-			{#each latest as r, i}
-				<div use:reveal={{ delay: i * 90 }}><ResourceCard {r} /></div>
-			{/each}
-		</div>
-	</div>
-</section>
-
-<!-- ───── Три пътя (разгъващи се редове) ───── -->
-<section class="section" aria-labelledby="paths-h">
-	<div class="wrap">
-		<p class="eyebrow" use:reveal>Какво ще намерите</p>
-		<h2 id="paths-h" class="visually-hidden">Раздели на сайта</h2>
-		<ol class="paths">
-			{#each paths as p, i}
-				<li use:reveal={{ delay: i * 80 }}>
-					<a href={p.href}>
-						<span class="pn">{p.n}</span>
-						<span class="pt">{p.title}</span>
-						<span class="pa" aria-hidden="true">→</span>
-					</a>
-					<div class="pbody">
-						<div>
-							<p>{p.text}</p>
-							<a href={p.href} class="plink">{p.cta}</a>
-						</div>
-					</div>
-				</li>
-			{/each}
-		</ol>
-	</div>
-</section>
-
-
-<!-- ───── Философия ───── -->
-<section class="section quote-sec">
-	<div class="wrap narrow">
-		<p class="eyebrow" use:reveal>Педагогическа философия</p>
-		<blockquote use:reveal={{ delay: 80 }}>
-			Образованието трябва да отговаря на нуждите на учениците. Малките стъпки, последователността и дисциплината подобряват резултатите.
-		</blockquote>
-		<a href="{base}/portfolio/filosofia/" class="more" use:reveal={{ delay: 140 }}>Прочетете повече <span>→</span></a>
-	</div>
-</section>
-
 <style>
 	/* Hero */
 	.hero {
 		position: relative;
-		min-height: min(100svh, 920px);
 		display: flex;
 		align-items: center;
-		padding: 140px 0 90px;
+		padding: 140px 0 40px;
 		overflow: hidden;
 		background:
 			radial-gradient(50% 60% at 85% 20%, rgb(228 238 244 / 0.9), transparent 70%),
@@ -213,19 +117,8 @@
 		color: var(--ink);
 		font-weight: 500;
 	}
-	.motto {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0 0.6em;
-		margin: 22px 0 20px;
-		font-family: var(--serif);
-		font-style: italic;
-		font-size: 24px;
-		line-height: 1.3;
-		color: var(--coral);
-	}
-	.motto span[lang='fr'] {
-		color: var(--ink-soft);
+	.hero-text .lead {
+		margin-top: 26px;
 	}
 	.ctas {
 		display: flex;
@@ -247,56 +140,16 @@
 		height: 100%;
 		object-fit: cover;
 		object-position: 50% 30%;
-		border-radius: 200px 200px var(--radius-lg) var(--radius-lg);
+		border-radius: var(--radius-lg);
 		background-color: var(--paper);
-	}
-	.frame {
-		position: absolute;
-		inset: 0;
-		translate: 18px 18px;
-		border: 1px solid var(--sea);
-		border-radius: 200px 200px var(--radius-lg) var(--radius-lg);
-		opacity: 0.5;
-		transition: translate 0.8s var(--ease);
-	}
-	.hero-visual:hover .frame {
-		translate: 10px 10px;
-	}
-	.float-card {
-		position: absolute;
-		left: -48px;
-		bottom: 36px;
-		display: flex;
-		flex-direction: column;
-		gap: 2px;
-		max-width: 240px;
-		padding: 14px 18px;
-		border-radius: 14px;
-		background: rgb(250 248 245 / 0.78);
-		backdrop-filter: blur(14px);
-		-webkit-backdrop-filter: blur(14px);
-		border: 1px solid rgb(227 221 208 / 0.9);
-		box-shadow: var(--shadow-float);
-		text-decoration: none;
-		color: var(--ink);
-	}
-	.fc-k {
-		font-size: 10.5px;
-		letter-spacing: 0.22em;
-		text-transform: uppercase;
-		color: var(--coral);
-		font-weight: 600;
-	}
-	.fc-t {
-		font-family: var(--serif);
-		font-size: 19px;
-		font-weight: 600;
-		color: var(--sea);
-		line-height: 1.2;
+		box-shadow: var(--shadow-soft);
 	}
 
 
 	/* Двете врати */
+	.doors-sec {
+		padding-top: clamp(32px, 4vw, 56px);
+	}
 	.doors-sec h2 {
 		margin: 12px 0 40px;
 	}
@@ -466,103 +319,6 @@
 		}
 	}
 
-	/* Лента */
-
-	/* Заглавни редове на секции */
-	.head {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: flex-end;
-		justify-content: space-between;
-		gap: 16px;
-		margin-bottom: 40px;
-	}
-	.head h2 {
-		margin-top: 12px;
-	}
-	.more {
-		display: inline-flex;
-		gap: 8px;
-		font-weight: 500;
-		text-decoration: none;
-	}
-	.more span {
-		transition: transform 0.4s var(--ease);
-	}
-	.more:hover span {
-		transform: translateX(4px);
-	}
-	.cards {
-		display: grid;
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-		gap: 24px;
-	}
-
-	/* Разгъващи се пътеки */
-	.paths {
-		list-style: none;
-		margin: 28px 0 0;
-		padding: 0;
-		border-top: 1px solid var(--line-strong);
-	}
-	.paths li {
-		border-bottom: 1px solid var(--line-strong);
-	}
-	.paths li > a {
-		display: grid;
-		grid-template-columns: 64px 1fr auto;
-		align-items: baseline;
-		gap: 16px;
-		padding: 26px 0;
-		text-decoration: none;
-	}
-	.pn {
-		font-size: 13px;
-		letter-spacing: 0.12em;
-		color: var(--ink-soft);
-	}
-	.pt {
-		font-family: var(--serif);
-		font-size: clamp(38px, 6vw, 72px);
-		line-height: 1;
-		color: var(--sea);
-		transition: transform 0.6s var(--ease), color 0.3s;
-	}
-	.pa {
-		font-size: 28px;
-		color: var(--sea);
-		opacity: 0.4;
-		transition: transform 0.5s var(--ease), opacity 0.3s;
-	}
-	.pbody > div {
-		padding-left: 80px;
-	}
-	.pbody p {
-		max-width: 56ch;
-		color: var(--ink);
-		margin-bottom: 10px;
-	}
-	.plink {
-		display: inline-block;
-		margin-bottom: 28px;
-		font-weight: 500;
-	}
-
-	/* Числа */
-
-	/* Цитат */
-	.narrow {
-		max-width: 860px;
-	}
-	blockquote {
-		margin: 24px 0 28px;
-		font-family: var(--serif);
-		font-size: clamp(30px, 4vw, 46px);
-		line-height: 1.22;
-		color: var(--ink);
-	}
-
-
 	@media (max-width: 900px) {
 		.hero-grid {
 			grid-template-columns: 1fr;
@@ -570,23 +326,6 @@
 		.hero-visual {
 			width: min(300px, 70vw);
 			margin-top: 20px;
-		}
-		.float-card {
-			left: -20px;
-		}
-		.cards {
-			grid-template-columns: 1fr;
-		}
-		.pbody > div {
-			padding-left: 0;
-		}
-		.paths li > a {
-			grid-template-columns: 40px 1fr auto;
-		}
-	}
-	@media (min-width: 901px) and (max-width: 1100px) {
-		.cards {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
 	}
 </style>

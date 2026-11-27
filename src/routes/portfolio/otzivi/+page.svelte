@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import { testimonials } from '$lib/content.js';
 	import { reveal } from '$lib/actions/reveal.js';
 	import PageHeader from '$lib/components/PageHeader.svelte';
@@ -6,8 +7,8 @@
 </script>
 
 <svelte:head><title>Отзиви · Портфолио</title></svelte:head>
-<PageHeader
-	eyebrow="Портфолио · Комуникативна функция"
+<PageHeader back={{ href: `${base}/portfolio/`, label: 'Портфолио' }}
+	eyebrow="Комуникативна функция"
 	title="Отзиви"
 	lead="Свидетелства на родители и ученици (Наредба № 15, чл. 84, ал. 1, т. 2). Имената са скрити."
 />

@@ -1,5 +1,6 @@
 <script>
-	import { pages, criterionHref } from '$lib/content.js';
+	import { base } from '$app/paths';
+	import { pages, criterionHref, visibleCriteria } from '$lib/content.js';
 	import { byId } from '$lib/data/criteria.js';
 	import { reveal } from '$lib/actions/reveal.js';
 	import PageHeader from '$lib/components/PageHeader.svelte';
@@ -9,7 +10,7 @@
 </script>
 
 <svelte:head><title>Цели за развитие · Портфолио</title></svelte:head>
-<PageHeader eyebrow="Портфолио · Развиваща функция" title={p.title} lead={p.lead} />
+<PageHeader back={{ href: `${base}/portfolio/`, label: 'Портфолио' }} eyebrow="Развиваща функция" title={p.title} lead={p.lead} />
 
 <section class="section">
 	<div class="wrap">
@@ -27,7 +28,7 @@
 						<div class="crit">
 							{#each g.criteria as id}
 								{@const c = byId[id]}
-								{#if c}<a class="chip" href={criterionHref(c)}>{c.section}.{c.num}</a>{/if}
+								{#if c && visibleCriteria.some((v) => v.id === c.id)}<a class="chip" href={criterionHref(c)}>{c.section}.{c.num}</a>{:else if c}<span class="chip">{c.section}.{c.num}</span>{/if}
 							{/each}
 						</div>
 					</div>

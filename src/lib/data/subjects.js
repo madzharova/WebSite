@@ -10,16 +10,30 @@ export const subjectPages = {
 		href: `${base}/balgarski/`,
 		name: 'Български',
 		full: 'Български език и литература',
-		tagline: 'Граматика, правопис, литература и писане – с игри, упражнения и интерактивни уроци.',
+		tagline: 'Езикови норми, литература и създаване на текст – уроци, упражнения и игри.',
 		lang: 'bg',
 		accent: 'var(--sea)',
 		mark: 'Аа',
+		// Темите – по учебната програма. На материала се пише най-конкретното:
+		// topic: [punktuacia] → сайтът сам го показва и под „Български език“.
 		topics: [
-			{ id: 'gramatika', label: 'Граматика' },
-			{ id: 'pravopis', label: 'Правопис и пунктуация' },
+			{
+				id: 'ezik',
+				label: 'Български език',
+				sub: [
+					{ id: 'pravopis', label: 'Правописна норма' },
+					{ id: 'gramatika', label: 'Граматична норма' },
+					{ id: 'punktuacia', label: 'Пунктуационна норма' },
+					{ id: 'leksika', label: 'Лексикална норма' }
+				]
+			},
 			{ id: 'literatura', label: 'Литература' },
-			{ id: 'pisane', label: 'Писане и развитие на речта' },
-			{ id: 'izpiti', label: 'НВО и ДЗИ' }
+			{ id: 'tekst', label: 'Създаване на текст' }
+		],
+		// Подготовка за изпит – отделен знак, който може да има материал от всяка тема: izpit: [nvo]
+		exams: [
+			{ id: 'nvo', label: 'НВО' },
+			{ id: 'dzi', label: 'ДЗИ' }
 		],
 		levels: ['8', '9', '10', '11', '12'],
 		levelLabel: (l) => `${l} клас`,
@@ -35,7 +49,7 @@ export const subjectPages = {
 		href: `${base}/francais/`,
 		name: 'Français',
 		full: 'Френски език',
-		tagline: 'Grammaire, vocabulaire, civilisation et Francophonie – уроци и игри за втори чужд език.',
+		tagline: 'Grammaire, vocabulaire et civilisation – уроци, упражнения и игри.',
 		lang: 'fr',
 		accent: 'var(--coral)',
 		mark: 'Fr',
@@ -44,7 +58,7 @@ export const subjectPages = {
 			{ id: 'vocabulaire', label: 'Vocabulaire' },
 			{ id: 'comprehension', label: 'Compréhension' },
 			{ id: 'expression', label: 'Expression écrite et orale' },
-			{ id: 'civilisation', label: 'Civilisation et Francophonie' }
+			{ id: 'civilisation', label: 'Civilisation' }
 		],
 		levels: ['A1', 'A2', 'B1', 'B2'],
 		levelLabel: (l) => `ниво ${l}`,
@@ -61,6 +75,15 @@ export const subjectPages = {
 	}
 };
 
+// Вид материал – основният филтър в страниците на предметите.
+// Полето `type` в описанието на материала определя вида му.
+export const kinds = [
+	{ id: 'prezentacii', label: 'Презентации', types: ['презентация'] },
+	{ id: 'uprazhnenia', label: 'Упражнения', types: ['упражнение', 'тест'] },
+	{ id: 'uroci', label: 'Уроци', types: ['урок'] },
+	{ id: 'igri', label: 'Игри', types: ['игра'] }
+];
+
 // Бинарните уроци – общото между двата предмета (subject: bel-fr)
 export const bridge = {
 	key: 'bel-fr',
@@ -70,8 +93,13 @@ export const bridge = {
 
 export const topicLabel = (id) => {
 	for (const s of Object.values(subjectPages)) {
-		const t = s.topics.find((x) => x.id === id);
-		if (t) return t.label;
+		for (const t of s.topics) {
+			if (t.id === id) return t.label;
+			const st = t.sub?.find((x) => x.id === id);
+			if (st) return st.label;
+		}
 	}
 	return id;
 };
+
+export const examLabel = (id) => ({ nvo: 'НВО', dzi: 'ДЗИ' })[id] ?? id.toUpperCase();

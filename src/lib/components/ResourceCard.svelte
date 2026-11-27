@@ -1,7 +1,7 @@
 <script>
 	import { base } from '$app/paths';
 	import { subjects } from '$lib/content.js';
-	import { topicLabel } from '$lib/data/subjects.js';
+	import { topicLabel, examLabel } from '$lib/data/subjects.js';
 	let { r } = $props();
 	const fmt = (d) => (d ? new Date(d).toLocaleDateString('bg-BG', { month: 'long', year: 'numeric' }) : '');
 </script>
@@ -20,6 +20,7 @@
 	<div class="foot">
 		<span class="date">{fmt(r.date)}</span>
 		<span class="flags">
+			{#each [].concat(r.izpit ?? []) as e}<span class="chip">{examLabel(e)}</span>{/each}
 			{#if r.interactive}<span class="chip">интерактивно</span>{/if}
 			{#if r.files?.length}<span class="chip" title="Материали за сваляне">за печат</span>{/if}
 		</span>
