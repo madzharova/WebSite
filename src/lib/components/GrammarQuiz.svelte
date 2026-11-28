@@ -5,7 +5,7 @@
 	//   <GrammarQuiz {quiz} />
 	// Формат на задачите: виж „Указания-интерактивни-тестове.md“, т. 4.
 	// Клавиши (след клик в теста или на цял екран): 1–4 / А–Г, Space/Enter, ← →, R, F, ?
-	let { quiz, theme = 'peach' } = $props();
+	let { quiz, theme = 'peach', bare = false } = $props(); // bare – вграден в урок (LessonSlides)
 
 	const L = ['А', 'Б', 'В', 'Г'];
 	const KEY = { 1: 0, 2: 1, 3: 2, 4: 3, а: 0, б: 1, в: 2, г: 3, a: 0, b: 1, v: 2, w: 2, g: 3 };
@@ -70,12 +70,12 @@
 <svelte:window onkeydown={onkey} onpointerdown={ondown} />
 <svelte:document onfullscreenchange={() => (full = document.fullscreenElement === root)} />
 
-<div class="quiz {theme}" class:active class:full bind:this={root} role="region" aria-label={quiz.name}>
+<div class="quiz {theme}" class:active class:full class:bare bind:this={root} role="region" aria-label={quiz.name}>
 	<header>
 		<p class="title">{quiz.name}</p>
 		<span class="kbd-state" title="Клавишите работят, когато тестът е избран">{active || full ? 'клавишите са включени' : 'кликнете в теста за клавишите'}</span>
 		<button class="tab" onclick={() => (help = true)} aria-label="Клавиши">Клавиши ?</button>
-		<button class="tab" onclick={fs}>{full ? 'Изход от цял екран' : 'Цял екран'}</button>
+		{#if !bare}<button class="tab" onclick={fs}>{full ? 'Изход от цял екран' : 'Цял екран'}</button>{/if}
 	</header>
 
 	<main>
@@ -200,6 +200,8 @@
 	.quiz.green { --c: #cfe3d4; --l: #e7f1ea; --d: #34604a; }
 	.quiz.blue { --c: #cde0ee; --l: #e6f0f7; --d: #2a5878; }
 	.quiz.active { box-shadow: 0 0 0 4px var(--l); }
+	.quiz.bare { --fs: inherit; height: 100%; min-height: 0; margin: 0; border: 0; border-radius: 0; }
+	.quiz.bare.active { box-shadow: none; }
 	.quiz.full {
 		--fs: clamp(18px, 1.5vw, 30px);
 		height: 100vh;

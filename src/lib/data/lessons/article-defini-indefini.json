@@ -1,0 +1,225 @@
+{
+ "name": "L'article défini et indéfini",
+ "stages": [
+  {
+   "fr": "Mise en route",
+   "bg": "Въведение",
+   "slides": [
+    {
+     "kick": "Leçon · A1",
+     "h": "L'article défini et indéfini",
+     "sub": "Определителен и неопределителен член",
+     "big": "Dans mon sac, il y a <b>un</b> livre.<br><b>Le</b> livre est rouge.",
+     "ask": "Защо първо казваме <b>un</b> livre, а после <b>le</b> livre?",
+     "answer": "Първо споменаваме книгата – тя е нова, „някаква“ → <b>un</b>. После вече знаем за коя книга става дума → <b>le</b>."
+    },
+    {
+     "h": "Objectifs",
+     "sub": "Днес ще се научим",
+     "html": "<ul><li>да различаваме <b>un · une · des</b> и <b>le · la · l' · les</b>;</li><li>да сравняваме члена във френски, български и английски;</li><li>да използваме правилния член в изречение.</li></ul>"
+    }
+   ]
+  },
+  {
+   "fr": "Comparons",
+   "bg": "Български · English · Français",
+   "slides": [
+    {
+     "h": "Една дума – три езика",
+     "table": {
+      "head": [
+       "Български",
+       "English",
+       "Français"
+      ],
+      "rows": [
+       [
+        "книга",
+        "<b>a</b> book",
+        "<b>un</b> livre"
+       ],
+       [
+        "книга<b>та</b>",
+        "<b>the</b> book",
+        "<b>le</b> livre"
+       ],
+       [
+        "ябълка",
+        "<b>an</b> apple",
+        "<b>une</b> pomme"
+       ],
+       [
+        "ябълка<b>та</b>",
+        "<b>the</b> apple",
+        "<b>la</b> pomme"
+       ],
+       [
+        "книги",
+        "books",
+        "<b>des</b> livres"
+       ],
+       [
+        "книги<b>те</b>",
+        "<b>the</b> books",
+        "<b>les</b> livres"
+       ]
+      ]
+     },
+     "ask": "Къде стои членът във всеки от трите езика?",
+     "answer": "В български членът е <b>накрая</b> на думата: книга<b>та</b>. В английски и френски е <b>пред</b> думата: <b>the</b> book, <b>le</b> livre."
+    },
+    {
+     "h": "Какво забелязваме?",
+     "html": "<ul><li><b>Неопределителен член:</b> в български няма (понякога казваме „един, една“), в английски – <b>a / an</b>, във френски – <b>un / une / des</b>.</li><li>Английският член не се променя: <b>the</b> book, <b>the</b> apple. Френският се променя по <b>род</b> и <b>число</b>: <b>le</b> livre, <b>la</b> pomme, <b>les</b> livres.</li><li>В мн.ч. казваме „книги“, <i>books</i> – без член. Във френски <b>des</b> е задължително: <b>des</b> livres.</li><li><b>l'</b> пред гласна напомня английското <b>an</b>: <i>an apple</i> – <b>l'</b>école, <b>l'</b>ami.</li></ul>"
+    },
+    {
+     "h": "Attention au genre !",
+     "table": {
+      "head": [
+       "Български",
+       "Français"
+      ],
+      "rows": [
+       [
+        "книга <small>ж.р.</small>",
+        "<b>le</b> livre <small>m.</small>"
+       ],
+       [
+        "слънце <small>ср.р.</small>",
+        "<b>le</b> soleil <small>m.</small>"
+       ],
+       [
+        "море <small>ср.р.</small>",
+        "<b>la</b> mer <small>f.</small>"
+       ],
+       [
+        "стол <small>м.р.</small>",
+        "<b>la</b> chaise <small>f.</small>"
+       ]
+      ]
+     },
+     "note": "Във френски няма среден род, а родът често е различен от българския. Учете всяка дума заедно с члена: <b>une</b> chaise, <b>la</b> chaise."
+    },
+    {
+     "h": "Обичам музика · <i>I like music</i>",
+     "table": {
+      "head": [
+       "Български",
+       "English",
+       "Français"
+      ],
+      "rows": [
+       [
+        "Обичам музика.",
+        "I like music.",
+        "J'aime <b>la</b> musique."
+       ],
+       [
+        "Не обичам кафе.",
+        "I don't like coffee.",
+        "Je n'aime pas <b>le</b> café."
+       ]
+      ]
+     },
+     "ask": "Каква е разликата между трите езика?",
+     "answer": "В български и английски тук няма член. След <b>aimer, adorer, préférer, détester</b> френският използва <b>le, la, l', les</b> – говорим за нещо изобщо."
+    }
+   ]
+  },
+  {
+   "fr": "La règle",
+   "bg": "Новото",
+   "slides": [
+    {
+     "h": "L'article indéfini",
+     "sub": "<b>un · une · des</b> = нещо ново, неуточнено, „някакво“",
+     "table": {
+      "head": [
+       "masculin · м.р.",
+       "féminin · ж.р.",
+       "pluriel · мн.ч."
+      ],
+      "rows": [
+       [
+        "<b>un</b>",
+        "<b>une</b>",
+        "<b>des</b>"
+       ],
+       [
+        "un livre",
+        "une pomme",
+        "des amis"
+       ]
+      ]
+     },
+     "note": "⚠️ <b>des</b> не се изпуска: <i>Това са ученици.</i> = Ce sont <b>des</b> élèves."
+    },
+    {
+     "h": "L'article défini",
+     "sub": "<b>le · la · l' · les</b> = нещо известно, уточнено – като българския член: книга<b>та</b>",
+     "table": {
+      "head": [
+       "masculin · м.р.",
+       "féminin · ж.р.",
+       "pluriel · мн.ч."
+      ],
+      "rows": [
+       [
+        "<b>le</b> · <b>l'</b>",
+        "<b>la</b> · <b>l'</b>",
+        "<b>les</b>"
+       ],
+       [
+        "le livre · l'ami",
+        "la pomme · l'école",
+        "les amis"
+       ]
+      ]
+     },
+     "note": "Пред гласна или нямо h <b>le</b> и <b>la</b> стават <b>l'</b>: l'école, l'hôtel."
+    },
+    {
+     "h": "Un ou le ?",
+     "sub": "Кога кой член",
+     "html": "<ul><li>Споменаваме за първи път → <b>un / une / des</b>: J'ai <b>un</b> chien.</li><li>Вече знаем за кое става дума → <b>le / la / les</b>: <b>Le</b> chien s'appelle Oscar.</li><li>Нещо единствено по рода си → <b>le / la</b>: <b>le</b> soleil, <b>la</b> lune.</li><li>След <b>aimer, adorer, préférer, détester</b> → <b>le / la / les</b>: J'adore <b>les</b> animaux.</li></ul>"
+    },
+    {
+     "h": "À retenir",
+     "big": "un livre → le livre<br>une pomme → la pomme<br>un ami → l'ami<br>des amis → les amis"
+    }
+   ]
+  },
+  {
+   "fr": "Exerçons-nous",
+   "bg": "Упражнение",
+   "quiz": true
+  },
+  {
+   "fr": "Réflexion",
+   "bg": "Рефлексия",
+   "slides": [
+    {
+     "h": "Ticket de sortie",
+     "sub": "Преведете на френски",
+     "html": "<ol><li>Имам котка. Котката е бяла.</li><li>Обичам шоколад.</li><li>Това са приятели.</li></ol>",
+     "answer": "<ol><li>J'ai <b>un</b> chat. <b>Le</b> chat est blanc.</li><li>J'aime <b>le</b> chocolat.</li><li>Ce sont <b>des</b> amis.</li></ol>"
+    },
+    {
+     "h": "Qu'est-ce que j'ai appris ?",
+     "html": "<ul class='n321'><li><b>3</b> неща, които научих днес</li><li><b>2</b> разлики между члена във френски, български и английски</li><li><b>1</b> въпрос, който още имам</li></ul>"
+    },
+    {
+     "h": "Je peux…",
+     "sub": "Мога ли вече?",
+     "html": "<ul class='check'><li>да избера <b>un, une</b> или <b>des</b></li><li>да избера <b>le, la, l'</b> или <b>les</b></li><li>да обясня кога френският използва член, а българският и английският – не</li></ul>"
+    },
+    {
+     "h": "Devoirs · Mon sac d'école",
+     "sub": "Напишете 5 изречения за предметите в раницата си",
+     "big": "Dans mon sac, il y a <b>un</b> stylo.<br><b>Le</b> stylo est bleu.",
+     "note": "Използвайте поне веднъж <b>un, une, des, le, la, l'</b> и <b>les</b>."
+    }
+   ]
+  }
+ ]
+}
