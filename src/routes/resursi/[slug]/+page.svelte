@@ -183,12 +183,8 @@
 	.hcover {
 		width: 100%;
 		border-radius: var(--radius-lg);
-		box-shadow: var(--shadow-float);
-		transform: rotate(2deg);
-		transition: transform 0.6s var(--ease);
-	}
-	.hcover:hover {
-		transform: rotate(0) scale(1.02);
+		border: 1px solid var(--line);
+		box-shadow: var(--shadow-soft);
 	}
 	@media (max-width: 860px) {
 		.hgrid {
