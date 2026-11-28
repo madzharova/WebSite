@@ -8,9 +8,8 @@ date: 2026-10-27
 cover: /files/buditeli/plakat.webp
 link: https://sites.google.com/view/buditeli-2026
 linkLabel: Примерен сайт на играта
-interactive: true
 files:
-  - label: Плакат и 15 следи за печат (PDF, A4, 16 стр.)
+  - label: Изтегли за печат – плакат и 15 следи (PDF, A4, 16 стр.)
     href: /files/buditeli/misia-buditeli-universalna.pdf
 criteria: [I-1.3, I-2.3, I-2.2, I-4.2, II-2.2]
 evidence: [dinamika]
@@ -33,8 +32,8 @@ evidence: [dinamika]
 
 <div class="gallery">
 <figure><a href="/files/buditeli/plakat.webp"><img src="/files/buditeli/plakat.webp" alt="Главният плакат на играта" loading="lazy" /></a><figcaption>Главен плакат</figcaption></figure>
-<figure><a href="/files/buditeli/sleda-1.webp"><img src="/files/buditeli/sleda-1.webp" alt="Следа 1 от 15 – въпрос и QR код" loading="lazy" /></a><figcaption>Следа 1 – разпечатва се</figcaption></figure>
-<figure><a href="/files/buditeli/sleda-8.webp"><img src="/files/buditeli/sleda-8.webp" alt="Следа 8 от 15 – въпрос и QR код" loading="lazy" /></a><figcaption>Следа 8 – разпечатва се</figcaption></figure>
+<figure><a href="/files/buditeli/sleda-1.webp"><img src="/files/buditeli/sleda-1.webp" alt="Следа 1 от 15 – въпрос и QR код" loading="lazy" /></a><figcaption>Следа 1 · <a href="/files/buditeli/misia-buditeli-universalna.pdf" download>↓ PDF за печат</a></figcaption></figure>
+<figure><a href="/files/buditeli/sleda-8.webp"><img src="/files/buditeli/sleda-8.webp" alt="Следа 8 от 15 – въпрос и QR код" loading="lazy" /></a><figcaption>Следа 8 · <a href="/files/buditeli/misia-buditeli-universalna.pdf" download>↓ PDF за печат</a></figcaption></figure>
 <figure><a href="/files/buditeli/buditel-paisii.webp"><img src="/files/buditeli/buditel-paisii.webp" alt="Страница за Паисий Хилендарски, която се отваря от QR кода" loading="lazy" /></a><figcaption>QR кодът отваря: Паисий</figcaption></figure>
 <figure><a href="/files/buditeli/buditel-beron.webp"><img src="/files/buditeli/buditel-beron.webp" alt="Страница за Петър Берон" loading="lazy" /></a><figcaption>Петър Берон</figcaption></figure>
 <figure><a href="/files/buditeli/buditel-raina.webp"><img src="/files/buditeli/buditel-raina.webp" alt="Страница за Райна Княгиня" loading="lazy" /></a><figcaption>Райна Княгиня</figcaption></figure>
@@ -59,7 +58,7 @@ evidence: [dinamika]
 
 ### Подготовка
 
-1. Разпечатайте плаката и 15-те следи (PDF по-горе).
+1. Разпечатайте плаката и 15-те следи: [↓ изтеглете PDF файла](/files/buditeli/misia-buditeli-universalna.pdf) (A4, 16 страници).
 2. Поставете главния плакат на входа, а следите – на различни места из училището: коридори, библиотека, кабинети, стълбища.
 3. Обявете играта в класовете и в групите на учениците.
 4. След края на играта проверете отговорите във формуляра и наградете най-бързите и точните откриватели.

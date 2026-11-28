@@ -106,8 +106,9 @@
 				</ul>
 			{/if}
 			<div class="actions" use:reveal={{ delay: 180 }}>
-				{#if r.link}<a class="btn" href={r.link} rel="noopener">{r.linkLabel ?? "Отвори ресурса"} <span class="arrow">↗</span></a>{/if}
-				{#each r.files ?? [] as f}<a class="btn btn--ghost" href={f.href} download>↓ {f.label}</a>{/each}
+				<!-- Файлът за изтегляне е основното действие, ако има такъв -->
+				{#each r.files ?? [] as f}<a class="btn" href={f.href} download>↓ {f.label}</a>{/each}
+				{#if r.link}<a class="btn" class:btn--ghost={r.files?.length} href={r.link} rel="noopener">{r.linkLabel ?? "Отвори ресурса"} <span class="arrow">↗</span></a>{/if}
 				{#if r.drive}<a class="btn btn--ghost" href={r.drive} rel="noopener">Споделено с колегите</a>{/if}
 			</div>
 			</div>
