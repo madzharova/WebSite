@@ -10,13 +10,6 @@ cover: /img/resursi/article-defini-indefini.png
 link: https://padlet.com/margaritamadzarova/l-article-defini-et-indefini-s125vqemcwxv4b1fux8z
 linkLabel: Отвори в Padlet
 padlet: true
-wide: true
 criteria: [I-1.3, I-2.2, I-2.3]
 evidence: [dinamika]
 ---
-
-<script>
-	import GameFrame from '$lib/components/GameFrame.svelte';
-</script>
-
-<GameFrame src="https://padlet.com/embed/s125vqemcwxv4b1fux8z" title="L'article défini et indéfini – Padlet" />

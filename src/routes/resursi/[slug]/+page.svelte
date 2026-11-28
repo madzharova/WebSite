@@ -12,12 +12,14 @@
 
 	// „Копирай връзката“ – за изпращане на учениците
 	let copied = $state(false);
+	// Padlet урок – учениците получават адреса на таблото; иначе – на тази страница
+	const linkToShare = () => (r.padlet && r.link ? r.link : location.href.split('#')[0]);
 	async function copyLink() {
 		try {
-			await navigator.clipboard.writeText(location.href.split('#')[0]);
+			await navigator.clipboard.writeText(linkToShare());
 		} catch {
 			const t = document.createElement('textarea');
-			t.value = location.href.split('#')[0];
+			t.value = linkToShare();
 			document.body.append(t);
 			t.select();
 			document.execCommand('copy');
@@ -79,14 +81,14 @@
 						<svg class="ui" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18M4 4v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4M12 16v4M9 20h6M8 12l3-3 2 2 3-3" /></svg>
 						<div>
 							<b>На проектор или интерактивна дъска</b>
-							<span>Таблото е отдолу на тази страница. Натиснете „Цял екран“ и минете по колоните отляво надясно – правило, примери, упражнения.</span>
+							<span>Натиснете „Отвори в Padlet“, после бутона за слайдшоу (▶) – бележките се показват една по една на цял екран. Колоните са подредени по реда на урока: откриване, правило, примери, упражнения.</span>
 						</div>
 					</li>
 					<li>
 						<svg class="ui" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 9a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1zM18 8V5a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h9M16 9h2" /></svg>
 						<div>
-							<b>На телефона на всеки ученик</b>
-							<span>Изпратете им връзката. Таблото се отваря без регистрация; учениците могат да коментират и да отговарят под упражненията.</span>
+							<b>С учениците</b>
+							<span>„Копирай връзката за учениците“ копира адреса на таблото – изпратете го или покажете QR кода от Padlet (Споделяне → QR код). Отваря се без регистрация; учениците гласуват и отговарят, а вие одобрявате отговорите. Може да си направите и свое копие на урока (Remake).</span>
 						</div>
 					</li>
 				</ul>
@@ -144,6 +146,8 @@
 		</div>
 	</header>
 
+	<!-- Урок в Padlet няма съдържание на страницата – учителят го отваря в Padlet -->
+	{#if dev || !r.padlet}
 	<div class="wrap body" class:wide={r.wide} class:solo={!dev}>
 		<div class="prose">
 			<r.component />
@@ -172,6 +176,7 @@
 		</aside>
 		{/if}
 	</div>
+	{/if}
 </article>
 
 {#if related.length}
