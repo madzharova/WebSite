@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Le Défi du français – être + verbes en -er</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800&family=Nunito:wght@400;600;800&display=swap">
+<style>
+:root{
+  --navy:#14213D; --cream:#F5F8FA; --blue:#2A6F97; --red:#A95A61; --gold:#F2B134;
+  --green:#1F8A5B; --soft:#4A5568; --card:#FFFFFF; --line:#D6E2EA;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--cream);color:var(--navy);font-family:'Nunito',Arial,sans-serif;min-height:100%}
+body{display:flex;justify-content:center}
+.app{width:100%;max-width:520px;min-height:100vh;padding:18px 16px 28px;display:flex;flex-direction:column}
+h1,h2,h3{font-family:'Rubik',Arial,sans-serif;margin:0}
+.flagbar{display:flex;height:8px;border-radius:4px;overflow:hidden;margin-bottom:18px}
+.flagbar i{flex:1}.flagbar i:nth-child(1){background:var(--blue)}.flagbar i:nth-child(2){background:#fff}.flagbar i:nth-child(3){background:var(--red)}
+.screen{display:none;flex-direction:column;gap:14px;flex:1}
+.screen.on{display:flex}
+.hero{text-align:center;padding:10px 0 4px}
+.hero h1{font-size:34px;line-height:1.05;font-weight:800}
+.hero h1 span{color:var(--red)}
+.hero p{color:var(--soft);margin:8px 0 0;font-size:16px}
+label{font-weight:800;font-size:15px}
+input[type=text]{width:100%;font:inherit;font-size:20px;padding:14px 16px;border:2px solid var(--line);border-radius:14px;background:#fff;color:var(--navy)}
+input[type=text]:focus{outline:none;border-color:var(--blue)}
+.choice{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pill{border:2px solid var(--line);background:#fff;border-radius:16px;padding:14px 10px;text-align:center;font:inherit;color:var(--navy);cursor:pointer}
+.pill b{display:block;font-family:'Rubik';font-size:18px}
+.pill small{color:var(--soft);font-size:13px}
+.pill.sel{border-color:var(--blue);background:#EAF0FC;box-shadow:0 0 0 2px var(--blue) inset}
+.toggle{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid var(--line);border-radius:14px;padding:12px 14px;font-size:15px}
+.toggle input{width:22px;height:22px;accent-color:var(--blue)}
+.btn{font:inherit;font-family:'Rubik';font-weight:700;font-size:20px;border:0;border-radius:16px;padding:16px;cursor:pointer;color:#fff;background:var(--blue);box-shadow:0 4px 0 #1F5574}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #1F5574}
+.btn.red{background:var(--red);box-shadow:0 4px 0 #8F4A51}
+.btn.gold{background:var(--gold);color:var(--navy);box-shadow:0 4px 0 #B07D14}
+.btn.ghost{background:transparent;color:var(--blue);box-shadow:none;border:2px solid var(--blue)}
+.btn[disabled]{opacity:.45}
+.modes{display:grid;gap:12px}
+.mode{display:flex;gap:14px;align-items:center;text-align:left;padding:18px}
+.mode .ic{font-size:34px}
+.mode b{font-size:20px}
+.mode small{display:block;font-family:'Nunito';font-weight:600;font-size:14px;opacity:.9}
+.top{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:15px}
+.badge{background:#fff;border:2px solid var(--line);border-radius:999px;padding:6px 12px}
+.timer{font-family:'Rubik';font-size:22px}
+.timer.low{color:var(--red)}
+.progress{height:10px;background:#DCE6EE;border-radius:6px;overflow:hidden}
+.progress div{height:100%;background:var(--gold);width:0;transition:width .3s}
+.qcard{background:#fff;border-radius:20px;padding:20px 18px;box-shadow:0 2px 0 var(--line);border:2px solid var(--line);text-align:center}
+.qtype{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--red)}
+.qflag{font-size:54px;line-height:1.1;margin:6px 0}
+.qtext{font-family:'Rubik';font-weight:700;font-size:24px;line-height:1.3;white-space:pre-line}
+.qhint{color:var(--soft);font-size:15px;margin-top:6px}
+.speak{margin:10px auto 0;font-size:18px;padding:12px 18px}
+.answers{display:grid;gap:10px}
+.ans{font:inherit;font-size:20px;font-weight:800;padding:15px 14px;border-radius:14px;border:2px solid var(--line);background:#fff;color:var(--navy);cursor:pointer;text-align:center}
+.ans.ok{background:var(--green);border-color:var(--green);color:#fff}
+.ans.no{background:var(--red);border-color:var(--red);color:#fff}
+.ans[disabled]{cursor:default}
+.ans{position:relative}
+.ans .key{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:26px;height:26px;border-radius:8px;background:#E4EEF4;color:var(--soft);font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.ans.ok .key,.ans.no .key{background:rgba(255,255,255,.25);color:#fff}
+.keyhint{text-align:center;font-size:13px;color:var(--soft)}
+.feedback{border-radius:16px;padding:14px 16px;font-size:16px;line-height:1.4;display:none}
+.feedback.show{display:block}
+.feedback.good{background:#E3F4EC;border:2px solid var(--green)}
+.feedback.bad{background:#F7E9EA;border:2px solid var(--red)}
+.feedback b{font-family:'Rubik'}
+.flash{position:fixed;inset:0;pointer-events:none;opacity:0;transition:opacity .25s}
+.flash.g{background:rgba(31,138,91,.25);opacity:1}
+.flash.r{background:rgba(217,72,43,.25);opacity:1}
+.combo{text-align:center;font-family:'Rubik';font-weight:800;color:var(--red);height:22px}
+.result{text-align:center;background:#fff;border:2px solid var(--line);border-radius:22px;padding:22px 16px}
+.result .name{font-size:18px;color:var(--soft);font-weight:800}
+.result .big{font-family:'Rubik';font-size:72px;font-weight:800;color:var(--blue);line-height:1}
+.result .stars{font-size:38px;margin:6px 0}
+.result p{margin:6px 0;font-size:17px}
+.review{background:#fff;border:2px solid var(--line);border-radius:16px;padding:12px 14px}
+.review h3{font-size:17px;margin-bottom:6px}
+.review li{margin:6px 0;font-size:15px}
+.review ul{padding-left:18px;margin:0}
+.small{font-size:13px;color:var(--soft);text-align:center}
+.spacer{flex:1}
+
+/* ===== Адаптивност: телефон · лаптоп · проектор ===== */
+.app{min-height:100vh;min-height:100svh}
+@media (hover:none){.keyhint{display:none}}
+/* Телефон с нисък екран – по-компактно, за да се виждат отговорите без превъртане */
+@media (max-width:759px) and (max-height:760px){
+  .app{padding:12px 12px 18px}
+  .flagbar{margin-bottom:10px}
+  .screen{gap:10px}
+  .qcard{padding:14px 12px}
+  .qflag{font-size:40px}
+  .qtext{font-size:20px}
+  .ans{font-size:18px;padding:12px 12px 12px 44px}
+  .hero h1{font-size:28px}
+}
+/* Лаптоп, дъска, проектор – по-широко, двуколонно, шрифтът расте с височината на екрана */
+@media (min-width:760px){
+  .app{max-width:min(1280px,96vw);padding:clamp(12px,2.2vh,28px) clamp(16px,3vw,44px)}
+  .flagbar{height:clamp(8px,1vh,12px);margin-bottom:clamp(10px,2vh,22px)}
+  #s-start,#s-menu,#s-result{width:100%;max-width:clamp(560px,52vw,760px);margin:0 auto}
+  .screen{gap:clamp(10px,1.8vh,20px)}
+  .hero h1{font-size:clamp(34px,6.5vh,72px)}
+  .hero p{font-size:clamp(16px,2.4vh,26px)}
+  label,.toggle{font-size:clamp(15px,2.1vh,22px)}
+  input[type=text]{font-size:clamp(18px,2.8vh,30px);padding:clamp(12px,1.8vh,20px) 18px}
+  .btn{font-size:clamp(18px,2.8vh,30px);padding:clamp(12px,2vh,22px)}
+  .mode .ic{font-size:clamp(30px,5vh,54px)}
+  .mode b{font-size:clamp(20px,3vh,34px)}
+  .mode small{font-size:clamp(14px,1.9vh,20px)}
+
+  #s-quiz.on{
+    display:grid;min-height:0;
+    grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
+    grid-template-rows:auto auto auto 1fr auto auto;
+    grid-template-areas:"top top" "prog prog" "card combo" "card ans" "fb next" "hint hint";
+    column-gap:clamp(18px,3vw,48px);row-gap:clamp(8px,1.6vh,18px);
+  }
+  #s-quiz .top{grid-area:top;font-size:clamp(15px,2.2vh,24px)}
+  #s-quiz .progress{grid-area:prog;height:clamp(10px,1.3vh,16px)}
+  #s-quiz .qcard{grid-area:card;display:flex;flex-direction:column;justify-content:center;padding:clamp(16px,3vh,40px) clamp(16px,2vw,32px)}
+  #s-quiz .combo{grid-area:combo;font-size:clamp(16px,2.4vh,26px);height:auto;min-height:1.3em}
+  #s-quiz .answers{grid-area:ans;align-content:center;gap:clamp(8px,1.6vh,18px)}
+  #s-quiz .feedback{grid-area:fb;font-size:clamp(15px,2.3vh,26px)}
+  #s-quiz #q-next{grid-area:next;align-self:end}
+  #s-quiz .keyhint{grid-area:hint;margin:0;font-size:clamp(12px,1.7vh,18px)}
+  .badge{padding:clamp(5px,.8vh,10px) clamp(10px,1.2vw,18px)}
+  .timer{font-size:clamp(22px,3.6vh,44px)}
+  .qtype{font-size:clamp(13px,1.9vh,22px)}
+  .qflag{font-size:clamp(52px,11vh,130px)}
+  .qtext{font-size:clamp(24px,4.6vh,56px)}
+  .qhint{font-size:clamp(15px,2.2vh,24px)}
+  .speak{font-size:clamp(18px,2.6vh,28px)}
+  .ans{font-size:clamp(18px,3.2vh,36px);padding:clamp(12px,2.1vh,26px) clamp(14px,1.5vw,24px) clamp(12px,2.1vh,26px) clamp(48px,4vw,64px)}
+  .ans .key{width:clamp(26px,3.4vh,40px);height:clamp(26px,3.4vh,40px);font-size:clamp(14px,2vh,22px);left:clamp(12px,1.2vw,18px)}
+
+  .result{padding:clamp(18px,3vh,36px)}
+  .result .name{font-size:clamp(18px,2.4vh,26px)}
+  .result .big{font-size:clamp(64px,12vh,140px)}
+  .result .stars{font-size:clamp(34px,5.5vh,64px)}
+  .result p{font-size:clamp(17px,2.4vh,26px)}
+  .review h3{font-size:clamp(17px,2.3vh,24px)}
+  .review li{font-size:clamp(15px,2vh,22px)}
+  .small{font-size:clamp(13px,1.7vh,18px)}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="flagbar"><i></i><i></i><i></i></div>
+
+  <!-- START -->
+  <section class="screen on" id="s-start">
+    <div class="hero">
+      <h1>Le Défi<br><span>du français</span></h1>
+      <p>Френски език · 9. и 11. клас</p>
+    </div>
+    <label for="nom">Ton nom ou ton équipe <span style="font-weight:600;color:var(--soft)">(Име или отбор – по избор)</span></label>
+    <input type="text" id="nom" maxlength="20" placeholder="ex. Maria · Équipe 1" autocomplete="off">
+    <label>Choisis la leçon (Избери урок)</label>
+    <div class="choice">
+      <button class="pill sel" data-lesson="1"><b>9e · Leçon 1</b><small>Pays et nationalités</small></button>
+      <button class="pill" data-lesson="5"><b>Le verbe être</b><small>je suis, tu es…</small></button>
+      <button class="pill" data-lesson="2"><b>9e · Leçon 2</b><small>être + verbes en -er</small></button>
+      <button class="pill" data-lesson="3"><b>11e · Magasin</b><small>Au magasin de chaussures</small></button>
+      <button class="pill" data-lesson="4"><b>11e · Comparer</b><small>plus, moins, aussi, le plus…</small></button>
+    </div>
+    <label class="toggle"><input type="checkbox" id="sound"> 🎧 Questions d’écoute (само ако имаш слушалки)</label>
+    <div class="spacer"></div>
+    <button class="btn" id="go">C’est parti ! ➜</button>
+  </section>
+
+  <!-- MENU -->
+  <section class="screen" id="s-menu">
+    <div class="hero"><h1 id="menu-title">Bonjour !</h1><p id="menu-sub"></p></div>
+    <div class="modes">
+      <button class="btn mode" id="m-train"><span class="ic">📘</span><span><b>1. Entraînement</b><small>12 въпроса с обяснения – без бързане</small></span></button>
+      <button class="btn red mode" id="m-chrono"><span class="ic">⏱️</span><span><b>2. Défi chrono</b><small>90 секунди – колкото повече, толкова по-добре!</small></span></button>
+    </div>
+    <div class="spacer"></div>
+    <button class="btn ghost" id="back">← Changer de leçon</button>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="screen" id="s-quiz">
+    <div class="top">
+      <span class="badge" id="q-count">1 / 12</span>
+      <span class="timer" id="q-timer"></span>
+      <span class="badge">⭐ <span id="q-score">0</span></span>
+    </div>
+    <div class="progress"><div id="q-prog"></div></div>
+    <div class="qcard">
+      <div class="qtype" id="q-type"></div>
+      <div class="qflag" id="q-flag"></div>
+      <div class="qtext" id="q-text"></div>
+      <div class="qhint" id="q-hint"></div>
+      <button class="btn gold speak" id="q-speak" style="display:none">🔊 Écoute</button>
+    </div>
+    <div class="combo" id="q-combo"></div>
+    <div class="answers" id="q-answers"></div>
+    <div class="feedback" id="q-feedback"></div>
+    <p class="keyhint">⌨️ Клавиши: 1–4 за отговор · Enter за „Suivant“</p>
+    <button class="btn" id="q-next" style="display:none">Suivant ➜</button>
+  </section>
+
+  <!-- RESULT -->
+  <section class="screen" id="s-result">
+    <div class="result">
+      <div class="name" id="r-name"></div>
+      <div class="stars" id="r-stars"></div>
+      <div class="big" id="r-score">0</div>
+      <p id="r-line"></p>
+      <p><b id="r-msg"></b></p>
+    </div>
+    <p class="small">📱 Montre ton écran au professeur ! (Покажи екрана на учителя!)</p>
+    <div class="review" id="r-review"></div>
+    <div class="spacer"></div>
+    <button class="btn red" id="r-chrono">⏱️ Défi chrono</button>
+    <button class="btn ghost" id="r-menu">↺ Menu</button>
+  </section>
+</div>
+<div class="flash" id="flash"></div>
+
+<script>
+/* ---------- данни ---------- */
+const COUNTRIES = [
+  {id:'bg',c:'la Bulgarie',fl:'🇧🇬',m:'bulgare',f:'bulgare',g:'e'},
+  {id:'fr',c:'la France',fl:'🇫🇷',m:'français',f:'française',g:'plus'},
+  {id:'be',c:'la Belgique',fl:'🇧🇪',m:'belge',f:'belge',g:'e'},
+  {id:'ch',c:'la Suisse',fl:'🇨🇭',m:'suisse',f:'suisse',g:'e'},
+  {id:'en',c:'l’Angleterre',fl:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',m:'anglais',f:'anglaise',g:'plus'},
+  {id:'de',c:'l’Allemagne',fl:'🇩🇪',m:'allemand',f:'allemande',g:'plus'},
+  {id:'it',c:'l’Italie',fl:'🇮🇹',m:'italien',f:'italienne',g:'ien'},
+  {id:'es',c:'l’Espagne',fl:'🇪🇸',m:'espagnol',f:'espagnole',g:'plus'},
+  {id:'ru',c:'la Russie',fl:'🇷🇺',m:'russe',f:'russe',g:'e'},
+  {id:'cn',c:'la Chine',fl:'🇨🇳',m:'chinois',f:'chinoise',g:'plus'},
+  {id:'ca',c:'le Canada',fl:'🇨🇦',m:'canadien',f:'canadienne',g:'ien'},
+  {id:'us',c:'les États-Unis',fl:'🇺🇸',m:'américain',f:'américaine',g:'plus'}
+];
+const C = Object.fromEntries(COUNTRIES.map(x=>[x.id,x]));
+const STARS = [
+  ['Grigor Dimitrov','m','bg'],['Kylian Mbappé','m','fr'],['Céline Dion','f','ca'],
+  ['Rafael Nadal','m','es'],['Roger Federer','m','ch'],['Jackie Chan','m','cn'],
+  ['Taylor Swift','f','us'],['Ed Sheeran','m','en'],['Andrea Bocelli','m','it'],
+  ['Heidi Klum','f','de'],['Stromae','m','be'],['Maria Sharapova','f','ru'],
+  ['Juliette Binoche','f','fr'],['Penélope Cruz','f','es'],['Adele','f','en'],['Monica Bellucci','f','it']
+];
+const GIRLS=['Marie','Anna','Sophie','Elena','Laura','Nina'], BOYS=['Paul','Marc','Léo','Ivan','Hugo','Tom'];
+
+function rule(co){
+  if(co.g==='e') return `Завършва на <b>-e</b> → еднакво за м. и ж. род: <b>${co.m}</b> / <b>${co.f}</b>.`;
+  if(co.g==='ien') return `<b>-ien → -ienne</b>: ${co.m} → <b>${co.f}</b>.`;
+  return `Ж. род = м. род <b>+ e</b>: ${co.m} → <b>${co.f}</b>.`;
+}
+
+/* спрежения */
+const PRON=['je','tu','il','elle','nous','vous','ils','elles'];
+const VERBS={
+  etre:{inf:'être',forms:{je:'suis',tu:'es',il:'est',elle:'est',nous:'sommes',vous:'êtes',ils:'sont',elles:'sont'},
+        rule:'<b>être</b>: je suis, tu es, il/elle est, nous sommes, vous êtes, ils/elles sont.'},
+  habiter:{inf:'habiter',forms:{je:'habite',tu:'habites',il:'habite',elle:'habite',nous:'habitons',vous:'habitez',ils:'habitent',elles:'habitent'},
+        rule:'Глаголи на <b>-er</b>: -e, -es, -e, -ons, -ez, -ent. <i>J’habite</i> – „je“ губи „e“ пред гласна/h.'},
+  parler:{inf:'parler',forms:{je:'parle',tu:'parles',il:'parle',elle:'parle',nous:'parlons',vous:'parlez',ils:'parlent',elles:'parlent'},
+        rule:'Глаголи на <b>-er</b>: -e, -es, -e, -ons, -ez, -ent.'},
+  appeler:{inf:'s’appeler',forms:{je:'m’appelle',tu:'t’appelles',il:'s’appelle',elle:'s’appelle',nous:'nous appelons',vous:'vous appelez',ils:'s’appellent',elles:'s’appellent'},
+        rule:'<b>s’appeler</b>: je m’appelle, tu t’appelles, il/elle s’appelle, nous nous appelons, vous vous appelez, ils/elles s’appellent. Двойно <b>ll</b>, когато окончанието не се чува.'}
+};
+const CITIES=['Sofia','Plovdiv','Varna','Paris','Lyon','Marseille','Rome','Berlin','Madrid','Genève','Toulouse','Bourgas'];
+const LANGS=['français','anglais','bulgare','italien','espagnol','allemand','chinois','russe'];
+const NAMES_SG=['Irène','Simon','Henri','Diane','Maria','Nikolaï','Elena','Paul'];
+const NAMES_PL=['Dutour','Boiron','Roncard','Ivanov','Martin','Petrov'];
+
+const TRANSL=[
+ ['Аз съм българин.','Je suis bulgare.',['Je es bulgare.','Tu es bulgare.','Je sommes bulgare.'],'je → <b>suis</b>; bulgare е еднакво в м. и ж. род.'],
+ ['Тя е французойка.','Elle est française.',['Elle est français.','Il est française.','Elle es française.'],'elle → <b>est</b>; ж. род: français + e → <b>française</b>.'],
+ ['Ние живеем в София.','Nous habitons à Sofia.',['Nous habitez à Sofia.','Nous habitent à Sofia.','Vous habitons à Sofia.'],'nous → окончание <b>-ons</b>.'],
+ ['Вие говорите английски.','Vous parlez anglais.',['Vous parlons anglais.','Vous parles anglais.','Tu parlez anglais.'],'vous → окончание <b>-ez</b>.'],
+ ['Казвам се Мария.','Je m’appelle Maria.',['Je appelle Maria.','Je s’appelle Maria.','Je m’appelles Maria.'],'<b>je m’appelle</b> – с „m’“ и без „s“ накрая.'],
+ ['Те са италианци.','Ils sont italiens.',['Ils sont italiennes.','Elles sont italiens.','Ils sommes italiens.'],'ils → <b>sont</b>; мн. число м. род: italien + s.'],
+ ['Ти живееш в Пловдив.','Tu habites à Plovdiv.',['Tu habite à Plovdiv.','Tu habitez à Plovdiv.','Tu habitent à Plovdiv.'],'tu → окончание <b>-es</b> (не се чува, но се пише!).'],
+ ['Тя говори италиански.','Elle parle italien.',['Elle parles italien.','Elle parlent italien.','Elle parle italienne.'],'elle → <b>-e</b>; езикът е като м. род: <b>italien</b>.'],
+ ['Те (жени) са швейцарки.','Elles sont suisses.',['Elles sont suisse.','Ils sont suisses.','Elles est suisses.'],'elles → <b>sont</b>; мн. число + s: <b>suisses</b>.'],
+ ['Ти си канадка?','Tu es canadienne ?',['Tu es canadien ?','Tu est canadienne ?','Tu êtes canadienne ?'],'tu → <b>es</b>; ж. род: -ien → <b>-ienne</b>.'],
+ ['Как се казвате? – Казваме се Дютур.','Nous nous appelons Dutour.',['Nous nous appelez Dutour.','Nous appelons Dutour.','Nous s’appellent Dutour.'],'<b>nous nous appelons</b> – две „nous“, едно „l“.'],
+ ['Аз говоря български и френски.','Je parle bulgare et français.',['Je parles bulgare et français.','Je parlons bulgare et français.','Je parle bulgares et français.'],'je → окончание <b>-e</b>.']
+];
+
+/* ---------- помощни ---------- */
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function opts(correct,pool,n=4){const s=[correct];for(const p of shuffle(pool)){if(s.length>=n)break;if(!s.includes(p))s.push(p)}return shuffle(s)}
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+function plural(w){return /s$/.test(w)?w:w+'s'}
+const canSpeak = 'speechSynthesis' in window;
+function say(text){
+  if(!canSpeak) return;
+  try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='fr-FR';u.rate=.85;
+    const v=speechSynthesis.getVoices().find(v=>/^fr/i.test(v.lang));if(v)u.voice=v;speechSynthesis.speak(u);}catch(e){}
+}
+if(canSpeak){try{speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices()}catch(e){}}
+
+/* ---------- генератори: урок 1 ---------- */
+const L1 = {
+  masc(){const co=rnd(COUNTRIES);const pool=COUNTRIES.filter(x=>x!==co).map(x=>x.m);if(co.f!==co.m)pool.push(co.f);
+    return {type:'Pays → nationalité',flag:co.fl,text:`${cap(co.c)}\nIl est…`,a:co.m,o:opts(co.m,pool),ex:`${co.c} → il est <b>${co.m}</b>.`}},
+  fem(){const co=rnd(COUNTRIES);const pool=COUNTRIES.filter(x=>x!==co).map(x=>x.f);if(co.f!==co.m)pool.push(co.m,co.m);
+    return {type:'Pays → nationalité',flag:co.fl,text:`${cap(co.c)}\nElle est…`,a:co.f,o:opts(co.f,pool),ex:rule(co)}},
+  agree(){const co=rnd(COUNTRIES.filter(x=>x.g!=='e'));const girl=Math.random()<.5;const nm=girl?rnd(GIRLS):rnd(BOYS);
+    const a=girl?co.f:co.m, b=girl?co.m:co.f;const other=rnd(COUNTRIES.filter(x=>x!==co&&x.g!=='e'));
+    return {type:'Il ou elle ?',flag:co.fl,text:`${nm} est…`,hint:`(${co.c})`,a,o:shuffle([a,b,other.m,other.f]),
+      ex:`${nm} е ${girl?'момиче → <b>elle</b>':'момче → <b>il</b>'}. ${girl?rule(co):`М. род: <b>${co.m}</b>.`}`}},
+  star(){const [n,g,id]=rnd(STARS);const co=C[id];const a=g==='f'?co.f:co.m;
+    const pool=COUNTRIES.filter(x=>x!==co).map(x=>g==='f'?x.f:x.m);if(co.f!==co.m)pool.unshift(g==='f'?co.m:co.f);
+    const o=opts(a,co.f!==co.m?[pool[0],...shuffle(pool.slice(1)).slice(0,2)]:pool);
+    return {type:'Qui est-ce ?',flag:'⭐',text:`${n}\n${g==='f'?'Elle':'Il'} est…`,a,o,
+      ex:`${n} → ${co.fl} ${co.c} → ${g==='f'?'elle':'il'} est <b>${a}</b>.`}},
+  dialog(){const co=rnd(COUNTRIES.filter(x=>x.g!=='e'));const asked=rnd(COUNTRIES.filter(x=>x!==co&&x.g!=='e'));
+    const mme=Math.random()<.5;const a=mme?co.f:co.m;const b=mme?co.m:co.f;
+    const other=rnd(COUNTRIES.filter(x=>x!==co&&x!==asked&&x.g!=='e'));
+    return {type:'À l’hôtel',flag:co.fl,text:`– Bonjour, ${mme?'madame':'monsieur'} !\nVous êtes ${mme?asked.f:asked.m} ?\n– Non, je suis…`,
+      a,o:shuffle([a,b,mme?other.f:other.m,mme?asked.f:asked.m]),
+      ex:`${mme?'<b>madame</b> → ж. род':'<b>monsieur</b> → м. род'}; знамето е ${co.c} → <b>${a}</b>.`}},
+  listen(){const okL=COUNTRIES.filter(x=>x.g!=='e'&&x.id!=='es');const co=rnd(okL);const fem=Math.random()<.5;const a=fem?co.f:co.m;
+    const other=rnd(okL.filter(x=>x!==co));
+    return {type:'Écoute !',flag:'🎧',text:'Какво чуваш?',a,o:shuffle([co.m,co.f,other.m,other.f]),speak:a,
+      ex:`Чу се <b>${a}</b>. ${fem?'В ж. род се чува последната съгласна.':'В м. род последната съгласна не се чува.'}`}}
+};
+/* ---------- генератори: урок 2 ---------- */
+function complement(v,p){
+  if(v==='habiter') return 'à '+rnd(CITIES);
+  if(v==='parler') return rnd(LANGS);
+  if(v==='appeler') return ['ils','elles','nous','vous'].includes(p)?rnd(NAMES_PL):rnd(NAMES_SG);
+  // être + националност (съгласувана)
+  const inv=COUNTRIES.filter(x=>x.g==='e');
+  if(p==='je'||p==='tu') return rnd(inv).m;
+  if(p==='nous'||p==='vous') return plural(rnd(inv).m);
+  const co=rnd(COUNTRIES);
+  if(p==='il') return co.m; if(p==='elle') return co.f;
+  if(p==='ils') return plural(co.m); return plural(co.f);
+}
+function subj(p,form){ if(p==='je' && /^[aeiouhé]/i.test(form)) return 'J’'; return cap(p)+' '; }
+const L2 = {
+  conj(){const v=rnd(['etre','etre','habiter','parler','appeler']);const p=rnd(PRON);const V=VERBS[v];const a=V.forms[p];
+    const pool=[...new Set(Object.values(V.forms))];
+    const s=subj(p,a);const gap=s.endsWith('’')?'___':' ___';
+    return {type:`Verbe ${V.inf}`,flag:'✏️',text:`${s.trim()}${gap} ${complement(v,p)}.`,hint:`(${V.inf})`,a,o:opts(a,pool),ex:V.rule}},
+  pron(){const v=rnd(['etre','habiter','parler']);const cand=v==='etre'?['je','tu','nous','vous']:['tu','nous','vous'];
+    const p=rnd(cand);const form=VERBS[v].forms[p];const a=cap(p);
+    const o=shuffle([a,...shuffle(['Je','Tu','Nous','Vous','Ils'].filter(x=>x!==a&&!(v!=='etre'&&x==='Je'))).slice(0,3)]);
+    return {type:'Quel pronom ?',flag:'👤',text:`___ ${form} ${complement(v,p)}.`,a,o,ex:`<b>${form}</b> върви само с <b>${p}</b>. ${VERBS[v].rule}`}},
+  dice(){const map={1:'je',2:'tu',3:'il',4:'nous',5:'vous',6:'ils'};const n=1+Math.floor(Math.random()*6);const p=map[n];
+    const v=rnd(['habiter','parler','etre','appeler']);const V=VERBS[v];
+    const full=x=>(x==='je'&&/^[aeiouhé]/i.test(V.forms[x])?'j’':x+' ')+V.forms[x];
+    const a=full(p);const pool=['je','tu','il','nous','vous','ils'].filter(x=>x!==p).map(full);
+    return {type:'Le dé 🎲',flag:['','⚀','⚁','⚂','⚃','⚄','⚅'][n],text:`${n} = ${p}\n+ ${V.inf}`,hint:'1 je · 2 tu · 3 il · 4 nous · 5 vous · 6 ils',a,o:opts(a,pool),ex:V.rule}},
+  transl(){const [bg,a,w,ex]=rnd(TRANSL);return {type:'Traduis !',flag:'🇧🇬 → 🇫🇷',text:bg,a,o:shuffle([a,...w]),ex}},
+  listen(){const v=rnd(['etre','habiter','parler']);const ps=['je','tu','il','nous','vous','elles'];const V=VERBS[v];
+    const full=x=>(x==='je'&&/^[aeiouhé]/i.test(V.forms[x])?'j’':x+' ')+V.forms[x];
+    const p=rnd(ps);const a=full(p);const o=opts(a,ps.filter(x=>x!==p).map(full));
+    return {type:'Écoute !',flag:'🎧',text:'Какво чуваш?',a,o,speak:a.replace('’',"'"),ex:`Чу се <b>${a}</b>. ${V.rule}`}}
+};
+
+
+/* ---------- 11 клас: банки ---------- */
+function fromBank(type,flag,item){const [text,a,w,ex,hint]=item;return {type,flag,text,hint:hint||'',a,o:shuffle([a,...w]),ex}}
+const SHOES=[['👠','les escarpins',['les baskets','les bottes','les sandales'],'<b>les escarpins</b> – елегантни обувки с ток.'],
+ ['👟','les baskets',['les escarpins','les bottes','les ballerines'],'<b>les baskets</b> – маратонки.'],
+ ['👢','les bottes',['les sandales','les baskets','les escarpins'],'<b>les bottes</b> – ботуши.'],
+ ['👡','les sandales',['les bottes','les escarpins','les baskets'],'<b>les sandales</b> – сандали.'],
+ ['🥿','les ballerines',['les bottes','les baskets','les sandales'],'<b>les ballerines</b> – обувки без ток (балеринки).'],
+ ['👞','les chaussures de ville',['les baskets','les sandales','les bottes'],'<b>les chaussures de ville</b> – официални обувки (кожени).']];
+const DEFS=[['La taille des chaussures, c’est…','la pointure',['la teinte','le talon','le modèle'],'<b>la pointure</b> – номер на обувката: « Je chausse du 38. »'],
+ ['Une couleur, c’est aussi…','une teinte',['une pointure','un talon','un bout'],'<b>une teinte</b> = une couleur (« en trois teintes »).'],
+ ['« C’est très cher » = …','Le prix est élevé.',['Le prix est bas.','C’est en solde.','C’est gratuit.'],'<b>un prix élevé</b> = висока цена.'],
+ ['« Je me sens bien dans ces chaussures » = …','Je suis à l’aise.',['Je suis pressée.','J’ai mal aux pieds.','Je suis en retard.'],'<b>être à l’aise</b> – чувствам се удобно.'],
+ ['« Je veux » = …','J’ai envie de…',['J’ai besoin de…','J’ai peur de…','J’ai mal à…'],'<b>avoir envie de</b> – искам, имам желание.'],
+ ['« Je préfère » = …','Ma préférence irait à…',['Je déteste…','Je ne sais pas…','Je cherche…'],'<b>ma préférence irait à</b> = je préfère (учтиво).'],
+ ['« Porter avec » = …','Mettre avec',['Acheter avec','Payer avec','Changer avec'],'<b>mettre avec</b> – нося с (комбинирам с).'],
+ ['« Changer de style » = …','Changer de look',['Changer de pied','Changer de caisse','Changer de prix'],'<b>changer de look</b> – сменям визията си.'],
+ ['La partie haute sous la chaussure, c’est…','le talon',['le bout','la pointure','la semelle'],'<b>le talon</b> – токът (haut / bas).'],
+ ['« Pointu » ou « rond », c’est…','le bout',['le talon','le prix','la teinte'],'<b>le bout</b> – върхът на обувката: à bout rond / pointu.']];
+const VF=[['La cliente cherche une paire d’escarpins.','Vrai',['Faux'],'Тя търси <b>escarpins</b> за специален повод.'],
+ ['La cliente chausse du 38.','Vrai',['Faux'],'« Je chausse du 38. »'],
+ ['Les chaussures à bouts ronds sont à la mode.','Faux',['Vrai'],'Продавачката казва, че вече <b>не са</b> на мода.'],
+ ['La vendeuse montre deux modèles.','Faux',['Vrai'],'Тя показва <b>три</b> модела.'],
+ ['Le premier modèle est très fin et très pointu.','Vrai',['Faux'],'Първият модел е много тънък и остър.'],
+ ['Le deuxième modèle n’est pas cher.','Faux',['Vrai'],'Вторият е <b>скъп</b> – колекционен модел.'],
+ ['La cliente achète le premier modèle.','Faux',['Vrai'],'Тя купува <b>третия</b> модел.'],
+ ['Le troisième modèle a des talons très hauts.','Vrai',['Faux'],'Третият модел е с много висок ток и е елегантен.'],
+ ['La cliente n’est pas à l’aise dans les escarpins.','Faux',['Vrai'],'Тя е <b>много удобно</b>: « je suis très à l’aise ».'],
+ ['La vendeuse est très polie.','Vrai',['Faux'],'Тя е учтива: « Bonne journée ».']];
+const PHR=[['Продавачката предлага помощ.','Je peux vous aider ?',['Je chausse du 38.','Combien ça coûte ?','Je peux essayer ?'],'Продавачът: <b>Je peux vous aider ?</b>'],
+ ['Продавачката пита за номера.','Quelle est votre pointure ?',['Quelle est votre couleur ?','Quel âge avez-vous ?','Où est la caisse ?'],'<b>Quelle est votre pointure ?</b>'],
+ ['Казвате номера си: 39.','Je chausse du 39.',['Je porte le 39.','J’ai 39 ans.','Je suis 39.'],'<b>Je chausse du…</b> + номер.'],
+ ['Искате да пробвате обувките.','Je peux les essayer ?',['Je peux les payer ?','Je peux les laisser ?','Je peux les changer ?'],'<b>essayer</b> – пробвам.'],
+ ['Продавачката казва, че ви стоят добре.','Ça vous va très bien.',['Ça vous coûte très cher.','Vous avez raison.','Bonne journée.'],'<b>Ça vous va bien</b> – стои ви добре.'],
+ ['Питате за цената.','Combien coûtent ces chaussures ?',['Quelle est votre pointure ?','Où sont ces chaussures ?','Comment sont ces chaussures ?'],'<b>Combien coûte / coûtent… ?</b>'],
+ ['Продавачката ви изпраща към касата.','Je vous laisse passer en caisse.',['Je vous montre les nouveaux modèles.','Quelle est votre pointure ?','Je peux vous aider ?'],'<b>passer en caisse</b> – отивам на касата.'],
+ ['Не знаете още какво искате.','Je ne sais pas encore.',['Je chausse du 38.','C’est très bien.','Je le prends.'],'<b>Je ne sais pas encore.</b>'],
+ ['Решавате да купите обувките.','Je les prends !',['Je les essaie.','Je les cherche.','Je les laisse.'],'<b>Je les prends</b> – взимам ги.']];
+const COMP16=[['Ces chaussures ne sont pas pareilles. Elles sont…','différentes',['les mêmes','pareilles','identiques'],'≠ → <b>différent(e)s</b>.'],
+ ['J’ai ___ pull que toi ! (=)','le même',['la même','les mêmes','pareil'],'pull е м.р. → <b>le même</b>.'],
+ ['Tu as ___ robe que moi ! (=)','la même',['le même','les mêmes','pareille'],'robe е ж.р. → <b>la même</b>.'],
+ ['Cette robe ressemble ___ robes de ma grand-mère.','aux',['à les','des','que les'],'ressembler <b>à</b> + les = <b>aux</b>.'],
+ ['Ce pull rouge ressemble ___ pull de Janine.','au',['à le','du','que le'],'ressembler <b>à</b> + le = <b>au</b>.'],
+ ['Quelle jupe choisir ? Elles sont toutes…','pareilles',['différent','même','ressemblent'],'еднакви = <b>pareilles</b> (ж.р. мн.ч.).']];
+const L3={
+  vocab(){const [e,a,w,ex]=rnd(SHOES);return {type:'Les chaussures',flag:e,text:'C’est…',a,o:shuffle([a,...w]),ex}},
+  def(){return fromBank('Vocabulaire','📖',rnd(DEFS))},
+  vf(){return fromBank('Vrai ou faux ?','👠',rnd(VF))},
+  phrase(){return fromBank('Au magasin','🛍️',rnd(PHR))},
+  comp(){return fromBank('Comparer','⚖️',rnd(COMP16))}
+};
+/* сравнение */
+const CMP=[['Le TGV','rapide','>','la voiture',false],['La tour Eiffel','haute','<','le viaduc de Millau',false],['Le Vatican','grand','<','Monaco',false],
+ ['Cette robe','chère','=','ce jean',false],['Les pommes','fraîches','<','les autres fruits',true],['L’automne','triste','>','l’été',false],
+ ['Le costume noir','élégant','>','le costume rouge',false],['Nadine','sympathique','<','Claire',false],['La chambre de Marie','claire','=','la chambre de Sylvie',false],
+ ['Les baskets','confortables','>','les escarpins',true],['Les bottes','chères','>','les sandales',true],['Paul','grand','=','son frère',false],
+ ['Le pantalon bleu','long','<','le pantalon blanc',false],['Le climat en Allemagne','pluvieux','=','en Suisse',false]];
+const SUP=[['Le Nil est ___ du monde. (+ long)','le fleuve le plus long',['le fleuve plus long','le plus fleuve long','le fleuve la plus longue'],'<b>le/la/les + plus + прил.</b>: le fleuve <b>le plus long</b>.'],
+ ['L’Everest est ___ du monde. (+ haute)','la montagne la plus haute',['la montagne plus haute','la montagne le plus haute','la montagne la plus haut'],'Членът и прилагателното се съгласуват: <b>la</b> montagne <b>la plus haute</b>.'],
+ ['Le Vatican est ___ du monde. (− grand)','le pays le moins grand',['le pays moins grand','le moins pays grand','le pays la moins grande'],'<b>le moins</b> + прил. = най-малко.'],
+ ['Ce jean est ___ de tous les modèles. (− cher)','le moins cher',['moins cher','la moins chère','le plus cher'],'<b>le moins cher de</b> tous les modèles.'],
+ ['Ces chaussures sont ___ du magasin. (+ confortables)','les plus confortables',['plus confortables','la plus confortable','les moins confortables'],'мн.ч. → <b>les plus</b>.'],
+ ['Cette robe est ___ de la collection. (+ longue)','la plus longue',['le plus long','plus longue','la moins longue'],'ж.р. → <b>la plus longue</b>.'],
+ ['Le guépard est ___ du monde. (+ rapide)','l’animal le plus rapide',['l’animal plus rapide','le plus animal rapide','l’animal la plus rapide'],'l’animal (м.р.) → <b>le plus rapide</b>.'],
+ ['La Russie est ___ du monde. (+ grand)','le pays le plus grand',['le pays plus grand','la pays la plus grande','le plus pays grand'],'<b>le pays le plus grand</b> du monde.']];
+const IRR=[['Ce gâteau est ___ que l’autre. (+ bon)','meilleur',['plus bon','mieux','le meilleur'],'bon → <b>meilleur</b> (никога „plus bon“).'],
+ ['C’est ___ film de l’année ! (+ bon)','le meilleur',['le plus bon','meilleur','le mieux'],'bon → <b>le meilleur</b>.'],
+ ['Cette pizza est ___ que la tienne. (+ bonne)','meilleure',['plus bonne','meilleur','mieux'],'ж.р.: <b>meilleure</b>.'],
+ ['Ce sont ___ amies. (+ bonnes)','mes meilleures',['mes plus bonnes','mes meilleurs','mes mieux'],'ж.р. мн.ч.: <b>meilleures</b>.'],
+ ['Le mensonge est ___ que la vérité. (+ mauvais, морално)','pire',['plus pire','le pire','meilleur'],'mauvais (морално) → <b>pire</b>.'],
+ ['C’est ___ de tous les problèmes. (+ petit, абстрактно)','le moindre',['le plus moindre','moindre','le meilleur'],'petit (абстрактно) → <b>le moindre</b>.']];
+const EXPR=[['belle comme le jour','много красива',['много глупава','много дребна','много тъжна'],'<b>belle comme le jour</b> – прекрасна.'],
+ ['bête comme ses pieds','много глупав',['много красив','много висок','много щастлив'],'<b>bête comme ses pieds</b> – глупав като гъска.'],
+ ['haut comme trois pommes','много малък (дребосък)',['много висок','много силен','много скучен'],'<b>haut comme trois pommes</b> – „колкото педя“.'],
+ ['jolie comme un cœur','много сладка, хубава',['много тъжна','много глупава','много висока'],'<b>jolie comme un cœur</b>.'],
+ ['long comme un jour sans pain','безкрайно дълго (и скучно)',['много кратко','много красиво','много вкусно'],'<b>long comme un jour sans pain</b>.'],
+ ['triste comme un lendemain de fête','много тъжен',['много весел','много дълъг','много малък'],'<b>triste comme un lendemain de fête</b>.']];
+const PAREIL=[['Le cartable de Jaqueline est ___ cartable de Nadia. (=)','pareil au',['pareil que le','aussi que le','même au'],'<b>pareil à</b> + le = <b>pareil au</b>.'],
+ ['Les deux cartables ___ .','se ressemblent',['ressemblent','se ressemble','sont ressemblent'],'<b>Ils se ressemblent.</b>'],
+ ['La chambre de Marie est ___ claire ___ la chambre de Sylvie. (=)','aussi … que',['plus … que','autant … que','aussi … comme'],'равенство: <b>aussi + прил. + que</b>.'],
+ ['La chanson de Mélanie est ___ à la chanson d’Amélie. (=)','pareille',['pareil','même','aussi'],'chanson е ж.р. → <b>pareille</b>.']];
+function cmpQ(){const [s,adj,sym,o,pl]=rnd(CMP);const v=pl?'sont':'est';const q=/^[aeiouhé]/i.test(o)?'qu’':'que ';
+  const f=w=>`${w} ${adj} ${q}`.replace(' ’','’');
+  const a=f(sym==='>'?'plus':sym==='<'?'moins':'aussi');
+  const o4=[f('plus'),f('moins'),f('aussi'),`le plus ${adj} ${q}`];
+  return {type:'Comparez !',flag:sym==='>'?'➕':sym==='<'?'➖':'🟰',text:`${s} (${sym}) ${adj} – ${o}\n${s} ${v} ___ ${o}.`,a:a.trim(),o:shuffle(o4.map(x=>x.trim())),
+    ex:'<b>plus</b> (+), <b>aussi</b> (=), <b>moins</b> (−) + прилагателно + <b>que</b>.'}}
+const L4={
+  compar:cmpQ,
+  sup(){return fromBank('Superlatif','🏆',rnd(SUP))},
+  irr(){return fromBank('Attention !','⚠️',rnd(IRR))},
+  expr(){const q=fromBank('Expressions','💬',rnd(EXPR));q.text=`« ${q.text} » = ?`;return q},
+  pareil(){return fromBank('Ils sont pareils','👯',rnd(PAREIL))}
+};
+
+
+/* ---------- глагол être ---------- */
+const ETRE_TR=[
+ ['Аз съм българин.','Je suis bulgare.',['Je es bulgare.','Tu es bulgare.','Je sommes bulgare.'],'je → <b>suis</b>.'],
+ ['Тя е французойка.','Elle est française.',['Elle es française.','Il est française.','Elle sont française.'],'elle → <b>est</b>.'],
+ ['Те са италианци.','Ils sont italiens.',['Ils sommes italiens.','Ils est italiens.','Elles sont italiens.'],'ils → <b>sont</b>.'],
+ ['Ти си канадка?','Tu es canadienne ?',['Tu est canadienne ?','Tu êtes canadienne ?','Tu suis canadienne ?'],'tu → <b>es</b>.'],
+ ['Ние сме ученици.','Nous sommes élèves.',['Nous êtes élèves.','Nous sont élèves.','Vous sommes élèves.'],'nous → <b>sommes</b>.'],
+ ['Вие сте учител?','Vous êtes professeur ?',['Vous sommes professeur ?','Vous est professeur ?','Tu êtes professeur ?'],'vous → <b>êtes</b>; пред професия няма член.'],
+ ['Аз не съм французин.','Je ne suis pas français.',['Je suis ne pas français.','Je ne suis français pas.','Je pas suis français.'],'отрицание: <b>ne + глагол + pas</b>.'],
+ ['Той не е тук.','Il n’est pas ici.',['Il ne est pas ici.','Il n’est ici pas.','Il pas est ici.'],'ne → <b>n’</b> пред гласна: il <b>n’est pas</b>.'],
+ ['Това е Мари.','C’est Marie.',['Ce est Marie.','Il est Marie.','C’es Marie.'],'<b>c’est</b> = това е.'],
+ ['Те (жени) са швейцарки.','Elles sont suisses.',['Elles est suisses.','Ils sont suisses.','Elles sommes suisses.'],'elles → <b>sont</b>.']];
+const L5={
+  conj(){for(;;){const q=L2.conj();if(q.type==='Verbe être')return q}},
+  pron(){for(;;){const q=L2.pron();if(/sommes|êtes|suis|\bes\b/.test(q.text))return q}},
+  neg(){const p=rnd(['je','tu','il','elle','nous','vous','ils','elles']);const f=VERBS.etre.forms[p];const c=complement('etre',p);const P=cap(p);
+    const vow=/^[aeiouhéê]/i.test(f);const a=`${P} ${vow?'n’':'ne '}${f} pas ${c}.`;
+    const w=[`${P} ${vow?'ne ':'n’'}${f} pas ${c}.`,`${P} ${vow?'n’':'ne '}${f} ${c} pas.`,`${P} ${f} ne pas ${c}.`];
+    return {type:'Forme négative',flag:'🚫',text:`${P} ${f} ${c}.\n→ ?`,a,o:shuffle([a,...w]),ex:'<b>ne + être + pas</b>. Пред гласна ne → <b>n’</b>: tu n’es pas, il n’est pas, vous n’êtes pas.'}},
+  transl(){const [bg,a,w,ex]=rnd(ETRE_TR);return {type:'Traduis !',flag:'🇧🇬 → 🇫🇷',text:bg,a,o:shuffle([a,...w]),ex}},
+  listen(){for(;;){const q=L2.listen();if(/suis|es|est|sommes|êtes|sont/.test(q.a)&&!/habit|parl/.test(q.a))return q}}
+};
+
+
+/* клавиатура: 1–4 отговор, Enter/интервал напред */
+document.addEventListener('keydown',e=>{
+  const on=id=>$(id).classList.contains('on');
+  if(e.target&&e.target.tagName==='INPUT'){if(!on('s-start')){e.target.blur()}else{if(e.key==='Enter'){e.preventDefault();$('go').click()}return}}
+  if(on('s-quiz')){
+    const n=parseInt(e.key,10);
+    if(n>=1&&n<=9&&!locked){const b=document.querySelectorAll('.ans')[n-1];if(b){e.preventDefault();b.click()}return}
+    if((e.key==='Enter'||e.key===' ')&&$('q-next').style.display!=='none'){e.preventDefault();$('q-next').click()}
+  }else if(on('s-start')&&e.key==='Enter'){e.preventDefault();$('go').click()}
+  else if(on('s-menu')){if(e.key==='1'){e.preventDefault();$('m-train').click()}if(e.key==='2'){e.preventDefault();$('m-chrono').click()}}
+  else if(on('s-result')&&e.key==='Enter'){e.preventDefault();$('r-chrono').click()}
+});
+
+/* ---------- състояние ---------- */
+let seen=new Set(), lesson=1, mode='train', name='', qs=[], qi=0, score=0, correct=0, answered=0, streak=0, mistakes=[], timer=null, tLeft=0, cur=null, locked=false;
+const $=id=>document.getElementById(id);
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id));window.scrollTo(0,0)}
+
+document.querySelectorAll('[data-lesson]').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('[data-lesson]').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');lesson=+b.dataset.lesson});
+try{const n=localStorage.getItem('defi-nom');if(n)$('nom').value=n}catch(e){}
+$('go').onclick=()=>{try{$('nom').blur()}catch(e){};name=$('nom').value.trim()||'Élève';try{localStorage.setItem('defi-nom',name)}catch(e){}
+  $('menu-title').textContent=`Bonjour, ${name} !`;
+  $('menu-sub').textContent=['','9e · Leçon 1 · Pays et nationalités','9e · Leçon 2 · être + verbes en -er','11e · Au magasin de chaussures','11e · Les degrés de comparaison','Le verbe être'][lesson];show('s-menu')};
+$('back').onclick=()=>show('s-start');
+$('m-train').onclick=()=>start('train');$('m-chrono').onclick=()=>start('chrono');
+$('r-chrono').onclick=()=>start('chrono');$('r-menu').onclick=()=>show('s-menu');
+
+function gen(){
+  const G=[null,L1,L2,L3,L4,L5][lesson];
+  let types=[null,['masc','fem','fem','agree','agree','star','star','dialog'],['conj','conj','conj','pron','dice','transl','transl'],
+    ['vocab','vocab','def','def','vf','vf','phrase','phrase','comp'],['compar','compar','compar','sup','sup','irr','irr','expr','pareil'],['conj','conj','conj','pron','pron','neg','neg','transl','transl']][lesson];
+  if($('sound').checked&&canSpeak&&(lesson<=2||lesson===5)) types=types.concat(['listen','listen']);
+  let q, guard=0;
+  do{q=G[rnd(types)]();guard++}while((seen.has(q.text+'|'+q.a)||(cur&&q.text===cur.text))&&guard<60);
+  seen.add(q.text+'|'+q.a);
+  return q;
+}
+function start(m){
+  mode=m;seen=new Set();qi=0;score=0;correct=0;answered=0;streak=0;mistakes=[];cur=null;
+  clearInterval(timer);
+  $('q-score').textContent='0';$('q-prog').style.width='0%';
+  if(mode==='train'){$('q-timer').textContent='';$('q-count').style.visibility='visible';}
+  else{tLeft=90;$('q-count').style.visibility='hidden';$('q-timer').textContent='1:30';$('q-timer').classList.remove('low');
+    timer=setInterval(()=>{tLeft--;$('q-timer').textContent=`${Math.floor(tLeft/60)}:${String(tLeft%60).padStart(2,'0')}`;
+      $('q-timer').classList.toggle('low',tLeft<=10);$('q-prog').style.width=((90-tLeft)/90*100)+'%';if(tLeft<=0){clearInterval(timer);end()}},1000);}
+  show('s-quiz');next();
+}
+function next(){
+  locked=false;cur=gen();
+  if(mode==='train'){$('q-count').textContent=`${qi+1} / 12`;$('q-prog').style.width=(qi/12*100)+'%'}
+  $('q-type').textContent=cur.type;$('q-flag').textContent=cur.flag||'';$('q-text').textContent=cur.text;$('q-hint').textContent=cur.hint||'';
+  $('q-speak').style.display=cur.speak?'inline-block':'none';if(cur.speak)setTimeout(()=>say(cur.speak),150);
+  $('q-feedback').className='feedback';$('q-next').style.display='none';$('q-combo').textContent=streak>=3?`🔥 Combo ×${streak}`:'';
+  const box=$('q-answers');box.innerHTML='';
+  cur.o.forEach((t,i)=>{const b=document.createElement('button');b.className='ans';b.dataset.v=t;b.innerHTML=`<span class="key">${i+1}</span>`;b.appendChild(document.createTextNode(t));b.onclick=()=>pick(b,t);box.appendChild(b)});
+}
+$('q-speak').onclick=()=>cur&&cur.speak&&say(cur.speak);
+function pick(btn,t){
+  if(locked)return;locked=true;answered++;
+  const ok=t===cur.a;
+  document.querySelectorAll('.ans').forEach(b=>{b.disabled=true;if(b.dataset.v===cur.a)b.classList.add('ok')});
+  if(!ok)btn.classList.add('no');
+  if(ok){correct++;streak++;score+=10+(streak>=3?5:0)}else{streak=0;mistakes.push(cur)}
+  $('q-score').textContent=score;
+  const fl=$('flash');fl.className='flash '+(ok?'g':'r');setTimeout(()=>fl.className='flash',260);
+  if(mode==='train'){
+    const fb=$('q-feedback');fb.className='feedback show '+(ok?'good':'bad');
+    fb.innerHTML=(ok?'<b>✓ Bravo !</b> ':`<b>✗ Pas tout à fait.</b> Правилно: <b>${cur.a}</b><br>`)+cur.ex;
+    qi++;$('q-next').textContent=qi>=12?'Résultat ➜':'Suivant ➜';$('q-next').style.display='block';
+  }else{
+    $('q-combo').textContent=ok?(streak>=3?`🔥 Combo ×${streak} (+15)`:'✓ +10'):`✗ ${cur.a}`;
+    setTimeout(()=>{if(tLeft>0)next()},ok?450:1100);
+  }
+}
+$('q-next').onclick=()=>{if(qi>=12)end();else next()};
+function end(){
+  clearInterval(timer);if(canSpeak)try{speechSynthesis.cancel()}catch(e){}
+  $('r-name').textContent=`${name} · ${['','9e L1','9e L2','11e Magasin','11e Comparer','être'][lesson]} · ${mode==='train'?'Entraînement':'Défi chrono'}`;
+  $('r-score').textContent=mode==='train'?`${correct}/12`:score;
+  const pct=answered?correct/answered:0;
+  $('r-stars').textContent=pct>=.9?'⭐⭐⭐':pct>=.7?'⭐⭐':pct>=.4?'⭐':'💪';
+  $('r-line').textContent=mode==='train'?`${score} точки`:`${correct} верни от ${answered} отговора`;
+  $('r-msg').textContent=pct>=.9?'Excellent ! Отлично!':pct>=.7?'Très bien ! Много добре!':pct>=.4?'Pas mal ! Продължавай!':'Courage ! Опитай пак!';
+  const rv=$('r-review');
+  if(mistakes.length){const seen=new Set();rv.innerHTML='<h3>📝 À revoir (За преговор)</h3><ul>'+mistakes.filter(m=>{const k=m.text+m.a;if(seen.has(k))return false;seen.add(k);return true}).slice(0,6)
+      .map(m=>`<li>${(m.speak?'🎧 ':'')+m.text.replace(/\n/g,' ')} → <b>${m.a}</b></li>`).join('')+'</ul>';rv.style.display='block'}
+  else rv.style.display='none';
+  $('r-chrono').style.display=mode==='train'?'block':'block';
+  $('r-chrono').textContent=mode==='train'?'⏱️ Maintenant : Défi chrono !':'⏱️ Rejouer le défi';
+  show('s-result');
+}
+
+/* фиксиран урок */
+(function(){lesson=2;document.querySelectorAll('[data-lesson]').forEach(b=>{b.classList.toggle('sel',+b.dataset.lesson===2)});
+const ch=document.querySelector('.choice');ch.style.display='none';ch.previousElementSibling.style.display='none';
+$('back').style.display='none';document.querySelector('.hero p').textContent='être + verbes en -er';})();
+</script>
+</body>
+</html>

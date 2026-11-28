@@ -53,13 +53,39 @@
 			<div class="meta" use:reveal>
 				<span class="chip subj" data-subject={r.subject}>{subjects[r.subject]}</span>
 				<span class="chip">{r.type}</span>
-				{#if r.grade}<span class="chip">{gradeLabel(r)}</span>{/if}
+				{#if r.level && !String(r.level).includes('[')}<span class="chip">ниво {r.level}</span>{:else if r.grade}<span class="chip">{gradeLabel(r)}</span>{/if}
 				{#if r.example}<span class="chip ex">примерен ресурс</span>{/if}
 			</div>
 			<h1 use:reveal={{ delay: 60 }}>{r.title}</h1>
 			<!-- При упражненията описанието само повтаря заглавието – там не се показва (остава на картите) -->
 			{#if !['упражнение', 'тест'].includes(r.type)}<p class="lead" use:reveal={{ delay: 120 }}>{r.summary}</p>{/if}
-			{#if r.interactive}
+			{#if r.interactive && r.defi}
+				<!-- Игрите „Le Défi du français“ – как се използват в клас -->
+				<ul class="use three" aria-label="Как да го използвате" use:reveal={{ delay: 160 }}>
+					<li>
+						<svg class="ui" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18M4 4v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4M12 16v4M9 20h6M8 12l3-3 2 2 3-3" /></svg>
+						<div>
+							<b>На проектор или интерактивна дъска</b>
+							<span>Отворете тази страница и натиснете „Цял екран“. Класът избира отговора заедно, а след всеки въпрос се показва кратко обяснение. За „Défi chrono“ разделете класа на два отбора: всеки има 90 секунди, печели отборът с повече точки.</span>
+						</div>
+					</li>
+					<li>
+						<svg class="ui" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 9a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1zM18 8V5a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h9M16 9h2" /></svg>
+						<div>
+							<b>На телефона или компютъра на всеки ученик</b>
+							<span>Изпратете им връзката. Отваря се на всяко устройство, без регистрация и без инсталиране. Накрая всеки вижда своите точки и въпросите, на които е сгрешил.</span>
+							<button class="copy" onclick={copyLink}>{copied ? 'Връзката е копирана ✓' : 'Копирай връзката'}</button>
+						</div>
+					</li>
+					<li>
+						<svg class="ui" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2" /></svg>
+						<div>
+							<b>Как се играе</b>
+							<span>Два режима: <i>Entraînement</i> е 12 въпроса без бързане, с обяснение на български след всеки отговор. <i>Défi chrono</i> е 90 секунди за колкото може повече верни отговори, с бонус за поредица от верни. Въпросите се сменят при всяка игра.</span>
+						</div>
+					</li>
+				</ul>
+			{:else if r.interactive}
 				<!-- Как се използва – на прост език, за колеги, които не са сигурни дали могат -->
 				<ul class="use" aria-label="Как да го използвате" use:reveal={{ delay: 160 }}>
 					<li>
@@ -120,7 +146,7 @@
 </article>
 
 {#if related.length}
-	<section class="section section--paper">
+	<section class="section related">
 		<div class="wrap">
 			<h2>Още ресурси</h2>
 			<div class="rel">
@@ -131,6 +157,9 @@
 {/if}
 
 <style>
+	.related {
+		border-top: 1px solid var(--line);
+	}
 	/* Само локално – оранжево, като останалите неща, които вижда само авторът */
 	.side.local .box {
 		border: 1px dashed #d8b98f;
@@ -270,6 +299,15 @@
 	.copy:hover {
 		background: var(--sea);
 		color: #fff;
+	}
+	.use.three {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		max-width: 1100px;
+	}
+	@media (max-width: 1000px) {
+		.use.three {
+			grid-template-columns: 1fr;
+		}
 	}
 	@media (max-width: 700px) {
 		.use {
