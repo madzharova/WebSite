@@ -59,6 +59,16 @@
 			<h1 use:reveal={{ delay: 60 }}>{r.title}</h1>
 			<!-- При упражненията описанието само повтаря заглавието – там не се показва (остава на картите) -->
 			{#if !['упражнение', 'тест'].includes(r.type)}<p class="lead" use:reveal={{ delay: 120 }}>{r.summary}</p>{/if}
+			<div class="actions" use:reveal={{ delay: 180 }}>
+				<!-- Файлът за изтегляне е основното действие, ако има такъв -->
+				{#each r.files ?? [] as f}<a class="btn" href={f.href} download>↓ {f.label}</a>{/each}
+				{#if r.link}<a class="btn" class:btn--ghost={r.files?.length} href={r.link} rel="noopener">{r.linkLabel ?? "Отвори ресурса"} <span class="arrow">↗</span></a>{/if}
+				{#if r.drive}<a class="btn btn--ghost" href={r.drive} rel="noopener">Споделено с колегите</a>{/if}
+			</div>
+			</div>
+			{#if r.cover}<img class="hcover" src={r.cover} alt="Плакат: {r.title}" use:reveal={{ delay: 200 }} />{/if}
+		</div>
+		<div class="wrap">
 			{#if r.padlet}
 				<!-- Урок в Padlet – как се използва -->
 				<ul class="use" aria-label="Как да го използвате" use:reveal={{ delay: 160 }}>
@@ -124,14 +134,6 @@
 					</li>
 				</ul>
 			{/if}
-			<div class="actions" use:reveal={{ delay: 180 }}>
-				<!-- Файлът за изтегляне е основното действие, ако има такъв -->
-				{#each r.files ?? [] as f}<a class="btn" href={f.href} download>↓ {f.label}</a>{/each}
-				{#if r.link}<a class="btn" class:btn--ghost={r.files?.length} href={r.link} rel="noopener">{r.linkLabel ?? "Отвори ресурса"} <span class="arrow">↗</span></a>{/if}
-				{#if r.drive}<a class="btn btn--ghost" href={r.drive} rel="noopener">Споделено с колегите</a>{/if}
-			</div>
-			</div>
-			{#if r.cover}<img class="hcover" src={r.cover} alt="Плакат: {r.title}" use:reveal={{ delay: 200 }} />{/if}
 		</div>
 	</header>
 
@@ -195,9 +197,9 @@
 	}
 	.hgrid {
 		display: grid;
-		grid-template-columns: minmax(0, 1fr) 300px;
+		grid-template-columns: minmax(0, 1fr) 360px;
 		gap: 56px;
-		align-items: center;
+		align-items: start;
 	}
 	.hcover {
 		width: 100%;
@@ -266,7 +268,6 @@
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: 12px;
-		max-width: 860px;
 	}
 	.use li {
 		display: flex;
