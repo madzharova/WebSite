@@ -95,9 +95,9 @@
 
 		<!-- Към кои критерии е доказателство – само локално; публично се вижда в портфолиото -->
 		{#if dev}
-		<aside class="side">
+		<aside class="side local">
 			<div class="box">
-				<p class="h">Доказателство към</p>
+				<p class="h">Доказателство към · само локално</p>
 				<ul>
 					{#each r.criteria as id}
 						{@const c = byId[id]}
@@ -130,6 +130,14 @@
 {/if}
 
 <style>
+	/* Само локално – оранжево, като останалите неща, които вижда само авторът */
+	.side.local .box {
+		border: 1px dashed #d8b98f;
+		background: #fbf6ee;
+	}
+	.side.local .h {
+		color: #7a5428;
+	}
 	.rh {
 		padding: clamp(120px, 12vw, 140px) 0 36px;
 		border-bottom: 1px solid var(--line);
