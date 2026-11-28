@@ -32,10 +32,9 @@
 		position: relative;
 		display: flex;
 		flex-direction: column;
-		gap: 12px;
+		gap: 8px;
 		height: 100%;
-		min-height: 260px;
-		padding: 28px;
+		padding: 20px 22px;
 		border-radius: var(--radius-lg);
 		border: 1px solid var(--line);
 		background: var(--card);
@@ -123,7 +122,7 @@
 		letter-spacing: 0.04em;
 	}
 	h3 {
-		font-size: 25px;
+		font-size: 21px;
 		line-height: 1.18;
 	}
 	p {
@@ -142,7 +141,7 @@
 		display: flex;
 		align-items: center;
 		gap: 8px;
-		padding-top: 14px;
+		padding-top: 10px;
 		border-top: 1px solid var(--line);
 		font-size: 13px;
 		color: var(--ink-soft);

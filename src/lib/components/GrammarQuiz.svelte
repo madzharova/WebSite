@@ -166,20 +166,22 @@
 </div>
 
 <style>
-	/* Видът следва образеца „Граматична-норма-упражнения.html“; системни шрифтове – работи офлайн */
+	/* Разположението следва образеца „Граматична-норма-упражнения.html“; системни шрифтове – работи офлайн.
+	   Цветовете – от сайта: бледосиньо и корал (28.11.2026), без бежово и кафяво. */
 	.quiz {
-		--bg: #f7f5f0;
+		--bg: #f5f8fa;
 		--card: #ffffff;
 		--ink: #1f2430;
 		--soft: #4a5060;
-		--line: #ddd8ce;
+		--line: #d6e2ea;
 		--ok: #2e7d4f;
 		--okbg: #d8efdd;
 		--no: #a8323f;
 		--nobg: #f7d9dc;
-		--c: #f6d9c6;
-		--l: #fbede3;
-		--d: #8a4a26;
+		--c: #e4eef4; /* заглавна лента, преминати въпроси – бледосиньо */
+		--l: #f7e9ea; /* букви на вариантите, правило – бледо корал */
+		--d: #2a6f97; /* бутони, рамки, текущ въпрос – синьо на сайта */
+		--accent: #a95a61; /* корал – буквите А–Г и надписите */
 		--fs: clamp(16px, 1.15vw, 21px);
 		position: relative;
 		display: grid;
@@ -189,8 +191,8 @@
 		margin: 8px 0 40px;
 		background: var(--bg);
 		color: var(--ink);
-		border: 2px solid var(--d);
-		border-radius: 16px;
+		border: 1.5px solid #c9d9e4;
+		border-radius: 18px;
 		overflow: hidden;
 		font: var(--fs) / 1.45 'Segoe UI', 'Noto Sans', 'Helvetica Neue', Arial, sans-serif;
 	}
@@ -237,7 +239,7 @@
 		overflow: hidden;
 	}
 	.col { overflow: auto; padding-right: 0.3em; }
-	.meta { font-size: 0.72em; font-weight: 700; color: var(--d); margin: 0 0 0.3em; }
+	.meta { font-size: 0.72em; font-weight: 700; color: var(--accent); margin: 0 0 0.3em; }
 	.q { font: 700 1.15em/1.3 Georgia, 'Times New Roman', serif; margin: 0 0 0.6em; text-wrap: balance; color: var(--ink); }
 	.p { background: var(--card); border-left: 6px solid var(--c); padding: 0.6em 0.9em; margin: 0 0 0.8em; border-radius: 6px; }
 	.p :global(u) { text-decoration-thickness: 2px; text-underline-offset: 4px; }
@@ -263,7 +265,7 @@
 		display: grid;
 		place-items: center;
 		background: var(--l);
-		color: var(--d);
+		color: var(--accent);
 		font-weight: 800;
 	}
 	.opt .tx { padding-top: 0.12em; }

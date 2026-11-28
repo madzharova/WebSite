@@ -94,7 +94,7 @@
 
 <style>
 	.rh {
-		padding: 150px 0 56px;
+		padding: clamp(120px, 12vw, 140px) 0 36px;
 		border-bottom: 1px solid var(--line);
 		background: radial-gradient(60% 80% at 90% 0%, rgb(228 238 244 / 0.7), transparent 70%);
 	}
@@ -165,8 +165,8 @@
 		border-color: #ecd6bd;
 	}
 	h1 {
-		font-size: clamp(38px, 5vw, 60px);
-		max-width: 20ch;
+		font-size: clamp(30px, 3.4vw, 44px);
+		max-width: 28ch;
 	}
 	.lead {
 		margin-top: 18px;
