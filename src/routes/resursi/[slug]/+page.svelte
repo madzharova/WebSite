@@ -57,7 +57,8 @@
 				{#if r.example}<span class="chip ex">примерен ресурс</span>{/if}
 			</div>
 			<h1 use:reveal={{ delay: 60 }}>{r.title}</h1>
-			<p class="lead" use:reveal={{ delay: 120 }}>{r.summary}</p>
+			<!-- При упражненията описанието само повтаря заглавието – там не се показва (остава на картите) -->
+			{#if !['упражнение', 'тест'].includes(r.type)}<p class="lead" use:reveal={{ delay: 120 }}>{r.summary}</p>{/if}
 			{#if r.interactive}
 				<!-- Как се използва – на прост език, за колеги, които не са сигурни дали могат -->
 				<ul class="use" aria-label="Как да го използвате" use:reveal={{ delay: 160 }}>
