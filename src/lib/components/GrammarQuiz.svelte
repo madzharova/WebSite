@@ -222,6 +222,9 @@
 		border-bottom: 2px solid var(--d);
 	}
 	.title { margin: 0 auto 0 0; font: 700 1em/1.2 Georgia, 'Times New Roman', serif; }
+	/* Вграден в страницата: заглавието вече е над теста – показва се само на цял екран */
+	.quiz:not(.full) .title { display: none; }
+	.quiz:not(.full) .kbd-state { margin-left: auto; }
 	.kbd-state { font-size: 0.7em; color: var(--soft); }
 	.tab {
 		border: 2px solid var(--d);
