@@ -6,14 +6,11 @@
 	let { r, hideSubject = false } = $props();
 </script>
 
-<a class="card" class:has-cover={r.cover} href="{base}/resursi/{r.slug}/" data-subject={r.subject}>
-	{#if r.cover}<div class="cover"><img src={r.cover} alt="" loading="lazy" /></div>{/if}
+<a class="card" href="{base}/resursi/{r.slug}/" data-subject={r.subject}>
 	<div class="meta">
 		{#if !hideSubject}
 			<span class="subj">{subjects[r.subject] ?? r.subject}</span>
-			<span class="dot" aria-hidden="true">·</span>
 		{/if}
-		<span>{r.type}</span>
 		{#if r.level && !String(r.level).includes('[')}<span class="grade">{r.level}</span>{:else if r.grade}<span class="grade">{gradeLabel(r)}</span>{/if}
 	</div>
 	{#if r.topic}<p class="topic">{[].concat(r.topic).map(topicLabel).join(' · ')}</p>{/if}
@@ -21,6 +18,7 @@
 	<p>{r.summary}</p>
 	<div class="foot">
 		<span class="flags">
+			{#if r.type}<span class="chip kind">{r.type}</span>{/if}
 			{#each [].concat(r.izpit ?? []) as e}<span class="chip">{examLabel(e)}</span>{/each}
 		</span>
 		<span class="arrow" aria-hidden="true">→</span>
@@ -71,22 +69,6 @@
 	}
 	.card:hover::after {
 		transform: scaleX(1);
-	}
-	.cover {
-		margin: -28px -28px 6px;
-		aspect-ratio: 16 / 10;
-		overflow: hidden;
-		background: var(--paper);
-	}
-	.cover img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		object-position: 50% 20%;
-		transition: transform 1s var(--ease);
-	}
-	.card:hover .cover img {
-		transform: scale(1.04);
 	}
 	.meta {
 		display: flex;
@@ -150,6 +132,10 @@
 		display: flex;
 		flex-wrap: wrap;
 		gap: 6px;
+	}
+	.flags .kind {
+		border-color: color-mix(in srgb, var(--coral) 45%, transparent);
+		color: var(--coral);
 	}
 	.flags .chip {
 		font-size: 11.5px;

@@ -360,8 +360,8 @@
 	.rel {
 		margin-top: 32px;
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-		gap: 24px;
+		grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+		gap: 16px;
 	}
 	@media (max-width: 900px) {
 		.body {
