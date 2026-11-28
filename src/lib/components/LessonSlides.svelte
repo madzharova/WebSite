@@ -232,10 +232,11 @@
 		background: var(--l);
 		color: var(--accent);
 	}
-	table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 0.3em 0 0.8em; font-size: 1.1em; background: var(--card); border: 2px solid var(--line); border-radius: 12px; overflow: hidden; }
-	th { background: var(--c); color: var(--d); text-align: left; font-size: 0.8em; padding: 0.45em 0.8em; }
-	td { padding: 0.4em 0.8em; border-top: 1px solid var(--line); }
-	td :global(small) { color: var(--soft); font-size: 0.7em; margin-left: 0.2em; }
+	/* .slide пред селекторите – за да не важат общите стилове на .prose table (15px) */
+	.slide table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 0.3em 0 0.8em; font-size: 1.25em; line-height: 1.4; background: var(--card); border: 2px solid var(--line); border-radius: 12px; overflow: hidden; }
+	.slide th { background: var(--c); color: var(--d); text-align: left; font-size: 0.75em; padding: 0.5em 0.9em; border: 0; }
+	.slide td { padding: 0.45em 0.9em; border: 0; border-top: 1px solid var(--line); }
+	.slide td :global(small) { color: var(--soft); font-size: 0.7em; margin-left: 0.2em; }
 	.slide :global(b) { color: var(--accent); }
 	h2 :global(i) { font-weight: 400; }
 	.note { margin: 0.2em 0 0.8em; padding: 0.5em 0.8em; background: var(--l); border-left: 6px solid var(--accent); border-radius: 6px; }
