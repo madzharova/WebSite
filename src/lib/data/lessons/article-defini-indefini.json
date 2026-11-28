@@ -203,7 +203,7 @@
      "sub": "Преведете на френски",
      "html": "<ol><li>Имам котка. Котката е бяла.</li><li>Обичам шоколад.</li><li>В раницата ми има книги. Книгите са нови.</li></ol>",
      "answer": "<ol><li>J'ai <b>un</b> chat. <b>Le</b> chat est blanc.</li><li>J'aime <b>le</b> chocolat.</li><li>Dans mon sac, il y a <b>des</b> livres. <b>Les</b> livres sont neufs.</li></ol>",
-     "note": "Помощ: <b>има</b> = <b>il y a</b> · <b>бял</b> = <b>blanc</b> · <b>нови</b> = <b>neufs</b> (неизползвани, никой не ги е ползвал) или <b>nouveaux</b> (новите ми, вместо старите – може и да са употребявани)"
+     "note": "Помощ: <b>има</b> = <b>il y a</b> · <b>бял</b> = <b>blanc</b> · <b>нови</b> = <b>neufs</b> или <b>nouveaux</b>:<br><i>une voiture <b>neuve</b></i> – съвсем нова, неизползвана кола · <i>ma <b>nouvelle</b> voiture</i> – новата ми кола (може и да е втора ръка)"
     },
     {
      "h": "Qu'est-ce que j'ai appris ?",
