@@ -63,6 +63,7 @@
 				<!-- Файлът за изтегляне е основното действие, ако има такъв -->
 				{#each r.files ?? [] as f}<a class="btn" href={f.href} download>↓ {f.label}</a>{/each}
 				{#if r.link}<a class="btn" class:btn--ghost={r.files?.length} href={r.link} rel="noopener">{r.linkLabel ?? "Отвори ресурса"} <span class="arrow">↗</span></a>{/if}
+				{#if r.interactive || r.padlet}<button class="btn btn--ghost" onclick={copyLink}>{copied ? 'Връзката е копирана ✓' : 'Копирай връзката за учениците'}</button>{/if}
 				{#if r.drive}<a class="btn btn--ghost" href={r.drive} rel="noopener">Споделено с колегите</a>{/if}
 			</div>
 			</div>
@@ -71,7 +72,9 @@
 		<div class="wrap">
 			{#if r.padlet}
 				<!-- Урок в Padlet – как се използва -->
-				<ul class="use" aria-label="Как да го използвате" use:reveal={{ delay: 160 }}>
+				<details class="howto">
+					<summary>Как да го използвам в час</summary>
+				<ul class="use">
 					<li>
 						<svg class="ui" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18M4 4v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4M12 16v4M9 20h6M8 12l3-3 2 2 3-3" /></svg>
 						<div>
@@ -84,13 +87,15 @@
 						<div>
 							<b>На телефона на всеки ученик</b>
 							<span>Изпратете им връзката. Таблото се отваря без регистрация; учениците могат да коментират и да отговарят под упражненията.</span>
-							<button class="copy" onclick={copyLink}>{copied ? 'Връзката е копирана ✓' : 'Копирай връзката'}</button>
 						</div>
 					</li>
 				</ul>
+				</details>
 			{:else if r.interactive && r.defi}
 				<!-- Игрите „Le Défi du français“ – как се използват в клас -->
-				<ul class="use three" aria-label="Как да го използвате" use:reveal={{ delay: 160 }}>
+				<details class="howto">
+					<summary>Как да го използвам в час</summary>
+				<ul class="use three">
 					<li>
 						<svg class="ui" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18M4 4v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4M12 16v4M9 20h6M8 12l3-3 2 2 3-3" /></svg>
 						<div>
@@ -103,7 +108,6 @@
 						<div>
 							<b>На телефона или компютъра на всеки ученик</b>
 							<span>Изпратете им връзката. Отваря се на всяко устройство, без регистрация и без инсталиране. Накрая всеки вижда своите точки и въпросите, на които е сгрешил.</span>
-							<button class="copy" onclick={copyLink}>{copied ? 'Връзката е копирана ✓' : 'Копирай връзката'}</button>
 						</div>
 					</li>
 					<li>
@@ -114,9 +118,12 @@
 						</div>
 					</li>
 				</ul>
+				</details>
 			{:else if r.interactive}
 				<!-- Как се използва – на прост език, за колеги, които не са сигурни дали могат -->
-				<ul class="use" aria-label="Как да го използвате" use:reveal={{ delay: 160 }}>
+				<details class="howto">
+					<summary>Как да го използвам в час</summary>
+				<ul class="use">
 					<li>
 						<svg class="ui" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18M4 4v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4M12 16v4M9 20h6M8 12l3-3 2 2 3-3" /></svg>
 						<div>
@@ -129,10 +136,10 @@
 						<div>
 							<b>На телефона или компютъра на всеки ученик</b>
 							<span>Изпратете им връзката – отваря се на всяко устройство, без регистрация и без инсталиране.</span>
-							<button class="copy" onclick={copyLink}>{copied ? 'Връзката е копирана ✓' : 'Копирай връзката'}</button>
 						</div>
 					</li>
 				</ul>
+				</details>
 			{/if}
 		</div>
 	</header>
@@ -179,6 +186,40 @@
 {/if}
 
 <style>
+	/* „Как да го използвам“ – сгънато, отваря се при нужда */
+	.howto {
+		margin-top: 24px;
+	}
+	.howto summary {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		cursor: pointer;
+		list-style: none;
+		font-size: 15px;
+		font-weight: 500;
+		color: var(--sea);
+	}
+	.howto summary::-webkit-details-marker {
+		display: none;
+	}
+	.howto summary::before {
+		content: '+';
+		display: inline-grid;
+		place-items: center;
+		width: 22px;
+		height: 22px;
+		border: 1px solid var(--sea);
+		border-radius: 50%;
+		font-size: 15px;
+		line-height: 1;
+	}
+	.howto[open] summary::before {
+		content: '−';
+	}
+	.howto .use {
+		margin-top: 14px;
+	}
 	.related {
 		border-top: 1px solid var(--line);
 	}
