@@ -6,6 +6,7 @@ type: урок
 topic: [grammaire]
 level: A1
 date: 2026-11-28
+cover: /img/resursi/article-defini-indefini.png
 link: https://padlet.com/margaritamadzarova/l-article-defini-et-indefini-s125vqemcwxv4b1fux8z
 linkLabel: Отвори в Padlet
 padlet: true
