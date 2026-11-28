@@ -3,6 +3,7 @@ title: "être + verbes en -er"
 summary: "Игра за être, habiter, parler и s’appeler – спрежение, „зарче“ и превод."
 subject: fr
 type: игра
+also: упражнение
 topic: [grammaire]
 level: A1
 grade: 9

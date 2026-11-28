@@ -3,6 +3,7 @@ title: "Au magasin de chaussures"
 summary: "Игра за лексиката от урока „В магазина за обувки“ – видове обувки, фрази и вярно/невярно."
 subject: fr
 type: игра
+also: упражнение
 topic: [vocabulaire, comprehension]
 level: A2
 grade: 11

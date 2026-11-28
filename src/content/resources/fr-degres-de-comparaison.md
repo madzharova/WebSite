@@ -3,6 +3,7 @@ title: "Les degrés de comparaison"
 summary: "Игра за сравнителна и превъзходна степен – plus, moins, aussi, le plus, meilleur, pire."
 subject: fr
 type: игра
+also: упражнение
 topic: [grammaire]
 level: A2
 grade: 11

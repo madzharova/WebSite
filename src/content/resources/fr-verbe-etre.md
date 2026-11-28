@@ -3,6 +3,7 @@ title: "Le verbe être"
 summary: "Игра за спрежението на être – форми, местоимения, отрицание и превод."
 subject: fr
 type: игра
+also: упражнение
 topic: [grammaire]
 level: A1
 grade: 9

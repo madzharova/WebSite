@@ -19,11 +19,13 @@
 	// Клас/ниво може да е едно („11“) или няколко ([10, 11, 12])
 	const levelsOf = (r) => (key === 'fr' && r.level ? [].concat(r.level).map(String) : gradesOf(r));
 
-	const kindOf = (r) => kinds.find((k) => k.types.includes(r.type))?.id ?? '';
+	// Материалът може да е в повече от един вид: type + по желание also (напр. игра, която е и упражнение)
+	const typesOf = (r) => [r.type, ...[].concat(r.also ?? [])];
+	const isKind = (r, id) => kinds.find((k) => k.id === id)?.types.some((t) => typesOf(r).includes(t));
 
 	// Показват се само видовете, темите и класовете, в които има поне един материал
 	const usedKinds = kinds
-		.map((k) => ({ ...k, n: own.filter((r) => kindOf(r) === k.id).length }))
+		.map((k) => ({ ...k, n: own.filter((r) => isKind(r, k.id)).length }))
 		.filter((k) => k.n);
 	const examsOf = (r) => [].concat(r.izpit ?? []);
 	// Тема с подтеми („Български език“) съдържа и материалите с някоя от подтемите си
@@ -53,7 +55,7 @@
 	let list = $derived(
 		own.filter(
 			(r) =>
-				(!kind || kindOf(r) === kind) &&
+				(!kind || isKind(r, kind)) &&
 				(!topic || hasTopic(r, topic)) &&
 				(!exam || examsOf(r).includes(exam)) &&
 				(!level || levelsOf(r).includes(level))

@@ -3,6 +3,7 @@ title: "Pays et nationalités"
 summary: "Игра с флагове и известни личности: страни и националности в мъжки и женски род."
 subject: fr
 type: игра
+also: упражнение
 topic: [vocabulaire, grammaire]
 level: A1
 grade: 9
