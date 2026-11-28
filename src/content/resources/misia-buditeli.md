@@ -32,8 +32,8 @@ evidence: [dinamika]
 
 <div class="gallery">
 <figure><a href="/files/buditeli/plakat.webp"><img src="/files/buditeli/plakat.webp" alt="Главният плакат на играта" loading="lazy" /></a><figcaption>Главен плакат</figcaption></figure>
-<figure><a href="/files/buditeli/sleda-1.webp"><img src="/files/buditeli/sleda-1.webp" alt="Следа 1 от 15 – въпрос и QR код" loading="lazy" /></a><figcaption>Следа 1 · <a href="/files/buditeli/misia-buditeli-universalna.pdf" download>↓ PDF за печат</a></figcaption></figure>
-<figure><a href="/files/buditeli/sleda-8.webp"><img src="/files/buditeli/sleda-8.webp" alt="Следа 8 от 15 – въпрос и QR код" loading="lazy" /></a><figcaption>Следа 8 · <a href="/files/buditeli/misia-buditeli-universalna.pdf" download>↓ PDF за печат</a></figcaption></figure>
+<figure><a href="/files/buditeli/sleda-1.webp"><img src="/files/buditeli/sleda-1.webp" alt="Следа 1 от 15 – въпрос и QR код" loading="lazy" /></a><figcaption>Следа 1</figcaption></figure>
+<figure><a href="/files/buditeli/sleda-8.webp"><img src="/files/buditeli/sleda-8.webp" alt="Следа 8 от 15 – въпрос и QR код" loading="lazy" /></a><figcaption>Следа 8</figcaption></figure>
 <figure><a href="/files/buditeli/buditel-paisii.webp"><img src="/files/buditeli/buditel-paisii.webp" alt="Страница за Паисий Хилендарски, която се отваря от QR кода" loading="lazy" /></a><figcaption>QR кодът отваря: Паисий</figcaption></figure>
 <figure><a href="/files/buditeli/buditel-beron.webp"><img src="/files/buditeli/buditel-beron.webp" alt="Страница за Петър Берон" loading="lazy" /></a><figcaption>Петър Берон</figcaption></figure>
 <figure><a href="/files/buditeli/buditel-raina.webp"><img src="/files/buditeli/buditel-raina.webp" alt="Страница за Райна Княгиня" loading="lazy" /></a><figcaption>Райна Княгиня</figcaption></figure>
