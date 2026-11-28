@@ -201,8 +201,8 @@
     {
      "h": "Ticket de sortie",
      "sub": "Преведете на френски",
-     "html": "<ol><li>Имам котка. Котката е бяла.</li><li>Обичам шоколад.</li><li>Това са приятели.</li></ol>",
-     "answer": "<ol><li>J'ai <b>un</b> chat. <b>Le</b> chat est blanc.</li><li>J'aime <b>le</b> chocolat.</li><li>Ce sont <b>des</b> amis.</li></ol>"
+     "html": "<ol><li>Имам котка. Котката е бяла.</li><li>Обичам шоколад.</li><li>В раницата ми има книги. Книгите са нови.</li></ol>",
+     "answer": "<ol><li>J'ai <b>un</b> chat. <b>Le</b> chat est blanc.</li><li>J'aime <b>le</b> chocolat.</li><li>Dans mon sac, il y a <b>des</b> livres. <b>Les</b> livres sont neufs.</li></ol>"
     },
     {
      "h": "Qu'est-ce que j'ai appris ?",
